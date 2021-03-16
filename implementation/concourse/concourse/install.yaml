@@ -2,12 +2,13 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.atlassian.jira
+  prefix: cap.implementation.concourse.concourse
   name: install
-  displayName: Install Jira
-  description: Action which installs Jira via Helm chart
-  documentationURL: https://github.com/javimox/helm-charts/tree/master/charts/jira-software
-  supportURL: https://mox.sh/helm/
+  displayName: Install Concourse
+  description: Action which installs Concourse via Helm chart
+  documentationURL: https://concourse-ci.org/
+  supportURL: https://concourse-ci.org/
+  iconURL: https://concourse-ci.org/images/logo-white.svg
   license:
     name: "Apache 2.0"
   maintainers:
@@ -27,15 +28,15 @@ spec:
         verbs: [ "get" ]
 
   outputTypeInstanceRelations:
-    jira-config:
+    concourse-config:
       uses:
-        - jira-helm-release
+        - concourse-helm-release
         - postgresql
         - database
         - user
 
   implements:
-    - path: cap.interface.productivity.jira.install
+    - path: cap.interface.automation.concourse.install
       revision: 0.1.0
 
   requires:
@@ -74,9 +75,9 @@ spec:
     runnerInterface: argo.run
     args:
       workflow:
-        entrypoint: jira-install
+        entrypoint: concourse-install
         templates:
-          - name: jira-install
+          - name: concourse-install
             inputs:
               artifacts:
                 - name: input-parameters
@@ -110,7 +111,7 @@ spec:
                       - name: user-input
                         raw:
                           data: |
-                            name: jira
+                            name: concourse
 
               - - name: render-create-db-args
                   voltron-action: jinja2.template
@@ -119,7 +120,7 @@ spec:
                       - name: template
                         raw:
                           data: |
-                            name: jiradb
+                            name: concoursedb
                             owner: "<@ name @>"
                       - name: input-parameters
                         from: "{{steps.create-user.outputs.artifacts.user}}"
@@ -149,34 +150,45 @@ spec:
                             command: "install"
                             generateName: true
                             chart:
-                              name: "jira-software"
-                              repo: "https://helm.mox.sh"
+                              name: "concourse"
+                              repo: "https://concourse-charts.storage.googleapis.com"
+                              version: "14.6.2"
                             output:
                               goTemplate:
-                                version: "{{ .Values.image.tag }}"
-                                host: "{{ (index .Values.ingress.hosts 0).host }}"
+                                version: "{{ .Values.imageTag }}"
+                                host: "{{ (index .Values.web.ingress.hosts 0) }}"
+                                userAndPassword: "{{ .Values.secrets.localUsers }}"
                             values:
                               postgresql:
                                 enabled: false
-                              databaseConnection:
-                                host: <@ db.host @>
-                                user: <@ user.name @>
-                                password: <@ user.password @>
-                                database: <@ database.name @>
-                              ingress:
-                                enabled: true
-                                annotations:
-                                  acmechallengetype: http01
-                                  cert-manager.io/cluster-issuer: letsencrypt
-                                  kubernetes.io/ingress.class: nginx
-                                  kubernetes.io/tls-acme: "true"
-                                tls:
-                                  - secretName: jira-server-tls-<@ random_word(length=5) @>
-                                    hosts:
-                                      - <@ input.host @>
-                                hosts:
-                                - host: <@ input.host @>
-                                  paths: ['/']
+                              rbac:
+                                create: false
+                              secrets:
+                                postgresUser: <@ user.name @>
+                                postgresPassword: <@ user.password @>
+                              concourse:
+                                web:
+                                  externalUrl: https://<@ input.host @>
+                                  kubernetes:
+                                    createTeamNamespaces: false
+                                  postgres:
+                                    host: <@ db.host @>
+                                    database: <@ database.name @>
+                              web:
+                                ingress:
+                                  enabled: true
+                                  annotations:
+                                    acmechallengetype: http01
+                                    cert-manager.io/cluster-issuer: letsencrypt
+                                    kubernetes.io/ingress.class: nginx
+                                    kubernetes.io/tls-acme: "true"
+                                    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+                                  tls:
+                                    - secretName: concourse-server-tls-<@ random_word(length=5) @>
+                                      hosts:
+                                        - <@ input.host @>
+                                  hosts:
+                                  - <@ input.host @>
                       - name: input-parameters
                         from: "{{steps.install-db.outputs.artifacts.postgresql}}"
                       - name: configuration
@@ -223,9 +235,9 @@ spec:
               - - name: helm-run
                   voltron-action: helm.run
                   voltron-outputTypeInstances:
-                    - name: jira-config
+                    - name: concourse-config
                       from: additional
-                    - name: jira-helm-release
+                    - name: concourse-helm-release
                       from: helm-release
                   arguments:
                     artifacts:

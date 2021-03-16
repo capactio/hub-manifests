@@ -3,12 +3,12 @@ revision: 0.1.0
 kind: Type
 metadata:
   name: config
-  prefix: cap.type.productivity.jira
-  displayName: Jira config
-  description: Defines configuration for Jira instance
-  documentationURL: https://support.atlassian.com/jira-software-cloud/resources/
-  supportURL: https://www.atlassian.com/software/jira
-  iconURL: https://www.atlassian.com/pl/dam/jcr:e33efd9e-e0b8-4d61-a24d-68a48ef99ed5/Jira%20Software@2x-blue.png
+  prefix: cap.type.automation.concourse
+  displayName: Concourse config
+  description: Defines configuration for Concourse instance
+  documentationURL: https://concourse-ci.org/
+  supportURL: https://concourse-ci.org/
+  iconURL: https://concourse-ci.org/images/logo-white.svg
   maintainers:
     - email: team-dev@projectvoltron.dev
       name: Voltron Dev Team
@@ -20,7 +20,7 @@ spec:
       {
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
-        "title": "The schema for Jira configuration",
+        "title": "The schema for Concourse configuration",
         "required": [
             "version"
         ],
@@ -40,6 +40,11 @@ spec:
           }
           "host": {
             "$ref": "#/$ocfRefs/hostname"
+          },
+          "userAndPassword": {
+            "$id": "#/properties/userAndPassword",
+            "type": "string",
+            "title": "User and password, separated by colon"
           }
         },
         "additionalProperties": true
