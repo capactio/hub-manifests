@@ -2,34 +2,34 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Interface
 metadata:
-  prefix: cap.interface.voltron.validation.action
+  prefix: cap.interface.capactio.capact.validation.action
   name: passing
-  displayName: Passing Voltron test action
+  displayName: Passing Capact test action
   description: ""
-  documentationURL: "https://projectvoltron.dev"
+  documentationURL: "https://capact.io"
   maintainers:
-    - email: team-dev@projectvoltron.dev
-      name: Voltron Dev Team
-      url: https://projectvoltron.dev
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
 
 spec:
   input:
     typeInstances:
       testInput:
         typeRef:
-          path: cap.type.voltron.validation.download
+          path: cap.type.capactio.capact.validation.download
           revision: "0.1.0"
         verbs: ["get"]
       testUpdate:
         typeRef:
-          path: cap.type.voltron.validation.update
+          path: cap.type.capactio.capact.validation.update
           revision: "0.1.0"
         verbs: ["get", "update"]
   output:
     typeInstances:
       testUpload:
         typeRef:
-          path: cap.type.voltron.validation.upload
+          path: cap.type.capactio.capact.validation.upload
           revision: "0.1.0"
 
 signature:
