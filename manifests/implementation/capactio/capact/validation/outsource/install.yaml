@@ -8,7 +8,7 @@ metadata:
     name: "Apache 2.0"
   displayName: "Alternative Implementation"
   description: |-
-    Alternative Implementation of the `cap.interface.capactio.capact.validation.och.install` Interface
+    Alternative Implementation of the `cap.interface.capactio.capact.validation.hub.install` Interface
     This implementation additionally requires the GCP SA and has also the GCP Attribute.
   documentationURL: "https://capact.io"
   maintainers:
@@ -24,7 +24,7 @@ spec:
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.validation.och.install
+    - path: cap.interface.capactio.capact.validation.hub.install
       revision: 1.0.0
 
   requires:
@@ -59,4 +59,4 @@ spec:
               args: ["echo 'always exit 0'  && sleep 2"]
 
 signature:
-  och: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9
+  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

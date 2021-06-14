@@ -7,4 +7,4 @@ To contribute to this project, follow the common contribution rules in the [`CON
 
 Get familiar with additional documents, which are relevant for the contribution to this repository:
 
-- Learn how to [develop hub manifests](https://staging.capact.io/docs/content-development/guide).
+- Learn how to [develop hub manifests](https://capact.io/docs/content-development).
