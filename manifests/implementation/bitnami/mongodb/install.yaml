@@ -93,7 +93,7 @@ spec:
                             replicaSetHostnames: <@ input.replicaSetHostnames | default(true) | tojson @>
                             directoryPerDB: <@ input.directoryPerDB | default(false) | tojson @>
                             enableIPv6: <@ input.enableIPv6 | default(false) | tojson @>
-                            systemLogVerbosity: <@ input.systemLogVerbosity | defult(0) @>
+                            systemLogVerbosity: <@ input.systemLogVerbosity | default(0) @>
                             disableSystemLog: <@ input.disableSystemLog | default(false) | tojson @>
                             configuration: "<@ input.configuration | default('') @>"
                             initdbScripts: <@ input.initdbScripts | default({}) | tojson @>
