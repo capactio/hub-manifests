@@ -96,21 +96,6 @@ spec:
                       - name: manifest
                         from: "{{steps.render-secret-manifest.outputs.artifacts.render}}"
 
-              - - name: fill-default-input
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: input-parameters
-                        from: "{{inputs.artifacts.input-parameters}}"
-                      - name: template
-                        raw:
-                          data: |
-                            replicas: <@ input.replicas | default(3) @>
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: input
-
               # Here we prepare the input for the Helm runner.
               - - name: render-helm-args
                   capact-action: jinja2.template
