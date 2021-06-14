@@ -1,0 +1,36 @@
+name: PR build
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    paths-ignore:
+      - "LICENSE"
+      - "CODEOWNERS"
+    branches:
+      - "main"
+
+jobs:
+  cancel-previous-workflows:
+    name: Cancel previous workflows
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+
+  validation:
+    name: Validate Hub manifests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Download the latest Capact CLI for linux
+        run: |
+          curl -Lo ./capact https://storage.googleapis.com/capactio-binaries/latest/capact-linux-amd64
+          chmod +x ./capact
+      - name: Validate manifests
+        run: ./capact validate $(find ./manifests -regex ".*\.yaml")
+
