@@ -1,6 +1,6 @@
 # Hub
 
-The directory contains a representation of the Hub repository content.
+The directory contains a representation of the Hub content.
 
 The Hub contains the following groups:
 - [`core`](manifests/core) - Contains Hub metadata with configuration and core manifests, such as Interfaces or Types.
