@@ -53,7 +53,7 @@ spec:
                     }
                   }
                 },
-                "och-public":{
+                "hub-public":{
                   "resources":{
                     "limits":{
                       "cpu":"400m",
@@ -236,10 +236,10 @@ spec:
                   },
                   "additionalProperties":false
                 },
-                "och-public":{
-                  "$id":"#/properties/override/properties/capactValues/properties/och-public",
+                "hub-public":{
+                  "$id":"#/properties/override/properties/capactValues/properties/hub-public",
                   "type":"object",
-                  "description":"Specifies override for Capact OCH Public component.",
+                  "description":"Specifies override for Capact Hub Public component.",
                   "properties":{
                     "resources": {
                       "$ref": "#/definitions/resources"
@@ -273,4 +273,4 @@ spec:
         "additionalProperties":true
       }
 signature:
-  och: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9\
+  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9\

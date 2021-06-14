@@ -3,9 +3,9 @@ revision: 0.1.0
 kind: InterfaceGroup
 metadata:
   prefix: cap.interface.capactio.capact.validation
-  name: och
-  displayName: "Capact E2E OCH Public test manifests"
-  description: "Manifests used for testing OCH Public GraphQL calls and filters"
+  name: hub
+  displayName: "Capact E2E Hub Public test manifests"
+  description: "Manifests used for testing Hub Public GraphQL calls and filters"
   documentationURL: https://capact.io
   supportURL: https://capact.io
   maintainers:
@@ -14,4 +14,4 @@ metadata:
       url: https://capact.io
 
 signature:
-  och: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9
+  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

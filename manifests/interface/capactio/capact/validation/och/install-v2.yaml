@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 2.0.0
 kind: Interface
 metadata:
-  prefix: cap.interface.capactio.capact.validation.och
+  prefix: cap.interface.capactio.capact.validation.hub
   name: install
   displayName: Install v2
   description: ""
@@ -17,4 +17,4 @@ spec:
   output: {}
 
 signature:
-  och: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9
+  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9
