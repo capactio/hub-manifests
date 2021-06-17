@@ -166,7 +166,7 @@ spec:
                           data: |
                             variables: |+
                               region = "<@ additionalinput.region | default("eu-west-1") @>"
-                              domain_name = "elastic-<@ random_word(length=12) @>"
+                              domain_name = "<@ additionalinput.domain_name | default('elastic-' + random_word(length=12)) @>"
 
                               advanced_security_options_enabled = true
                               advanced_security_options_internal_user_database_enabled = true
