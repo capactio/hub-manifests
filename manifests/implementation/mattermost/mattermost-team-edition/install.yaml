@@ -327,7 +327,7 @@ spec:
                                 AllowBannerDismissal: <@ input.configJSON.AnnouncementSettings.AllowBannerDismissal | default(true) | tojson @>
                               GitLabSettings:
                                 Enable: <@ input.configJSON.GitLabSettings.Enable | default(false) | tojson @>
-                                Secret: <"@ input.configJSON.GitLabSettings.Secret | default('') @>"
+                                Secret: "<@ input.configJSON.GitLabSettings.Secret | default('') @>"
                                 Id: "<@ input.configJSON.GitLabSettings.Id | default('') @>"
                                 Scope: "<@ input.configJSON.GitLabSettings.Scope | default('') @>"
                                 AuthEndpoint: "<@ input.configJSON.GitLabSettings.AuthEndpoint | default('') @>"

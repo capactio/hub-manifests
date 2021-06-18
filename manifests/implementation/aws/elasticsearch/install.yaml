@@ -26,7 +26,7 @@ spec:
   additionalInput:
     parameters:
       typeRef:
-        path: cap.type.aws.elasticsearch
+        path: cap.type.aws.elasticsearch.install-input
         revision: 0.1.0
 
   additionalOutput:
