@@ -73,6 +73,3 @@ spec:
               image: alpine:latest
               command: ["sh", "-c"]
               args: ["echo 'Implementation A' && cp /input /upload && cp /input /update && sleep 1"]
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

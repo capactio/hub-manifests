@@ -25,6 +25,3 @@ spec:
             "foo.bar.capact.dev"
         ]
       }
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

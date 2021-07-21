@@ -27,6 +27,3 @@ spec:
             "30000"
         ]
       }
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

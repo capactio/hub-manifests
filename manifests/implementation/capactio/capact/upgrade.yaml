@@ -279,6 +279,3 @@ spec:
                 - "-n={{inputs.parameters.namespace}}"
                 - "--selector={{inputs.parameters.selector}}"
                 - "--timeout={{inputs.parameters.timeout}}"
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

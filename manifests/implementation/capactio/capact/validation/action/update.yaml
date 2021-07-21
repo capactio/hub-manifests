@@ -74,6 +74,3 @@ spec:
               image: alpine:latest
               command: ["sh", "-c"]
               args: ["cat /input-parameters | grep success && echo 'updated: true' | tee /update && sleep 2"]
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

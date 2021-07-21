@@ -187,6 +187,3 @@ spec:
               artifacts:
                 - name: out
                   path: /file
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

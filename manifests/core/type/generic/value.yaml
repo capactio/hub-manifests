@@ -18,6 +18,3 @@ spec:
           "$schema": "http://json-schema.org/draft-04/schema#",
           "additionalProperties": true
       }
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9
