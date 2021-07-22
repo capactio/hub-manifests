@@ -43,14 +43,17 @@ spec:
           "rootPassword",
           "replicas"
         ],
-        "$ocfRefs": {
+        "definitions": {
           "hostname": {
-            "name": "cap.core.type.networking.hostname",
-            "revision": "0.1.0"
+            "type": "string",
+            "format": "hostname",
+            "title": "Hostname"
           },
           "port": {
-            "name": "cap.core.type.networking.port",
-            "revision": "0.1.0"
+            "type": "integer",
+            "title": "Port",
+            "minimum": 0,
+            "maximum": 65535
           }
         },
         "properties": {
@@ -88,10 +91,10 @@ spec:
             "title": "Defines a root password"
           },
           "host": {
-            "$ref": "#/$ocfRefs/hostname"
+            "$ref": "#/definitions/hostname"
           },
           "port": {
-            "$ref": "#/$ocfRefs/port"
+            "$ref": "#/definitions/port"
           },
           "replicas": {
             "$id": "#/properties/replicas",

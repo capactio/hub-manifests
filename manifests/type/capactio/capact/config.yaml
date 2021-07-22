@@ -29,11 +29,12 @@ spec:
             }
           }
         ],
-        "$ocfRefs": {
+        "definitions": {
           "uri": {
-            "name": "cap.core.type.networking.uri",
-            "revision": "0.1.0"
-          }
+           "type": "string",
+           "format": "uri",
+           "title": "URI"
+         }
         },
         "required": [
           "gateway",
@@ -67,7 +68,7 @@ spec:
               },
               "url": {
                 "$id": "#/properties/gateway/properties/url",
-                "$ref": "#/$ocfRefs/uri",
+                "$ref": "#/definitions/uri",
                 "title": "The Capact Gateway URL."
               }
             },
