@@ -490,7 +490,3 @@ spec:
               image: bitnami/kubectl:1.18
               command: [sh, -c]
               args: ["kubectl create -f {{inputs.artifacts.manifest.path}} --output=yaml > {{outputs.artifacts.manifest.path}}"]
-
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

@@ -28,7 +28,7 @@ spec:
       typeRef:
         path: cap.type.aws.rds.postgresql.install-input
         revision: 0.1.0
-      
+
   additionalOutput:
     typeInstances:
       rds-instance:
@@ -285,6 +285,3 @@ spec:
                             identifier: "<@ identifier @>"
                             availability_zone: "<@ availability_zone @>"
                             class: "<@ class @>"
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

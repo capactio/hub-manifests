@@ -369,7 +369,7 @@ spec:
                                   enabled: <@ additionalinput.metrics.prometheusRule.enabled | default(false) | tojson @>
                                   additionalLabels: <@ additionalinput.metrics.prometheusRule.additionalLabels | default({}) @>
                                   rules: <@ additionalinput.metrics.prometheusRule.rules | default({}) @>
-                             
+
                             output:
                               goTemplate: |
                                 replicas:
@@ -409,6 +409,3 @@ spec:
                         from: "{{steps.fill-input-in-module-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

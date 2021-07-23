@@ -414,7 +414,7 @@ spec:
                                 path: <@ additionalinput.ingress.path | default('/') @>
                                 annotations:
                                   "cert-manager.io/cluster-issuer": letsencrypt
-                                hosts: 
+                                hosts:
                                   - <@ input.host @>
                                 tls:
                                   - hosts:
@@ -717,6 +717,3 @@ spec:
                         from: "{{steps.fill-db.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

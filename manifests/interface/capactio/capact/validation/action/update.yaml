@@ -38,6 +38,3 @@ spec:
           revision: "0.1.0"
         verbs: ["get", "update"]
   output: {}
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

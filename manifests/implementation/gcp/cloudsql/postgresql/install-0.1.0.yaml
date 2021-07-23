@@ -122,6 +122,3 @@ spec:
                         from: "{{workflow.outputs.artifacts.runner-context}}"
                       - name: gcp-sa
                         from: "{{workflow.outputs.artifacts.gcp-sa}}"
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9

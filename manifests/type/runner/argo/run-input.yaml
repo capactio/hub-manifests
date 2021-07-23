@@ -4699,9 +4699,3 @@ spec:
         },
         "additionalProperties": false
       }
-
-
-
-
-signature:
-  hub: eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9
