@@ -22,15 +22,16 @@ spec:
         "type": "object",
         "title": "The schema for Elasticsearch input parameters.",
         "required": [],
-        "$ocfRefs": {
+        "definitions": {
           "hostname": {
-            "name": "cap.core.type.networking.hostname",
-            "revision": "0.1.0"
+            "type": "string",
+            "format": "hostname",
+            "title": "Hostname"
           }
         },
         "properties": {
           "host": {
-            "$ref": "#/$ocfRefs/hostname"
+            "$ref": "#/definitions/hostname"
           },
           "replicas": {
             "type": "string",

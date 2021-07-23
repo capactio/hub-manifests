@@ -24,15 +24,16 @@ spec:
         "required": [
             "host"
         ],
-        "$ocfRefs": {
+        "definitions": {
           "hostname": {
-            "name": "cap.core.type.networking.hostname",
-            "revision": "0.1.0"
+            "type": "string",
+            "format": "hostname",
+            "title": "Hostname"
           }
         },
         "properties": {
           "host": {
-            "$ref": "#/$ocfRefs/hostname"
+            "$ref": "#/definitions/hostname"
           }
         "smtp": {
             "$id": "#/properties/smtp",

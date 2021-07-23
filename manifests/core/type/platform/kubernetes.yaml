@@ -25,15 +25,21 @@ spec:
         "required": [
             "version"
         ],
-        "$ocfRefs": {
+        "definitions": {
           "semVer": {
-            "name": "cap.core.type.versioning.semver",
-            "revision": "0.1.0"
+            "type": "string",
+            "minLength": 5,
+            "pattern": "^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$",
+            "title": "Semantic Versioning version",
+            "examples": [
+                "1.19.0"
+                "2.0.1-alpha1"
+            ]
           }
         },
         "properties": {
           "version": {
-            "$ref": "#/$ocfRefs/semVer"
+            "$ref": "#/definitions/semVer"
           }
         },
         "additionalProperties": false
