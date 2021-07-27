@@ -76,7 +76,7 @@ spec:
                   globalName: tfstate
                   path: "/terraform-state.yaml"
             container:
-              image: ghcr.io/capactio/terraform-runner:09b65f7
+              image: ghcr.io/capactio/pr/terraform-runner:PR-407
               env:
                 - name: RUNNER_CONTEXT_PATH
                   value: "{{inputs.artifacts.runner-context.path}}"
