@@ -157,13 +157,13 @@ spec:
                       - name: helm-release
                         from: "{{inputs.artifacts.neo4j-helm-release}}"
               - - name: waiting-for-neo4j-to-be-ready
-                  template: wait-for-ready-pod
+                  template: wait-for-workload
                   arguments:
                     parameters:
                       - name: namespace
                         value: 'capact-system'
-                      - name: selector
-                        value: 'app.kubernetes.io/component=core'
+                      - name: workload
+                        value: 'sts/neo4j-neo4j-core'
                       - name: timeout
                         value: '300s'
 
@@ -178,13 +178,13 @@ spec:
                       - name: helm-release
                         from: "{{inputs.artifacts.ingress-nginx-helm-release}}"
               - - name: waiting-for-ingress-to-be-ready
-                  template: wait-for-ready-pod
+                  template: wait-for-workload
                   arguments:
                     parameters:
                       - name: namespace
                         value: 'capact-system'
-                      - name: selector
-                        value: 'app.kubernetes.io/component=controller'
+                      - name: workload
+                        value: 'deploy/ingress-nginx-controller'
                       - name: timeout
                         value: '90s'
 
@@ -263,19 +263,18 @@ spec:
               command: [ kubectl ]
               args: [ "annotate", "secret", "-n=capact-system", "argo-minio", 'kubed.appscode.com/sync=', "--overwrite" ]
 
-          - name: wait-for-ready-pod
+          - name: wait-for-workload
             inputs:
               parameters:
                 - name: namespace
-                - name: selector
+                - name: workload
                 - name: timeout
             container:
               image: bitnami/kubectl:1.18
               command: [ kubectl ]
               args:
-                - "wait"
-                - "--for=condition=ready"
-                - "pod"
+                - "rollout"
+                - "status"
+                - "{{inputs.parameters.workload}}"
                 - "-n={{inputs.parameters.namespace}}"
-                - "--selector={{inputs.parameters.selector}}"
                 - "--timeout={{inputs.parameters.timeout}}"
