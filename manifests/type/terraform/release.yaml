@@ -23,12 +23,12 @@ spec:
         "examples": [
           {
             "name": "foo",
-            "source": "bar",
+            "source": "bar"
           }
         ],
         "required": [
-            "name",
-            "source"
+          "name",
+          "source"
         ],
         "properties": {
           "name": {
@@ -40,7 +40,7 @@ spec:
             "$id": "#/properties/args/properties/source",
             "type": "string",
             "title": "The source of the release"
-          },
+          }
         },
         "additionalProperties": false
       }

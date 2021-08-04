@@ -31,9 +31,9 @@ spec:
           }
         ],
         "required": [
-            "name",
-            "namespace",
-            "chart"
+          "name",
+          "namespace",
+          "chart"
         ],
         "properties": {
           "name": {
@@ -53,9 +53,9 @@ spec:
             "type": "object",
             "title": "The chart schema",
             "required": [
-                "name"
-                "version"
-                "repo"
+              "name",
+              "version",
+              "repo"
             ],
             "additionalProperties": false,
             "properties": {

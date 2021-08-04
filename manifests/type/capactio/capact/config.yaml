@@ -76,4 +76,4 @@ spec:
           }
         },
         "additionalProperties": false
-      }\
+      }

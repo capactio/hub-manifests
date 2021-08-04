@@ -51,84 +51,84 @@ spec:
           "chart"
         ],
         "properties": {
-            "name": {
-              "$id": "#/properties/name",
-              "type": "string",
-              "title": "The name of installed release"
-            },
-            "chart": {
-              "$id": "#/properties/chart",
-              "type": "object",
-              "title": "The chart data",
-              "required": [
-                "name"
-              ],
-              "properties": {
-                "name": {
-                  "$id": "#/properties/chart/properties/name",
-                  "type": "string",
-                  "title": "The name of Chart",
-                  "default": ""
-                },
-                "version": {
-                  "$id": "#/properties/chart/properties/version",
-                  "type": "string",
-                  "title": "Specify the exact chart version to use. If this is not specified, the latest version is used",
-                  "default": ""
-                },
-                "repo": {
-                  "$id": "#/properties/repo",
-                  "type": "string",
-                  "title": "Chart repository URL where to locate the requested chart"
-                }
+          "name": {
+            "$id": "#/properties/name",
+            "type": "string",
+            "title": "The name of installed release"
+          },
+          "chart": {
+            "$id": "#/properties/chart",
+            "type": "object",
+            "title": "The chart data",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "$id": "#/properties/chart/properties/name",
+                "type": "string",
+                "title": "The name of Chart",
+                "default": ""
               },
-              "additionalProperties": false
+              "version": {
+                "$id": "#/properties/chart/properties/version",
+                "type": "string",
+                "title": "Specify the exact chart version to use. If this is not specified, the latest version is used",
+                "default": ""
+              },
+              "repo": {
+                "$id": "#/properties/repo",
+                "type": "string",
+                "title": "Chart repository URL where to locate the requested chart"
+              }
             },
-            "noHooks": {
-              "$id": "#/properties/noHooks",
-              "type": "boolean",
-              "title": "Prevent hooks from running during install",
-              "default": false
-            },
-            "generateName": {
-              "$id": "#/properties/generateName",
-              "type": "boolean",
-              "title": "Generate release name",
-              "default": false
-            },
-            "replace": {
-              "$id": "#/properties/replace",
-              "type": "boolean",
-              "title": "Re-use the given name, only if that name is a deleted release which remains in the history. This is unsafe in production",
-              "default": false
-            },
-            "values": {
-              "$id": "#/properties/values",
-              "type": "object",
-              "title": "The values for chart",
-              "additionalProperties": true
-            },
-            "valuesFromFile": {
-              "$id": "#/properties/valuesFromFile",
-              "type": "string",
-              "title": "The path for file with values for chart"
-            },
-            "output": {
-              "$id": "#/properties/output",
-              "type": "object",
-              "title": "The parameters for output files",
-              "additionalProperties": false,
-              "required": [
-                "goTemplate"
-              ],
-              "properties": {
-                "goTemplate": {
-                  "$id": "#/properties/output/properties/goTemplate",
-                  "type": "object",
-                  "title": "Defines additional data to extract from Helm release and save as additional output. Support Go template syntax.",
-                  "additionalProperties": true
-                }
+            "additionalProperties": false
+          },
+          "noHooks": {
+            "$id": "#/properties/noHooks",
+            "type": "boolean",
+            "title": "Prevent hooks from running during install",
+            "default": false
+          },
+          "generateName": {
+            "$id": "#/properties/generateName",
+            "type": "boolean",
+            "title": "Generate release name",
+            "default": false
+          },
+          "replace": {
+            "$id": "#/properties/replace",
+            "type": "boolean",
+            "title": "Re-use the given name, only if that name is a deleted release which remains in the history. This is unsafe in production",
+            "default": false
+          },
+          "values": {
+            "$id": "#/properties/values",
+            "type": "object",
+            "title": "The values for chart",
+            "additionalProperties": true
+          },
+          "valuesFromFile": {
+            "$id": "#/properties/valuesFromFile",
+            "type": "string",
+            "title": "The path for file with values for chart"
+          },
+          "output": {
+            "$id": "#/properties/output",
+            "type": "object",
+            "title": "The parameters for output files",
+            "additionalProperties": false,
+            "required": [
+              "goTemplate"
+            ],
+            "properties": {
+              "goTemplate": {
+                "$id": "#/properties/output/properties/goTemplate",
+                "type": "object",
+                "title": "Defines additional data to extract from Helm release and save as additional output. Support Go template syntax.",
+                "additionalProperties": true
               }
             }
+          }
         }
       }

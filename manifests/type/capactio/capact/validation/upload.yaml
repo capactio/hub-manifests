@@ -21,7 +21,7 @@ spec:
         "title": "The schema for upload Type",
         "examples": [
           {
-            "key": "1"
+            "key": true
           }
         ],
         "required": [
@@ -30,9 +30,9 @@ spec:
         "properties": {
           "key": {
            "$id": "#/properties/key",
-           "type": "bool",
+           "type": "boolean",
            "title": "Key"
           }
-        }
+        },
         "additionalProperties": false
       }

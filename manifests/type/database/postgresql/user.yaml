@@ -22,24 +22,24 @@ spec:
         "examples": [
           {
             "name": "userName",
-            "password": "some_secret",
+            "password": "some_secret"
           }
         ],
         "required": [
-            "name",
-            "password"
+          "name",
+          "password"
         ],
         "properties": {
           "name": {
             "$id": "#/properties/name",
             "type": "string",
-            "title": "User name",
+            "title": "User name"
           },
           "password": {
             "$id": "#/properties/password",
             "type": "string",
-            "title": "User password",
-          },
+            "title": "User password"
+          }
         },
         "additionalProperties": false
       }

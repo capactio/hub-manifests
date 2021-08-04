@@ -26,7 +26,7 @@ spec:
         "properties": {
           "user": {
             "$id": "#/properties/user",
-            "type": "object"
+            "type": "object",
             "properties": {
               "username": {
                 "$id": "#/properties/user/properties/username",
@@ -37,7 +37,7 @@ spec:
               "password": {
                 "$id": "#/properties/user/properties/password",
                 "type": "string",
-                "title": "MongoDB user password",
+                "title": "MongoDB user password"
               }
             }
           },
@@ -50,7 +50,7 @@ spec:
           "replicaSetKey": {
             "$id": "#/properties/replicaSetKey",
             "type": "string",
-            "title": "ReplicaSet authentication key",
+            "title": "ReplicaSet authentication key"
           },
           "replicaSetName": {
             "$id": "#/properties/replicaSetName",
@@ -73,3 +73,4 @@ spec:
         },
         "additionalProperties": false
       }
+ 
