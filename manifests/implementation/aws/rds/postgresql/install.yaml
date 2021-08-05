@@ -94,39 +94,28 @@ spec:
                 - name: rds-instance
                   from: "{{steps.render-rds.outputs.artifacts.render}}"
             steps:
-              - - name: fill-default-input
-                  capact-action: jinja2.template
+              - - name: prepare-parameters
+                  template: prepare-parameters
                   arguments:
                     artifacts:
                       - name: input-parameters
                         from: "{{inputs.artifacts.input-parameters}}"
-                      - name: template
-                        raw:
-                          data: |
-                            superuser:
-                              username: "<@ input.superuser.username | default('postgres') @>"
-                              password: "<@ input.superuser.password | default(random_word(length=16)) @>"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: input
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+                      - name: aws
+                        from: "{{workflow.outputs.artifacts.aws-credentials}}"
 
               - - name: create-module-args
                   capact-action: jinja2.template
                   arguments:
                     artifacts:
-                      - name: input-parameters
-                        from: "{{inputs.artifacts.additional-parameters}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: additionalinput
                       - name: template
                         raw:
                           data: |
                             variables: |+
-                              user_name = "<@ input.superuser.username @>"
-                              user_password = "<@ input.superuser.password @>"
+                              user_name = "<@ input.superuser.username | default('postgres') @>"
+                              user_password = "<@ input.superuser.password | default(random_word(length=16)) @>"
 
                               region = "<@ additionalinput.region | default('eu-west-1') @>"
                               ingress_rule_cidr_blocks = "<@ additionalinput.ingress_rule_cidr_blocks | default('0.0.0.0/0') @>"
@@ -206,32 +195,11 @@ spec:
                                 identifier: "{{ .identifier }}"
                                 availability_zone: "{{ .availability_zone }}"
                                 class: "{{ .class }}"
-
-              - - name: fill-input-in-module-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.create-module-args.outputs.artifacts.render}}"
                       - name: input-parameters
-                        from: "{{steps.fill-default-input.outputs.artifacts.render}}"
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
                         raw:
-                          data: |
-                            prefix: input
-
-              - - name: fill-aws-params-in-module-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-input-in-module-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{workflow.outputs.artifacts.aws-credentials}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: aws
+                          data:
 
               - - name: terraform-apply
                   capact-action: terraform.apply
@@ -241,7 +209,7 @@ spec:
                   arguments:
                     artifacts:
                       - name: input-parameters
-                        from: "{{steps.fill-aws-params-in-module-args.outputs.artifacts.render}}"
+                        from: "{{steps.create-module-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
 
@@ -285,3 +253,20 @@ spec:
                             identifier: "<@ identifier @>"
                             availability_zone: "<@ availability_zone @>"
                             class: "<@ class @>"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalinput.yaml
+                  optional: true
+                - name: aws
+                  path: /yamls/aws.yaml
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml

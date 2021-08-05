@@ -73,46 +73,20 @@ spec:
                 - name: mongodb
                   from: "{{steps.helm-install.outputs.artifacts.additional}}"
             steps:
-              - - name: fill-default-input
-                  capact-action: jinja2.template
+              - - name: prepare-parameters
+                  template: prepare-parameters
                   arguments:
                     artifacts:
                       - name: input-parameters
                         from: "{{inputs.artifacts.input-parameters}}"
-                      - name: template
-                        raw:
-                          data: |
-                            user:
-                              username: "<@ input.user.username | default('mongo') @>"
-                              password: "<@ input.user.password | default(random_word(length=16)) @>"
-                            defaultDBName: "<@ input.defaultDBName | default('mongo') @>"
-                            rootPassword: "<@ input.rootPassword | default(random_word(length=16)) @>"
-                            replicas: <@ input.replicas | default(3) @>
-                            replicaSetName: "<@ input.replicaSetName | default('rs0') @>"
-                            replicaSetKey: "<@ input.replicaSetKey | default(random_word(length=16)) @>"
-                            replicaSetHostnames: <@ input.replicaSetHostnames | default(true) | tojson @>
-                            directoryPerDB: <@ input.directoryPerDB | default(false) | tojson @>
-                            enableIPv6: <@ input.enableIPv6 | default(false) | tojson @>
-                            systemLogVerbosity: <@ input.systemLogVerbosity | default(0) @>
-                            disableSystemLog: <@ input.disableSystemLog | default(false) | tojson @>
-                            configuration: "<@ input.configuration | default('') @>"
-                            initdbScripts: <@ input.initdbScripts | default({}) | tojson @>
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: input
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
 
-              - - name: create-helm-args
+              - - name: render-helm-args
                   capact-action: jinja2.template
                   arguments:
                     artifacts:
-                      - name: input-parameters
-                        from: "{{inputs.artifacts.additional-parameters}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: additionalinput
-
                       - name: template
                         raw:
                           data: |
@@ -135,11 +109,11 @@ spec:
 
                               auth:
                                 enabled: true
-                                username: <@ input.user.username @>
-                                password: <@ input.user.password @>
-                                database: <@ input.defaultDBName @>
-                                rootPassword: <@ input.rootPassword @>
-                                replicaSetKey: "<@ input.replicaSetKey @>"
+                                username: "<@ input.user.username | default('mongo') @>"
+                                password: "<@ input.user.password | default(random_word(length=16)) @>"
+                                database: "<@ input.defaultDBName | default('mongo') @>"
+                                rootPassword: "<@ input.rootPassword | default(random_word(length=16)) @>"
+                                replicaSetKey: "<@ input.replicaSetKey | default(random_word(length=16)) @>"
 
                               tls:
                                 enabled: <@ additionalinput.tls.enabled | default(false) | tojson @>
@@ -151,19 +125,19 @@ spec:
                                   tag: <@ additionalinput.tls.image.tag | default("1.19.5-debian-10-r19") @>
                                   pullPolicy: <@ additionalinput.tls.image.pullPolicy | default("IfNotPresent") @>
 
-                              replicaSetName: <@ input.replicaSetName @>
-                              replicaSetHostnames: <@ input.replicaSetHostnames @>
-                              enableIPv6: <@ input.enableIPv6 @>
-                              directoryPerDB: <@ input.directoryPerDB @>
-                              systemLogVerbosity: <@ input.systemLogVerbosity @>
-                              disableSystemLog: <@ input.disableSystemLog @>
-                              configuration: "<@ input.configuration @>"
-                              initdbScripts: <@ input.initdbScripts @>
+                              replicaSetName: "<@ input.replicaSetName | default('rs0') @>"
+                              replicaSetHostnames: <@ input.replicaSetHostnames | default(true) | tojson @>
+                              enableIPv6: <@ input.enableIPv6 | default(false) | tojson @>
+                              directoryPerDB: <@ input.directoryPerDB | default(false) | tojson @>
+                              systemLogVerbosity: <@ input.systemLogVerbosity | default(0) @>
+                              disableSystemLog: <@ input.disableSystemLog | default(false) | tojson @>
+                              configuration: "<@ input.configuration | default('') @>"
+                              initdbScripts: <@ input.initdbScripts | default({}) | tojson @>
                               extraFlags: <@ additionalinput.extraFlags | default([]) @>
                               extraEnvVars: <@ additionalinput.extraEnvVars | default([]) @>
                               annotations: <@ additionalinput.annotations | default({}) @>
                               labels: <@ additionalinput.labels | default({}) @>
-                              replicaCount: <@ input.replicas @>
+                              replicaCount: <@ input.replicas | default(3) @>
                               strategyType: <@ additionalinput.strategyType | default("RollingUpdate") @>
                               podManagementPolicy: <@ additionalinput.podManagementPolicy | default("OrderedReady") @>
                               podAffinityPreset: "<@ additionalinput.podAffinityPreset | default("") @>"
@@ -382,19 +356,11 @@ spec:
                                 user:
                                   username: '{{ .Values.auth.username }}'
                                   password: '{{ .Values.auth.password }}'
-
-              - - name: fill-input-in-module-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.create-helm-args.outputs.artifacts.render}}"
                       - name: input-parameters
-                        from: "{{steps.fill-default-input.outputs.artifacts.render}}"
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
                         raw:
                           data: |
-                            prefix: input
 
               - - name: helm-install
                   capact-action: helm.install
@@ -406,6 +372,21 @@ spec:
                   arguments:
                     artifacts:
                       - name: input-parameters
-                        from: "{{steps.fill-input-in-module-args.outputs.artifacts.render}}"
+                        from: "{{steps.render-helm-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalInput.yaml
+                  optional: true
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml

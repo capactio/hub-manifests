@@ -98,49 +98,17 @@ spec:
                               username: "mongo"
                             defaultDBName: "mongo"
 
-              - - name: render-mongodb-connection-url
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        raw:
-                          data: |
-                            <%- set ns = namespace(replicas="") %>
-                            <% for r in mongo.replicas -%>
-                              <%- set ns.replicas = ns.replicas + r %>
-                              <% if not loop.last -%>
-                                <%- set ns.replicas = ns.replicas + "," %>
-                              <%- endif %>
-                            <%- endfor %>
-                            mongoURL: "mongodb://<@ mongo.user.username @>:<@ mongo.user.password@>@<@ ns.replicas @>/<@ mongo.defaultDBName @>?replicaSet=<@ mongo.replicaSetName @>"
-                            oplogURL: "mongodb://root:<@ mongo.rootPassword@>@<@ ns.replicas @>/local?replicaSet=<@ mongo.replicaSetName @>&authSource=admin"
-                      - name: input-parameters
-                        from: "{{steps.install-db.outputs.artifacts.mongodb}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: mongo
-
-              - - name: fill-default-input
-                  capact-action: jinja2.template
+              - - name: prepare-parameters
+                  template: prepare-parameters
                   arguments:
                     artifacts:
                       - name: input-parameters
                         from: "{{inputs.artifacts.input-parameters}}"
-                      - name: template
-                        raw:
-                          data: |
-                            host: <@ input.host @>
-                            smtp:
-                              enabled: <@ input.smtp.enabled | default(false) | tojson @>
-                              username: "<@ input.smtp.username | default('') @>"
-                              password: "<@ input.smtp.password | default('') @>"
-                              host: "<@ input.smtp.host | default('') @>"
-                              port: <@ input.smtp.port | default(587) @>
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: input
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+                      - name: mongo
+                        from: "{{steps.install-db.outputs.artifacts.mongodb}}"
 
               - - name: render-helm-args
                   capact-action: jinja2.template
@@ -156,8 +124,15 @@ spec:
                             values:
                               mongodb:
                                 enabled: false
-                              externalMongodbUrl: <@ mongo.mongoURL @>
-                              externalMongodbOplogUrl: <@ mongo.oplogURL @>
+                              <%- set ns = namespace(replicas="") %>
+                              <% for r in mongo.replicas -%>
+                                <%- set ns.replicas = ns.replicas + r %>
+                                <% if not loop.last -%>
+                                  <%- set ns.replicas = ns.replicas + "," %>
+                                <%- endif %>
+                              <%- endfor %>
+                              externalMongodbUrl: "mongodb://<@ mongo.user.username @>:<@ mongo.user.password@>@<@ ns.replicas @>/<@ mongo.defaultDBName @>?replicaSet=<@ mongo.replicaSetName @>"
+                              externalMongodbOplogUrl: "mongodb://root:<@ mongo.rootPassword@>@<@ ns.replicas @>/local?replicaSet=<@ mongo.replicaSetName @>&authSource=admin"
 
                               ingress:
                                 enabled: <@ additionalinput.ingress.enabled | default(true) | tojson @>
@@ -181,11 +156,11 @@ spec:
                               minAvailable: <@ additionalinput.minAvailable | default(1) @>
 
                               smtp:
-                                enabled: <@ input.smtp.enabled @>
-                                username: <@ input.smtp.username @>
-                                password: <@ input.smtp.password @>
-                                host: <@ input.smtp.host @>
-                                port: <@ input.smtp.port @>
+                                enabled: <@ input.smtp.enabled | default(false) | tojson @>
+                                username: "<@ input.smtp.username | default('') @>"
+                                password: "<@ input.smtp.password | default('') @>"
+                                host: "<@ input.smtp.host | default('') @>"
+                                port: <@ input.smtp.port | default(587) @>
 
                               extraEnv: |
                                 - name: EXIT_UNHANDLEDPROMISEREJECTION
@@ -267,37 +242,10 @@ spec:
                                 host: "{{ .Values.host }}"
                                 version: "{{ .Values.image.tag }}"
                       - name: input-parameters
-                        from: "{{inputs.artifacts.additional-parameters}}"
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
                         raw:
                           data: |
-                            prefix: additionalinput
-
-              - - name: fill-input-in-module-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.render-helm-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{steps.fill-default-input.outputs.artifacts.render}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: input
-
-              - - name: fill-input-params-in-helm-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-input-in-module-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{steps.render-mongodb-connection-url.outputs.artifacts.render}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: mongo
 
               - - name: helm-install
                   capact-action: helm.install
@@ -309,6 +257,23 @@ spec:
                   arguments:
                     artifacts:
                       - name: input-parameters
-                        from: "{{steps.fill-input-params-in-helm-args.outputs.artifacts.render}}"
+                        from: "{{steps.render-helm-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalInput.yaml
+                  optional: true
+                - name: mongo
+                  path: /yamls/mongo.yaml
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml

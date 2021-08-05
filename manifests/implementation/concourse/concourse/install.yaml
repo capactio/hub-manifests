@@ -140,6 +140,19 @@ spec:
                       - name: database-input
                         from: "{{steps.render-create-db-args.outputs.artifacts.render}}"
 
+              - - name: prepare-parameters
+                  template: prepare-parameters
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: db
+                        from: "{{steps.install-db.outputs.artifacts.postgresql}}"
+                      - name: database
+                        from: "{{steps.create-db.outputs.artifacts.database}}"
+                      - name: user
+                        from: "{{steps.create-user.outputs.artifacts.user}}"
+
               - - name: render-helm-args
                   capact-action: jinja2.template
                   arguments:
@@ -191,47 +204,10 @@ spec:
                                   hosts:
                                   - <@ input.host @>
                       - name: input-parameters
-                        from: "{{steps.install-db.outputs.artifacts.postgresql}}"
-                      - name: configuration
-                        raw:
-                          data: "prefix: db"
-
-              - - name: fill-database-params-in-helm-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.render-helm-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{steps.create-db.outputs.artifacts.database}}"
-                      - name: configuration
-                        raw:
-                          data: "prefix: database"
-
-              - - name: fill-input-params-in-helm-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-database-params-in-helm-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{inputs.artifacts.input-parameters}}"
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
                         raw:
                           data: |
-                            prefix: input
-
-              - - name: fill-user-params-in-helm-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-input-params-in-helm-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{steps.create-user.outputs.artifacts.user}}"
-                      - name: configuration
-                        raw:
-                          data: "prefix: user"
 
               - - name: helm-install
                   capact-action: helm.install
@@ -243,6 +219,24 @@ spec:
                   arguments:
                     artifacts:
                       - name: input-parameters
-                        from: "{{steps.fill-user-params-in-helm-args.outputs.artifacts.render}}"
+                        from: "{{steps.render-helm-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: db
+                  path: /yamls/db.yaml
+                - name: database
+                  path: /yamls/database.yaml
+                - name: user
+                  path: /yamls/user.yaml
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml
