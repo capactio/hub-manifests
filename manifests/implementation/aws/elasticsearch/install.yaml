@@ -136,36 +136,29 @@ spec:
                         raw:
                           data: |
 
-              - - name: fill-default-input
-                  capact-action: jinja2.template
+              - - name: prepare-parameters
+                  template: prepare-parameters
                   arguments:
                     artifacts:
                       - name: input-parameters
                         from: "{{inputs.artifacts.input-parameters}}"
-                      - name: template
-                        raw:
-                          data: |
-                            replicas: <@ input.replicas | default(3) @>
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: input
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+                      - name: aws
+                        from: "{{workflow.outputs.artifacts.aws-credentials}}"
+                      - name: basicAuth
+                        from: "{{steps.decode-es-creds.outputs.artifacts.render}}"
 
               - - name: create-module-args
                   capact-action: jinja2.template
                   arguments:
                     artifacts:
-                      - name: input-parameters
-                        from: "{{inputs.artifacts.additional-parameters}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: additionalinput
                       - name: template
                         raw:
                           data: |
                             variables: |+
-                              region = "<@ additionalinput.region | default("eu-west-1") @>"
+                              region = "<@ additionalinput.region | default('eu-west-1') @>"
                               domain_name = "<@ additionalinput.domain_name | default('elastic-' + random_word(length=12)) @>"
 
                               advanced_security_options_enabled = true
@@ -173,7 +166,7 @@ spec:
                               advanced_security_options_master_user_username = "<@ basicAuth.username @>"
                               advanced_security_options_master_user_password = "<@ basicAuth.password @>"
 
-                              cluster_config_instance_count = "<@ input.replicas @>"
+                              cluster_config_instance_count = "<@ input.replicas | default(3) @>"
 
                               <% if additionalinput.elasticsearch_version -%>
                               elasticsearch_version = "<@ additionalinput.elasticsearch_version @>"
@@ -388,45 +381,11 @@ spec:
                                 vpc_id: "{{ .vpc_options_vpc_id }}"
                                 availability_zones: "{{ .vpc_options_availability_zones }}"
                                 elasticsearch_version: "{{ .elasticsearch_version }}"
-
-              - - name: fill-input-params
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.create-module-args.outputs.artifacts.render}}"
                       - name: input-parameters
-                        from: "{{steps.fill-default-input.outputs.artifacts.render}}"
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
                         raw:
                           data: |
-                            prefix: input
-
-              - - name: fill-aws-params
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-input-params.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{workflow.outputs.artifacts.aws-credentials}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: aws
-
-              - - name: fill-secret-in-helm
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-aws-params.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{steps.decode-es-creds.outputs.artifacts.render}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: basicAuth
 
               - - name: terraform-apply
                   capact-action: terraform.apply
@@ -438,7 +397,7 @@ spec:
                   arguments:
                     artifacts:
                       - name: input-parameters
-                        from: "{{steps.fill-secret-in-helm.outputs.artifacts.render}}"
+                        from: "{{steps.create-module-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
 
@@ -490,3 +449,22 @@ spec:
               image: bitnami/kubectl:1.18
               command: [sh, -c]
               args: ["kubectl create -f {{inputs.artifacts.manifest.path}} --output=yaml > {{outputs.artifacts.manifest.path}}"]
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalinput.yaml
+                  optional: true
+                - name: aws
+                  path: /yamls/aws.yaml
+                - name: basicAuth
+                  path: /yamls/basicAuth.yaml
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml

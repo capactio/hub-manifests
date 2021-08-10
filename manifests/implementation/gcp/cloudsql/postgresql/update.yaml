@@ -75,16 +75,23 @@ spec:
                 - name: postgresql
                   from: "{{steps.terraform-apply.outputs.artifacts.additional}}"
             steps:
-              - - name: create-module-args
-                  capact-action: jinja2.template
+              - - name: prepare-parameters
+                  template: prepare-parameters
                   arguments:
                     artifacts:
                       - name: input-parameters
                         from: "{{inputs.artifacts.input-parameters}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: input
+                      - name: gcp
+                        from: "{{workflow.outputs.artifacts.gcp-sa}}"
+                      - name: release
+                        from: "{{inputs.artifacts.terraform-release}}"
+                      - name: postgresql
+                        from: "{{inputs.artifacts.postgresql}}"
+
+              - - name: create-module-args
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
                       - name: template
                         raw:
                           data:
@@ -111,45 +118,11 @@ spec:
                                 superuser:
                                   username: "{{ .username }}"
                                   password: "{{ .password }}"
-
-              - - name: fill-gcp-params-in-module-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.create-module-args.outputs.artifacts.render}}"
                       - name: input-parameters
-                        from: "{{workflow.outputs.artifacts.gcp-sa}}"
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
                         raw:
-                          data: |
-                            prefix: gcp
-
-              - - name: fill-release-in-module-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-gcp-params-in-module-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{inputs.artifacts.terraform-release}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: release
-
-              - - name: fill-postgresql-in-module-args
-                  capact-action: jinja2.template
-                  arguments:
-                    artifacts:
-                      - name: template
-                        from: "{{steps.fill-release-in-module-args.outputs.artifacts.render}}"
-                      - name: input-parameters
-                        from: "{{inputs.artifacts.postgresql}}"
-                      - name: configuration
-                        raw:
-                          data: |
-                            prefix: postgresql
+                          data:
 
               - - name: convert-gcp-yaml-to-json
                   template: convert-yaml-to-json
@@ -166,7 +139,7 @@ spec:
                   arguments:
                     artifacts:
                       - name: input-parameters
-                        from: "{{steps.fill-postgresql-in-module-args.outputs.artifacts.render}}"
+                        from: "{{steps.create-module-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
                       - name: tfstate
@@ -187,3 +160,21 @@ spec:
               artifacts:
                 - name: out
                   path: /file
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: gcp
+                  path: /yamls/gcp.yaml
+                - name: release 
+                  path: /yamls/release.yaml
+                - name: postgresql
+                  path: /yamls/postgresql.yaml
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml
