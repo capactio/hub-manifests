@@ -40,4 +40,4 @@ jobs:
           chmod +x ./capact
 
       - name: Validate manifests
-        run: ./capact validate $(find ./manifests -regex ".*\.yaml")
+        run: ./capact manifest validate $(find ./manifests -regex ".*\.yaml")
