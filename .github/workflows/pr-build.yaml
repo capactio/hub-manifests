@@ -29,15 +29,58 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      CAPACT_CREDENTIALS_STORE_FILE_PASSPHRASE: password
+      CAPACT_CREDENTIALS_STORE_BACKEND: file
+      CAPACT_GATEWAY_HOST: https://gateway.capact.local
+      CAPACT_GATEWAY_USERNAME: graphql
+      CAPACT_GATEWAY_PASSWORD: okon
+      CAPACT_MANIFESTS_REPOSITORY: github.com/${{ github.repository }}
+      CAPACT_MANIFEST_BRANCH: ${{ github.sha }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Download the latest Capact CLI for linux
+      - name: Download the latest Capact CLI
         run: |
           curl -Lo ./capact https://storage.googleapis.com/capactio-binaries/latest/capact-linux-amd64
           chmod +x ./capact
 
+      - name: Create kind cluster
+        run: |
+          ./capact env create kind --wait=5m
+
+      - name: Install Capact
+        # Minimal setup to have Public Hub up and running
+        run: |
+          ./capact install \
+            --verbose \
+            --environment=kind \
+            --helm-repo-url=@latest \
+            --version=@latest \
+            --capact-overrides="global.gateway.auth.username=$CAPACT_GATEWAY_USERNAME,global.gateway.auth.password=$CAPACT_GATEWAY_PASSWORD,hub-public.populator.manifestsLocation.repository=$CAPACT_MANIFESTS_REPOSITORY,hub-public.populator.manifestsLocation.branch=$CAPACT_MANIFEST_BRANCH" \
+            --install-component="neo4j,ingress-nginx,cert-manager,capact" \
+            --timeout=10m
+      - name: Log in with Capact CLI
+        run: |
+          ./capact login "$CAPACT_GATEWAY_HOST" -u "$CAPACT_GATEWAY_USERNAME" -p "$CAPACT_GATEWAY_PASSWORD"
+      - name: Wait for manifests
+        run: |
+          i=0
+          until [ $i -gt 36 ]; do
+          
+            RESPONSE=$(./capact hub interfaces get -oyaml);
+            echo 
+            if [ ${#RESPONSE} -gt 2 ]; then
+              echo "Completed";
+              exit 0;
+            fi;
+            echo "Waiting for manifests..."
+            sleep 5;
+            ((i++))
+          done;
+          echo "Timeout has been exceeded";
+          exit 1
       - name: Validate manifests
-        run: ./capact manifest validate $(find ./manifests -regex ".*\.yaml")
+        run: ./capact manifest validate --server-side $(find ./manifests -regex ".*\.yaml")
