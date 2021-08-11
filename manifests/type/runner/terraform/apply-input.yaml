@@ -33,45 +33,48 @@ spec:
               "command": "create",
               "module": {
                 "name": "cloudsql",
-                "source": "./../module",
-              }
+                "source": "./../module"
+              },
               "variables": {
-                "user_name": "capact",
-              }
+                "user_name": "capact"
+              },
               "env": [
-                 "TF_VAR_image_id=ami-abc123",
+                "TF_VAR_image_id=ami-abc123"
               ]
             }
           }
         ],
         "required": [
-            "context",
-            "args"
+          "context",
+          "args"
         ],
         "properties": {
           "context": {
             "$id": "#/properties/context",
             "type": "object",
             "title": "Runner context",
-            "required": [ "dryRun", "name" ],
+            "required": [
+              "dryRun",
+              "name"
+            ],
             "properties": {
               "dryRun": {
-                  "$id": "#/properties/context/properties/dryRun",
-                  "type": "boolean",
-                  "title": "Describes if the action should test ability to execute, not actually execute",
-                  "default": false
+                "$id": "#/properties/context/properties/dryRun",
+                "type": "boolean",
+                "title": "Describes if the action should test ability to execute, not actually execute",
+                "default": false
               },
               "name": {
-                  "$id": "#/properties/context/properties/name",
-                  "type": "string",
-                  "title": "Describes the name of current run"
+                "$id": "#/properties/context/properties/name",
+                "type": "string",
+                "title": "Describes the name of current run"
               },
               "platform": {
-                  "$id": "#/properties/context/properties/platform",
-                  "type": "object",
-                  "additionalProperties": true,
-                  "default": {},
-                  "title": "Describes platform-specific values"
+                "$id": "#/properties/context/properties/platform",
+                "type": "object",
+                "additionalProperties": true,
+                "default": {},
+                "title": "Describes platform-specific values"
               }
             },
             "additionalProperties": false
@@ -82,9 +85,9 @@ spec:
             "title": "Arguments for Helm Runner",
             "additionalProperties": false,
             "required": [
-                "command",
-                "module",
-                "output"
+              "command",
+              "module",
+              "output"
             ],
             "properties": {
               "command": {
@@ -115,14 +118,16 @@ spec:
                 "type": "object",
                 "title": "The parameters for output files",
                 "additionalProperties": false,
-                "required": ["goTemplate"],
+                "required": [
+                  "goTemplate"
+                ],
                 "properties": {
                   "goTemplate": {
                     "$id": "#/properties/args/properties/output/properties/goTemplate",
                     "type": "object",
                     "title": "The shape for additional output file defined with support for Go template syntax",
                     "additionalProperties": true
-                  },
+                  }
                 }
               }
             }

@@ -34,7 +34,7 @@ spec:
       elasticsearch-domain:
         typeRef:
           path: cap.type.aws.elasticsearch.domain
-          revision: 0.1.1
+          revision: 0.1.0
 
   outputTypeInstanceRelations:
     elasticsearch:

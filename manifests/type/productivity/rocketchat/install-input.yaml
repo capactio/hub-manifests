@@ -22,7 +22,7 @@ spec:
         "type": "object",
         "title": "The schema for Rocketchat configuration",
         "required": [
-            "host"
+          "host"
         ],
         "definitions": {
           "hostname": {
@@ -34,45 +34,46 @@ spec:
         "properties": {
           "host": {
             "$ref": "#/definitions/hostname"
-          }
-        "smtp": {
+          },
+          "smtp": {
             "$id": "#/properties/smtp",
             "type": "object",
             "title": "The SMTP configuration",
             "required": [],
             "properties": {
-                "enabled": {
-                    "$id": "#/properties/smtp/properties/enabled",
-                    "type": "boolean",
-                    "title": "Is enabled",
-                    "default": false
-                },
-                "username": {
-                    "$id": "#/properties/smtp/properties/username",
-                    "type": "string",
-                    "title": "The username",
-                    "default": ""
-                },
-                "password": {
-                    "$id": "#/properties/smtp/properties/password",
-                    "type": "string",
-                    "title": "The password",
-                    "default": ""
-                },
-                "host": {
-                    "$id": "#/properties/smtp/properties/host",
-                    "type": "string",
-                    "title": "The host schema",
-                    "default": ""
-                },
-                "port": {
-                    "$id": "#/properties/smtp/properties/port",
-                    "type": "integer",
-                    "title": "The port",
-                    "default": 587
-                }
+              "enabled": {
+                "$id": "#/properties/smtp/properties/enabled",
+                "type": "boolean",
+                "title": "Is enabled",
+                "default": false
+              },
+              "username": {
+                "$id": "#/properties/smtp/properties/username",
+                "type": "string",
+                "title": "The username",
+                "default": ""
+              },
+              "password": {
+                "$id": "#/properties/smtp/properties/password",
+                "type": "string",
+                "title": "The password",
+                "default": ""
+              },
+              "host": {
+                "$id": "#/properties/smtp/properties/host",
+                "type": "string",
+                "title": "The host schema",
+                "default": ""
+              },
+              "port": {
+                "$id": "#/properties/smtp/properties/port",
+                "type": "integer",
+                "title": "The port",
+                "default": 587
+              }
             },
             "additionalProperties": false
+          },
+          "additionalProperties": true
         }
-      "additionalProperties": true
       }

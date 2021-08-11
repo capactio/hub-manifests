@@ -22,24 +22,24 @@ spec:
         "examples": [
           {
             "name": "dbName",
-            "owner": "userName",
+            "owner": "userName"
           }
         ],
         "required": [
-            "name",
-            "owner",
+          "name",
+          "owner"
         ],
         "properties": {
           "name": {
             "$id": "#/properties/name",
             "type": "string",
-            "title": "The DB name",
+            "title": "The DB name"
           },
           "owner": {
             "$id": "#/properties/owner",
             "type": "string",
-            "title": "The DB owner username",
-          },
+            "title": "The DB owner username"
+          }
         },
         "additionalProperties": false
       }

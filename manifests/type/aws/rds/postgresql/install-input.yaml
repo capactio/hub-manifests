@@ -3,9 +3,9 @@ revision: 0.1.0
 kind: Type
 metadata:
   name: install-input
-  prefix: cap.type.aws.rds
-  displayName: AWS RDS installation installation input parameters
-  description: Defines input parameters for AWS RDS installation
+  prefix: cap.type.aws.rds.postgresql
+  displayName: AWS RDS PostgreSQL installation installation input parameters
+  description: Defines input parameters for AWS RDS PostgreSQL installation
   documentationURL: https://capact.io
   supportURL: https://capact.io
   maintainers:

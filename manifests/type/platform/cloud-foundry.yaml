@@ -13,7 +13,7 @@ metadata:
       name: Capact Dev Team
       url: https://capact.io
   attributes:
-    cap.core.attribute.capability.baseline:
+    cap.core.attribute.system.baseline:
       revision: 0.1.0
 spec:
   additionalRefs:
@@ -25,17 +25,17 @@ spec:
         "type": "object",
         "title": "The Cloud Foundry configuration",
         "required": [
-            "version"
+          "version"
         ],
         "definitions": {
           "semVer": {
             "type": "string",
             "minLength": 5,
-            "pattern": "^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$",
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "title": "Semantic Versioning version",
             "examples": [
-                "1.19.0"
-                "2.0.1-alpha1"
+              "1.19.0",
+              "2.0.1-alpha1"
             ]
           }
         },

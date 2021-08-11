@@ -22,23 +22,23 @@ spec:
         "examples": [
           {
             "name": "roleName",
-            "password": "some_secret",
+            "password": "some_secret"
           }
         ],
         "required": [
-          "name",
+          "name"
         ],
         "properties": {
           "name": {
             "$id": "#/properties/name",
             "type": "string",
-            "title": "User name",
+            "title": "User name"
           },
           "password": {
             "$id": "#/properties/password",
             "type": "string",
-            "title": "User password",
-          },
+            "title": "User password"
+          }
         },
         "additionalProperties": false
       }

@@ -30,21 +30,21 @@ spec:
             },
             "defaultDBName": "default_db",
             "host": "host",
-            "port": 9000,
+            "port": 9000
           }
         ],
         "required": [
-            "superuser",
-            "defaultDBName",
-            "host",
-            "port"
+          "superuser",
+          "defaultDBName",
+          "host",
+          "port"
         ],
         "definitions": {
           "hostname": {
             "type": "string",
             "format": "hostname",
             "title": "Hostname"
-          }
+          },
           "port": {
             "type": "integer",
             "title": "Port",
@@ -58,8 +58,8 @@ spec:
             "type": "object",
             "title": "Defines superuser details",
             "required": [
-                "username",
-                "password"
+              "username",
+              "password"
             ],
             "properties": {
               "username": {
@@ -86,7 +86,7 @@ spec:
           },
           "port": {
             "$ref": "#/definitions/port"
-          },
+          }
         },
         "additionalProperties": false
       }

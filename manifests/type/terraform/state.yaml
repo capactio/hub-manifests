@@ -23,12 +23,12 @@ spec:
         "examples": [
           {
             "State": "c3RhdGUK",
-            "Variables": "dmFycwo=",
+            "Variables": "dmFycwo="
           }
         ],
         "required": [
-            "state",
-            "variables"
+          "state",
+          "variables"
         ],
         "properties": {
           "state": {
@@ -40,7 +40,7 @@ spec:
             "$id": "#/properties/args/properties/Variables",
             "type": "string",
             "title": "Base64 encoded Terraform variables"
-          },
+          }
         },
         "additionalProperties": false
       }

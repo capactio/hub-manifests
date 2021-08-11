@@ -22,7 +22,7 @@ spec:
         "properties": {
           "host": {
             "$id": "#/properties/host",
-            "type": "string"
+            "type": "string",
             "title": "Host of the Mattermost instance"
           },
           "configJSON": {
