@@ -27,4 +27,4 @@ jobs:
 
       - name: Validate manifests
         run: |
-          ./capact validate $(find ./manifests -regex ".*\.yaml")
+          ./capact manifest validate $(find ./manifests -regex ".*\.yaml")
