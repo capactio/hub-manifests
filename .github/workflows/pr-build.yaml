@@ -35,8 +35,8 @@ jobs:
       CAPACT_GATEWAY_HOST: https://gateway.capact.local
       CAPACT_GATEWAY_USERNAME: graphql
       CAPACT_GATEWAY_PASSWORD: okon
-      CAPACT_MANIFESTS_REPOSITORY: github.com/${{ github.repository }}
-      CAPACT_MANIFEST_BRANCH: ${{ github.sha }}
+      CAPACT_MANIFEST_REPOSITORY: git::${{ github.event.pull_request.head.repo.clone_url }}
+      CAPACT_MANIFEST_BRANCH: ${{ github.event.pull_request.head.sha }}
 
     steps:
       - name: Checkout repository
@@ -46,41 +46,43 @@ jobs:
         run: |
           curl -Lo ./capact https://storage.googleapis.com/capactio-binaries/latest/capact-linux-amd64
           chmod +x ./capact
+          mv ./capact /usr/local/bin/capact
 
       - name: Create kind cluster
         run: |
-          ./capact env create kind --wait=5m
+          capact env create kind --wait=5m
 
       - name: Install Capact
         # Minimal setup to have Public Hub up and running
         run: |
-          ./capact install \
+          capact install \
             --verbose \
             --environment=kind \
             --helm-repo-url=@latest \
             --version=@latest \
-            --capact-overrides="global.gateway.auth.username=$CAPACT_GATEWAY_USERNAME,global.gateway.auth.password=$CAPACT_GATEWAY_PASSWORD,hub-public.populator.manifestsLocation.repository=$CAPACT_MANIFESTS_REPOSITORY,hub-public.populator.manifestsLocation.branch=$CAPACT_MANIFEST_BRANCH" \
+            --capact-overrides="global.gateway.auth.username=$CAPACT_GATEWAY_USERNAME,global.gateway.auth.password=$CAPACT_GATEWAY_PASSWORD,hub-public.populator.manifestsLocation.repository=$CAPACT_MANIFEST_REPOSITORY,hub-public.populator.manifestsLocation.branch=$CAPACT_MANIFEST_BRANCH" \
             --install-component="neo4j,ingress-nginx,cert-manager,capact" \
             --timeout=10m
       - name: Log in with Capact CLI
         run: |
-          ./capact login "$CAPACT_GATEWAY_HOST" -u "$CAPACT_GATEWAY_USERNAME" -p "$CAPACT_GATEWAY_PASSWORD"
+          capact login "$CAPACT_GATEWAY_HOST" -u "$CAPACT_GATEWAY_USERNAME" -p "$CAPACT_GATEWAY_PASSWORD"
       - name: Wait for manifests
         run: |
           i=0
+          success=false
           until [ $i -gt 36 ]; do
-          
-            RESPONSE=$(./capact hub interfaces get -oyaml);
+            RESPONSE=$(capact hub interfaces get -oyaml);
             echo 
             if [ ${#RESPONSE} -gt 2 ]; then
-              echo "Completed";
-              exit 0;
+              echo "Response is not empty. Finishing...";
+              success=true
+              break;
             fi;
             echo "Waiting for manifests..."
             sleep 5;
             ((i++))
           done;
-          echo "Timeout has been exceeded";
-          exit 1
+          
+          ! $success && echo "Timeout exceeded" && exit 1 
       - name: Validate manifests
         run: ./capact manifest validate --server-side $(find ./manifests -regex ".*\.yaml")
