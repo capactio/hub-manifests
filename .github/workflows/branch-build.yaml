@@ -24,7 +24,7 @@ jobs:
       CAPACT_GATEWAY_HOST: https://gateway.capact.local
       CAPACT_GATEWAY_USERNAME: graphql
       CAPACT_GATEWAY_PASSWORD: okon
-      CAPACT_INSTALL_COMPONENTS: neo4j,ingress-nginx,cert-manager,capact
+      CAPACT_INSTALL_COMPONENTS: ingress-nginx,cert-manager,argo,kubed,neo4j,capact
       CLUSTER_DUMP_DIR: output
 
     steps:
