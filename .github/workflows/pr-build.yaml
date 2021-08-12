@@ -30,13 +30,15 @@ jobs:
     permissions:
       contents: read
     env:
+      CAPACT_MANIFEST_REPOSITORY: git::${{ github.event.pull_request.head.repo.clone_url }}
+      CAPACT_MANIFEST_BRANCH: ${{ github.event.pull_request.head.sha }}
+      CAPACT_MANIFEST_WAITING_ITERATIONS: "100"
       CAPACT_CREDENTIALS_STORE_FILE_PASSPHRASE: password
       CAPACT_CREDENTIALS_STORE_BACKEND: file
       CAPACT_GATEWAY_HOST: https://gateway.capact.local
       CAPACT_GATEWAY_USERNAME: graphql
       CAPACT_GATEWAY_PASSWORD: okon
-      CAPACT_MANIFEST_REPOSITORY: git::${{ github.event.pull_request.head.repo.clone_url }}
-      CAPACT_MANIFEST_BRANCH: ${{ github.event.pull_request.head.sha }}
+      CAPACT_INSTALL_COMPONENTS: neo4j,ingress-nginx,cert-manager,capact
       CLUSTER_DUMP_DIR: output
 
     steps:
@@ -56,14 +58,22 @@ jobs:
       - name: Install Capact
         # Minimal setup to have Public Hub up and running
         run: |
-          exit 1
+          capact install \
+            --verbose \
+            --environment=kind \
+            --helm-repo-url=@latest \
+            --increase-resource-limits=false \
+            --version=@latest \
+            --capact-overrides="global.gateway.auth.username=$CAPACT_GATEWAY_USERNAME,global.gateway.auth.password=$CAPACT_GATEWAY_PASSWORD,hub-public.populator.manifestsLocation.repository=$CAPACT_MANIFEST_REPOSITORY,hub-public.populator.manifestsLocation.branch=$CAPACT_MANIFEST_BRANCH" \
+            --install-component="$CAPACT_INSTALL_COMPONENTS" \
+            --timeout=10m
 
       - name: Log in with Capact CLI
         run: capact login "$CAPACT_GATEWAY_HOST" -u "$CAPACT_GATEWAY_USERNAME" -p "$CAPACT_GATEWAY_PASSWORD"
 
       - name: Wait for manifests
         run: |
-          MAX_ITERATIONS=100
+          MAX_ITERATIONS=$CAPACT_MANIFEST_WAITING_ITERATIONS
           set +e
           i=1
           until [ $i -gt $MAX_ITERATIONS ]; do
