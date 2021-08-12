@@ -27,17 +27,91 @@ jobs:
   validation:
     name: Validate Hub manifests
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     permissions:
       contents: read
+    env:
+      CAPACT_MANIFEST_REPOSITORY: git::${{ github.event.pull_request.head.repo.clone_url }}
+      CAPACT_MANIFEST_BRANCH: ${{ github.event.pull_request.head.sha }}
+      CAPACT_MANIFEST_WAITING_ITERATIONS: "100"
+      CAPACT_CREDENTIALS_STORE_FILE_PASSPHRASE: password
+      CAPACT_CREDENTIALS_STORE_BACKEND: file
+      CAPACT_GATEWAY_HOST: https://gateway.capact.local
+      CAPACT_GATEWAY_USERNAME: graphql
+      CAPACT_GATEWAY_PASSWORD: okon
+      CAPACT_INSTALL_COMPONENTS: ingress-nginx,cert-manager,argo,kubed,neo4j,capact
+      CLUSTER_DUMP_DIR: output
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Download the latest Capact CLI for linux
+      - name: Download the latest Capact CLI
         run: |
           curl -Lo ./capact https://storage.googleapis.com/capactio-binaries/latest/capact-linux-amd64
           chmod +x ./capact
+          mv ./capact /usr/local/bin/capact
+
+      - name: Create kind cluster
+        run: |
+          capact env create kind --wait=5m
+
+      - name: Install Capact
+        # Minimal setup to have Public Hub up and running
+        run: |
+          capact install \
+            --verbose \
+            --environment=kind \
+            --helm-repo-url=@latest \
+            --increase-resource-limits=false \
+            --version=@latest \
+            --capact-overrides="global.gateway.auth.username=$CAPACT_GATEWAY_USERNAME,global.gateway.auth.password=$CAPACT_GATEWAY_PASSWORD,hub-public.populator.manifestsLocation.repository=$CAPACT_MANIFEST_REPOSITORY,hub-public.populator.manifestsLocation.branch=$CAPACT_MANIFEST_BRANCH" \
+            --install-component="$CAPACT_INSTALL_COMPONENTS" \
+            --timeout=10m
+
+      - name: Log in with Capact CLI
+        run: capact login "$CAPACT_GATEWAY_HOST" -u "$CAPACT_GATEWAY_USERNAME" -p "$CAPACT_GATEWAY_PASSWORD"
+
+      - name: Wait for manifests
+        run: |
+          set +e
+          i=1
+          until [ $i -gt $CAPACT_MANIFEST_WAITING_ITERATIONS ]; do
+            ITEMS=$(capact hub interfaces get -ojson | jq length);
+            if [ "$ITEMS" -gt 0 ]; then
+              echo "Manifests are populated. Finishing...";
+              exit 0;
+            fi;
+            echo "$(date "+%F %R:%S"): Waiting for manifests... (${i}/${CAPACT_MANIFEST_WAITING_ITERATIONS})"
+            sleep 5;
+            ((i++))
+          done;
+          set -e
+          
+          echo "$(date "+%F %R:%S"): Timeout exceeded"
+          exit 1      
 
       - name: Validate manifests
-        run: ./capact manifest validate $(find ./manifests -regex ".*\.yaml")
+        run: capact manifest validate --server-side $(find ./manifests -regex ".*\.yaml")
+ 
+      - name: Dump cluster info
+        if: ${{ failure() }}
+        run: |
+          echo "Installing kubectl"
+          curl --fail -Lo ./kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x ./kubectl
+          mv ./kubectl /usr/local/bin/kubectl
+          kubectl version --client
+
+          echo "Dumping cluster into ${CLUSTER_DUMP_DIR}..."
+          mkdir -p "${CLUSTER_DUMP_DIR}"
+          kubectl cluster-info dump --all-namespaces --output-directory="${CLUSTER_DUMP_DIR}"
+       
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: cluster_dump_${{github.sha}}
+          path: ${{env.CLUSTER_DUMP_DIR}}
+          retention-days: 5 # Default 90 days
+          if-no-files-found: ignore
