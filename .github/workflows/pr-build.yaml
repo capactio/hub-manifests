@@ -27,6 +27,7 @@ jobs:
   validation:
     name: Validate Hub manifests
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     permissions:
       contents: read
     env:
@@ -73,16 +74,15 @@ jobs:
 
       - name: Wait for manifests
         run: |
-          MAX_ITERATIONS=$CAPACT_MANIFEST_WAITING_ITERATIONS
           set +e
           i=1
-          until [ $i -gt $MAX_ITERATIONS ]; do
+          until [ $i -gt $CAPACT_MANIFEST_WAITING_ITERATIONS ]; do
             ITEMS=$(capact hub interfaces get -ojson | jq length);
             if [ "$ITEMS" -gt 0 ]; then
               echo "Manifests are populated. Finishing...";
               exit 0;
             fi;
-            echo "Waiting for manifests..."
+            echo "$(date "+%F %R:%S") Waiting for manifests... (${i}/$CAPACT_MANIFEST_WAITING_ITERATIONS)"
             sleep 5;
             ((i++))
           done;
