@@ -91,3 +91,23 @@ jobs:
       - name: Validate manifests
         run: capact manifest validate --server-side $(find ./manifests -regex ".*\.yaml")
  
+      - name: Dump cluster info
+        if: ${{ failure() }}
+        run: |
+          echo "Installing kubectl"
+          curl --fail -Lo /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x /usr/local/bin/kubectl
+          kubectl version --client
+
+          echo "Dumping cluster into ${CLUSTER_DUMP_DIR}..."
+          mkdir -p "${CLUSTER_DUMP_DIR}"
+          kubectl cluster-info dump --all-namespaces --output-directory="${CLUSTER_DUMP_DIR}"
+       
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: cluster_dump_${{github.sha}}
+          path: ${{env.CLUSTER_DUMP_DIR}}
+          retention-days: 5 # Default 90 days
+          if-no-files-found: ignore
