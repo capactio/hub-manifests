@@ -46,7 +46,7 @@ spec:
                 - name: render
                   path: "/render.yml"
             container:
-              image: ghcr.io/capactio/infra/jinja2:d3a195d
+              image: ghcr.io/capactio/infra/jinja2:608679f
               args:
                 - /template.yml
                 - /values.yml
