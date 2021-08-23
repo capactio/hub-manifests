@@ -1,0 +1,106 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: cap.implementation.capactio.capact.validation.io
+  name: install
+  license:
+    name: "Apache 2.0"
+  displayName: "Implementation which consumes additional input"
+  description: |-
+    Can be used to check if additional input is injected properly
+    This implementation accepts additional installation parameters.
+  documentationURL: "https://capact.io"
+  install-demotainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  appVersion: "2.x.x"
+
+  additionalInput:
+    typeInstances:
+      postgresql:
+        typeRef:
+          path: cap.type.database.postgresql.config
+          revision: 0.1.0
+        verbs: [ "get" ]
+    parameters:
+      # You can specify multiple input parameters
+      additional-parameters:
+        typeRef:
+          path: cap.type.mattermost.helm.install-input
+          revision: 0.1.0
+      additional-parameters-second:
+        typeRef:
+          path: cap.type.mattermost.helm.install-input
+          revision: 0.1.0
+
+  outputTypeInstanceRelations: { }
+
+  implements:
+    - path: cap.interface.capactio.capact.validation.hub.install
+      revision: 2.0.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: install-demo
+        templates:
+          - name: install-demo
+            inputs:
+              artifacts:
+                - name: postgresql
+                  optional: true
+                - name: additional-parameters
+                  optional: true
+                - name: additional-parameters-second
+                  optional: true
+            steps:
+              - - name: install-db
+                  capact-when: postgresql == nil # conditional execution
+                  template: install-db
+              - - name: display-parameters
+                  template: display-parameters
+                  arguments:
+                    artifacts:
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+                      - name: additional-parameters-second
+                        from: "{{inputs.artifacts.additional-parameters-second}}"
+                        optional: true
+          - name: install-db
+            container:
+              image: alpine:latest
+              command: [ "sh", "-c" ]
+              args: [ "echo 'optional postgresql TypeInstance was not specified' && sleep 2" ]
+
+          - name: display-parameters
+            inputs:
+              artifacts:
+                - name: additional-parameters
+                  path: /additional-parameters.yaml
+                  optional: true
+                - name: additional-parameters-second
+                  path: /additional-parameters-second.yaml
+                  optional: true
+            container:
+              image: alpine:latest
+              command: [ "sh", "-c" ]
+              args: [ "
+                  echo 'cat /additional-parameters.yaml' &&
+                  cat /additional-parameters.yaml || true &&
+                  echo 'cat /additional-parameters-second.yaml' &&
+                  cat /additional-parameters-second.yaml || true &&
+                  sleep 2 && exit 0
+                 " ]
