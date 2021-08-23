@@ -28,13 +28,13 @@ spec:
         verbs: [ "get" ]
     parameters:
       # You can specify multiple input parameters
-      additional-parameters:
+      mattermost-parameters:
         typeRef:
           path: cap.type.mattermost.helm.install-input
           revision: 0.1.0
-      additional-parameters-second:
+      rocketchat-parameters:
         typeRef:
-          path: cap.type.mattermost.helm.install-input
+          path: cap.type.rocketchat.helm.install-input
           revision: 0.1.0
 
   outputTypeInstanceRelations: { }
@@ -61,9 +61,9 @@ spec:
               artifacts:
                 - name: postgresql
                   optional: true
-                - name: additional-parameters
+                - name: mattermost-parameters
                   optional: true
-                - name: additional-parameters-second
+                - name: rocketchat-parameters
                   optional: true
             steps:
               - - name: install-db
@@ -73,11 +73,11 @@ spec:
                   template: display-parameters
                   arguments:
                     artifacts:
-                      - name: additional-parameters
-                        from: "{{inputs.artifacts.additional-parameters}}"
+                      - name: mattermost-parameters
+                        from: "{{inputs.artifacts.mattermost-parameters}}"
                         optional: true
-                      - name: additional-parameters-second
-                        from: "{{inputs.artifacts.additional-parameters-second}}"
+                      - name: rocketchat-parameters
+                        from: "{{inputs.artifacts.rocketchat-parameters}}"
                         optional: true
           - name: install-db
             container:
@@ -88,19 +88,19 @@ spec:
           - name: display-parameters
             inputs:
               artifacts:
-                - name: additional-parameters
-                  path: /additional-parameters.yaml
+                - name: mattermost-parameters
+                  path: /mattermost-parameters.yaml
                   optional: true
-                - name: additional-parameters-second
-                  path: /additional-parameters-second.yaml
+                - name: rocketchat-parameters
+                  path: /rocketchat-parameters.yaml
                   optional: true
             container:
               image: alpine:latest
               command: [ "sh", "-c" ]
               args: [ "
-                  echo 'cat /additional-parameters.yaml' &&
-                  cat /additional-parameters.yaml || true &&
-                  echo 'cat /additional-parameters-second.yaml' &&
-                  cat /additional-parameters-second.yaml || true &&
+                  echo 'cat /mattermost-parameters.yaml' &&
+                  cat /mattermost-parameters.yaml || true &&
+                  echo 'cat /rocketchat-parameters.yaml' &&
+                  cat /rocketchat-parameters.yaml || true &&
                   sleep 2 && exit 0
                  " ]
