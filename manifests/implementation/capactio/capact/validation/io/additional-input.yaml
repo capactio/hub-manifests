@@ -1,0 +1,106 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: cap.implementation.capactio.capact.validation.io
+  name: install
+  license:
+    name: "Apache 2.0"
+  displayName: "Implementation which consumes additional input"
+  description: |-
+    Can be used to check if additional input is injected properly
+    This implementation accepts additional installation parameters.
+  documentationURL: "https://capact.io"
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  appVersion: "2.x.x"
+
+  additionalInput:
+    typeInstances:
+      postgresql:
+        typeRef:
+          path: cap.type.database.postgresql.config
+          revision: 0.1.0
+        verbs: [ "get" ]
+    parameters:
+      # You can specify multiple input parameters
+      mattermost-parameters:
+        typeRef:
+          path: cap.type.mattermost.helm.install-input
+          revision: 0.1.0
+      rocketchat-parameters:
+        typeRef:
+          path: cap.type.rocketchat.helm.install-input
+          revision: 0.1.0
+
+  outputTypeInstanceRelations: { }
+
+  implements:
+    - path: cap.interface.capactio.capact.validation.hub.install
+      revision: 2.0.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: install-demo
+        templates:
+          - name: install-demo
+            inputs:
+              artifacts:
+                - name: postgresql
+                  optional: true
+                - name: mattermost-parameters
+                  optional: true
+                - name: rocketchat-parameters
+                  optional: true
+            steps:
+              - - name: install-db
+                  capact-when: postgresql == nil # conditional execution
+                  template: install-db
+              - - name: display-parameters
+                  template: display-parameters
+                  arguments:
+                    artifacts:
+                      - name: mattermost-parameters
+                        from: "{{inputs.artifacts.mattermost-parameters}}"
+                        optional: true
+                      - name: rocketchat-parameters
+                        from: "{{inputs.artifacts.rocketchat-parameters}}"
+                        optional: true
+          - name: install-db
+            container:
+              image: alpine:latest
+              command: [ "sh", "-c" ]
+              args: [ "echo 'optional postgresql TypeInstance was not specified' && sleep 2" ]
+
+          - name: display-parameters
+            inputs:
+              artifacts:
+                - name: mattermost-parameters
+                  path: /mattermost-parameters.yaml
+                  optional: true
+                - name: rocketchat-parameters
+                  path: /rocketchat-parameters.yaml
+                  optional: true
+            container:
+              image: alpine:latest
+              command: [ "sh", "-c" ]
+              args: [ "
+                  echo 'cat /mattermost-parameters.yaml' &&
+                  cat /mattermost-parameters.yaml || true &&
+                  echo 'cat /rocketchat-parameters.yaml' &&
+                  cat /rocketchat-parameters.yaml || true &&
+                  sleep 2 && exit 0
+                 " ]
