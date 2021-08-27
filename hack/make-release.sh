@@ -24,6 +24,7 @@ main() {
 
   git tag "v${RELEASE_VERSION}"
   git push origin "${SOURCE_BRANCH}"
+  git push origin "v${RELEASE_VERSION}"
 
   if [ "${RELEASE_BRANCH}" != "${SOURCE_BRANCH}" ]; then
     git checkout -B "${RELEASE_BRANCH}"
