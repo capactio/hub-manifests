@@ -27,7 +27,7 @@ main() {
 
   if [ "${RELEASE_BRANCH}" != "${SOURCE_BRANCH}" ]; then
     git checkout -B "${RELEASE_BRANCH}"
-    git push "${RELEASE_BRANCH}"
+    git push origin "${RELEASE_BRANCH}"
   fi
 }
 
