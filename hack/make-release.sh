@@ -5,7 +5,7 @@ release::replace_runner_images() {
   local -r tag="$1"
 
   for manifest in ./manifests/implementation/runner/**/*.yaml; do
-    sed -i.bak -E "s|^(              image: ghcr.io/capactio/)(.+):(.+)|\1\2:${tag}" "${manifest}"
+    sed -i.bak -E "s|^(              image: ghcr.io/capactio/)(.+):(.+)|\1\2:${tag}|" "${manifest}"
   done
 
   git add .
