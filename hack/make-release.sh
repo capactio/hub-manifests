@@ -4,12 +4,11 @@ set -e
 release::replace_runner_images() {
   local -r tag="$1"
 
-  for manifest in ./manifests/implementation/runner/**/*.yaml; do
+  local manifests="$(find ./manifests/implementation/runner -iname "*.yaml" -a -not -path "*cloudsql*")"
+
+  for manifest in $manifests; do
     sed -i.bak -E "s|^(              image: ghcr.io/capactio/)(.+):(.+)|\1\2:${tag}|" "${manifest}"
   done
-
-  git add .
-  git commit -m "Update runner images to tag ${tag}"
 }
 
 [ -z "${RELEASE_VERSION}" ] && echo "Need to set RELEASE_VERSION" && exit 1;
@@ -21,6 +20,9 @@ RELEASE_BRANCH="release-${RELEASE_VERSION_MAJOR_MINOR}"
 
 main() {
   release::replace_runner_images "${RUNNER_IMAGES_TAG}"
+
+  git add .
+  git commit -m "Update runner images to tag ${tag}"
 
   git tag "v${RELEASE_VERSION}"
   git push origin "${SOURCE_BRANCH}"
