@@ -7,7 +7,7 @@ release::replace_runner_images() {
   local manifests="$(find ./manifests/implementation/runner -iname "*.yaml" -a -not -path "*cloudsql*")"
 
   for manifest in $manifests; do
-    sed -i.bak -E "s|^(              image: ghcr.io/capactio/)(.+):(.+)|\1\2:${tag}|" "${manifest}"
+    sed -i.bak -E "s|^(              image: ghcr.io/capactio/)(pr/)?(.+):(.+)|\1\3:${tag}|" "${manifest}"
   done
 }
 
