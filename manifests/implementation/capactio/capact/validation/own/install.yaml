@@ -45,7 +45,9 @@ spec:
         entrypoint: main
         templates:
           - name: main
-            template: pass
+            steps:
+              - - name: pass
+                  template: pass
           - name: pass
             container:
               image: alpine:latest
