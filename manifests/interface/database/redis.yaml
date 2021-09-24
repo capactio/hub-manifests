@@ -1,0 +1,15 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: InterfaceGroup
+metadata:
+  prefix: "cap.interface.database"
+  name: "redis"
+  displayName: "Redis"
+  description: "Redis related Interfaces"
+  documentationURL: https://redis.io/documentation
+  supportURL: https://redis.io/support
+  iconURL: https://redis.io/images/redis-white.png
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io

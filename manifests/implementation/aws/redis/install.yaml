@@ -1,0 +1,268 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: "cap.implementation.aws.redis"
+  name: install
+  displayName: "Redis install Action"
+  description: "Redis install Action"
+  documentationURL: https://redis.io/documentation
+  supportURL: https://redis.io/support
+  iconURL: https://redis.io/images/redis-white.png
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+  license:
+    name: "Apache 2.0"
+
+spec:
+  appVersion: "1.0.x"
+  additionalInput:
+    parameters:
+      additional-parameters:
+        typeRef:
+          path: "cap.type.aws.redis.install-input"
+          revision: 0.1.0
+
+  outputTypeInstanceRelations:
+    config:
+      uses:
+        - terraform-release
+
+  implements:
+    - path: cap.interface.database.redis.install
+      revision: 0.1.0
+
+  requires:
+    cap.type.aws.auth:
+      allOf:
+        - name: credentials
+          alias: aws-credentials
+          revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.templating.jinja2
+      alias: jinja2
+      methods:
+        - name: template
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.runner.terraform
+      alias: terraform
+      methods:
+        - name: apply
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: deploy
+        templates:
+          - name: deploy
+            inputs:
+              artifacts:
+                - name: input-parameters
+                - name: additional-parameters
+                  optional: true
+            outputs:
+              artifacts: []
+            steps:
+              - - name: prepare-parameters
+                  template: prepare-parameters
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+                      - name: aws
+                        from: "{{workflow.outputs.artifacts.aws-credentials}}"
+
+              - - name: create-module-args
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
+                      - name: configuration
+                        raw:
+                          data:
+                      - name: template
+                        raw:
+                          data: |
+                            command: "apply"
+                            module:
+                              name: "install"
+                              source: "git::https://github.com/umotif-public/terraform-aws-elasticache-redis"
+                            env:
+                            - AWS_ACCESS_KEY_ID=<@ aws.accessKeyID @>
+                            - AWS_SECRET_ACCESS_KEY=<@ aws.secretAccessKey @>
+                            - AWS_DEFAULT_REGION=<@ additionalinput.region | default('eu-west-1') @>
+                            output:
+                              goTemplate:
+                                elasticache_auth_token: "{{ .elasticache_auth_token }}"
+                                elasticache_parameter_group_id: "{{ .elasticache_parameter_group_id }}"
+                                elasticache_port: "{{ .elasticache_port }}"
+                                elasticache_replication_group_arn: "{{ .elasticache_replication_group_arn }}"
+                                elasticache_replication_group_id: "{{ .elasticache_replication_group_id }}"
+                                elasticache_replication_group_member_clusters: "{{ .elasticache_replication_group_member_clusters }}"
+                                elasticache_replication_group_primary_endpoint_address: "{{ .elasticache_replication_group_primary_endpoint_address }}"
+                                elasticache_replication_group_reader_endpoint_address: "{{ .elasticache_replication_group_reader_endpoint_address }}"
+                                security_group_arn: "{{ .security_group_arn }}"
+                                security_group_description: "{{ .security_group_description }}"
+                                security_group_egress: "{{ .security_group_egress }}"
+                                security_group_id: "{{ .security_group_id }}"
+                                security_group_ingress: "{{ .security_group_ingress }}"
+                                security_group_name: "{{ .security_group_name }}"
+                                security_group_owner_id: "{{ .security_group_owner_id }}"
+                                security_group_vpc_id: "{{ .security_group_vpc_id }}"
+                            variables: |+
+                              name_prefix = <@ input.name | tojson @>
+                              auth_token = <@ input.password | default(random_word(length=16)) | tojson @>
+
+                              <%- if additionalinput.apply_immediately %>
+                              apply_immediately = <@ additionalinput.apply_immediately | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.at_rest_encryption_enabled %>
+                              at_rest_encryption_enabled = <@ additionalinput.at_rest_encryption_enabled | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.auto_minor_version_upgrade %>
+                              auto_minor_version_upgrade = <@ additionalinput.auto_minor_version_upgrade | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.automatic_failover_enabled %>
+                              automatic_failover_enabled = <@ additionalinput.automatic_failover_enabled | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.availability_zones %>
+                              availability_zones = <@ additionalinput.availability_zones | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.cluster_mode_enabled %>
+                              cluster_mode_enabled = <@ additionalinput.cluster_mode_enabled | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.description %>
+                              description = <@ additionalinput.description | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.engine_version %>
+                              engine_version = <@ additionalinput.engine_version | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.family %>
+                              family = <@ additionalinput.family | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.final_snapshot_identifier %>
+                              final_snapshot_identifier = <@ additionalinput.final_snapshot_identifier | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.global_replication_group_id %>
+                              global_replication_group_id = <@ additionalinput.global_replication_group_id | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.ingress_cidr_blocks %>
+                              ingress_cidr_blocks = <@ additionalinput.ingress_cidr_blocks | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.ingress_self %>
+                              ingress_self = <@ additionalinput.ingress_self | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.kms_key_id %>
+                              kms_key_id = <@ additionalinput.kms_key_id | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.maintenance_window %>
+                              maintenance_window = <@ additionalinput.maintenance_window | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.multi_az_enabled %>
+                              multi_az_enabled = <@ additionalinput.multi_az_enabled | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.node_type %>
+                              node_type = <@ additionalinput.node_type | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.notification_topic_arn %>
+                              notification_topic_arn = <@ additionalinput.notification_topic_arn | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.num_node_groups %>
+                              num_node_groups = <@ additionalinput.num_node_groups | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.number_cache_clusters %>
+                              number_cache_clusters = <@ additionalinput.number_cache_clusters | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.parameter %>
+                              parameter = <@ additionalinput.parameter | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.port %>
+                              port = <@ additionalinput.port | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.replicas_per_node_group %>
+                              replicas_per_node_group = <@ additionalinput.replicas_per_node_group | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.security_group_ids %>
+                              security_group_ids = <@ additionalinput.security_group_ids | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.snapshot_retention_limit %>
+                              snapshot_retention_limit = <@ additionalinput.snapshot_retention_limit | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.snapshot_window %>
+                              snapshot_window = <@ additionalinput.snapshot_window | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.subnet_ids %>
+                              subnet_ids = <@ additionalinput.subnet_ids | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.tags %>
+                              tags = <@ additionalinput.tags | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.transit_encryption_enabled %>
+                              transit_encryption_enabled = <@ additionalinput.transit_encryption_enabled | tojson @>
+                              <%- endif %>
+                              <%- if additionalinput.vpc_id %>
+                              vpc_id = <@ additionalinput.vpc_id | tojson @>
+                              <%- endif %>
+                              
+
+              - - name: terraform-apply
+                  capact-action: terraform.apply
+                  capact-outputTypeInstances:
+                    - name: terraform-release
+                      from: terraform-release
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.create-module-args.outputs.artifacts.render}}"
+                      - name: runner-context
+                        from: "{{workflow.outputs.artifacts.runner-context}}"
+
+              - - name: render-config
+                  capact-outputTypeInstances:
+                    - name: config
+                      from: render
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.terraform-apply.outputs.artifacts.additional}}"
+                      - name: configuration
+                        raw:
+                          data: ""
+                      - name: template
+                        raw:
+                          data: |
+                            password: "{{ .elasticache_auth_token }}"
+                            port: "{{ .elasticache_port }}"
+                            host: "{{ .elasticache_replication_group_arn }}"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalinput.yaml
+                  optional: true
+                - name: aws
+                  path: /yamls/aws.yaml
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml
