@@ -2,21 +2,21 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: "cap.implementation.bitnami.redis"
+  prefix: "cap.implementation.aws.redis"
   name: install
-  displayName: "install Action"
-  description: "install Action"
-  documentationURL: https://example.com
-  supportURL: https://example.com
+  displayName: "Redis Install Action"
+  description: "Redis Install Action for a Helm chart"
+  documentationURL: https://redis.io/documentation
+  supportURL: https://redis.io/support
   maintainers:
-    - email: dev@example.com
-      name: Example Dev
-      url: https://example.com
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
   license:
     name: "Apache 2.0"
 
 spec:
-  appVersion: "1.0.x" # TODO(ContentDeveloper): Set the supported application version here
+  appVersion: "6.2.x"
   additionalInput:
     parameters:
       additional-parameters:
@@ -97,7 +97,7 @@ spec:
                             chart:
                               name: "redis"
                               repo: "https://charts.bitnami.com/bitnami"
-                              version: "15.4.0"
+                              version: "15.3.2"
                             values:
                               architecture: <@ additionalinput.architecture | default("replication") @>
                               auth:
@@ -134,7 +134,7 @@ spec:
                                 pullSecrets: <@ additionalinput.image.pullSecrets | default(None) | tojson @>
                                 registry: <@ additionalinput.image.registry | default("docker.io") @>
                                 repository: <@ additionalinput.image.repository | default("bitnami/redis") @>
-                                tag: <@ additionalinput.image.tag | default("6.2.5-debian-10-r63") @>
+                                tag: <@ additionalinput.image.tag | default("6.2.5-debian-10-r34") @>
                               kubeVersion: <@ additionalinput.kubeVersion | default("") | tojson @>
                               master:
                                 affinity: {}
@@ -229,7 +229,7 @@ spec:
                                   pullSecrets: <@ additionalinput.metrics.image.pullSecrets | default(None) | tojson @>
                                   registry: <@ additionalinput.metrics.image.registry | default("docker.io") @>
                                   repository: <@ additionalinput.metrics.image.repository | default("bitnami/redis-exporter") @>
-                                  tag: <@ additionalinput.metrics.image.tag | default("1.27.1-debian-10-r4") @>
+                                  tag: <@ additionalinput.metrics.image.tag | default("1.26.0-debian-10-r5") @>
                                 podAnnotations:
                                   prometheus.io/port: <@ additionalinput.metrics.podAnnotations["prometheus.io/port"] | default("9121") @>
                                   prometheus.io/scrape: <@ additionalinput.metrics.podAnnotations["prometheus.io/scrape"] | default("true") @>
@@ -365,7 +365,6 @@ spec:
                                   type: <@ additionalinput.replica.updateStrategy.type | default("RollingUpdate") @>
                               sentinel:
                                 args: <@ additionalinput.sentinel.args | default(None) | tojson @>
-                                automateClusterRecovery: <@ additionalinput.sentinel.automateClusterRecovery | default(false) | tojson @>
                                 command: <@ additionalinput.sentinel.command | default(None) | tojson @>
                                 configuration: <@ additionalinput.sentinel.configuration | default("") | tojson @>
                                 containerPort: <@ additionalinput.sentinel.containerPort | default(26379) @>
@@ -388,7 +387,7 @@ spec:
                                   pullSecrets: <@ additionalinput.sentinel.image.pullSecrets | default(None) | tojson @>
                                   registry: <@ additionalinput.sentinel.image.registry | default("docker.io") @>
                                   repository: <@ additionalinput.sentinel.image.repository | default("bitnami/redis-sentinel") @>
-                                  tag: <@ additionalinput.sentinel.image.tag | default("6.2.5-debian-10-r63") @>
+                                  tag: <@ additionalinput.sentinel.image.tag | default("6.2.5-debian-10-r34") @>
                                 lifecycleHooks: {}
                                 livenessProbe:
                                   enabled: <@ additionalinput.sentinel.livenessProbe.enabled | default(true) | tojson @>
@@ -437,7 +436,7 @@ spec:
                                   pullSecrets: <@ additionalinput.sysctl.image.pullSecrets | default(None) | tojson @>
                                   registry: <@ additionalinput.sysctl.image.registry | default("docker.io") @>
                                   repository: <@ additionalinput.sysctl.image.repository | default("bitnami/bitnami-shell") @>
-                                  tag: <@ additionalinput.sysctl.image.tag | default("10-debian-10-r203") @>
+                                  tag: <@ additionalinput.sysctl.image.tag | default("10-debian-10-r174") @>
                                 mountHostSys: <@ additionalinput.sysctl.mountHostSys | default(false) | tojson @>
                                 resources:
                                   limits: {}
@@ -461,7 +460,7 @@ spec:
                                   pullSecrets: <@ additionalinput.volumePermissions.image.pullSecrets | default(None) | tojson @>
                                   registry: <@ additionalinput.volumePermissions.image.registry | default("docker.io") @>
                                   repository: <@ additionalinput.volumePermissions.image.repository | default("bitnami/bitnami-shell") @>
-                                  tag: <@ additionalinput.volumePermissions.image.tag | default("10-debian-10-r203") @>
+                                  tag: <@ additionalinput.volumePermissions.image.tag | default("10-debian-10-r174") @>
                                 resources:
                                   limits: {}
                                   requests: {}

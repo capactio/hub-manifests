@@ -4,11 +4,10 @@ kind: Implementation
 metadata:
   prefix: "cap.implementation.aws.redis"
   name: install
-  displayName: "Redis install Action"
-  description: "Redis install Action"
+  displayName: "Redis Install Action"
+  description: "Redis Install Action for a Terraform module"
   documentationURL: https://redis.io/documentation
   supportURL: https://redis.io/support
-  iconURL: https://redis.io/images/redis-white.png
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team
@@ -17,7 +16,7 @@ metadata:
     name: "Apache 2.0"
 
 spec:
-  appVersion: "1.0.x"
+  appVersion: "6.2.x"
   additionalInput:
     parameters:
       additional-parameters:
@@ -73,6 +72,7 @@ spec:
             outputs:
               artifacts: []
             steps:
+
               - - name: prepare-parameters
                   template: prepare-parameters
                   arguments:
@@ -82,7 +82,7 @@ spec:
                       - name: additional-parameters
                         from: "{{inputs.artifacts.additional-parameters}}"
                         optional: true
-                      - name: aws
+                      - name: provider-credentials
                         from: "{{workflow.outputs.artifacts.aws-credentials}}"
 
               - - name: create-module-args
@@ -102,9 +102,9 @@ spec:
                               name: "install"
                               source: "git::https://github.com/umotif-public/terraform-aws-elasticache-redis"
                             env:
-                            - AWS_ACCESS_KEY_ID=<@ aws.accessKeyID @>
-                            - AWS_SECRET_ACCESS_KEY=<@ aws.secretAccessKey @>
-                            - AWS_DEFAULT_REGION=<@ additionalinput.region | default('eu-west-1') @>
+                              - AWS_ACCESS_KEY_ID=<@ providercredentials.accessKeyID @>
+                              - AWS_SECRET_ACCESS_KEY=<@ providercredentials.secretAccessKey @>
+                              - AWS_DEFAULT_REGION=<@ additionalinput.region | default('eu-west-1') @>
                             output:
                               goTemplate:
                                 elasticache_auth_token: "{{ .elasticache_auth_token }}"
@@ -217,7 +217,6 @@ spec:
                               <%- if additionalinput.vpc_id %>
                               vpc_id = <@ additionalinput.vpc_id | tojson @>
                               <%- endif %>
-                              
 
               - - name: terraform-apply
                   capact-action: terraform.apply
@@ -258,8 +257,8 @@ spec:
                 - name: additional-parameters
                   path: /yamls/additionalinput.yaml
                   optional: true
-                - name: aws
-                  path: /yamls/aws.yaml
+                - name: provider-credentials
+                  path: /yamls/providercredentials.yaml
             container:
               image: ghcr.io/capactio/pr/infra/merger:PR-428
             outputs:

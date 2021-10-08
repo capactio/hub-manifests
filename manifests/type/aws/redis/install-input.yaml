@@ -8,17 +8,19 @@ metadata:
   description: Input for the AWS Elasticache Redis install Action
   documentationURL: https://redis.io/documentation
   supportURL: https://redis.io/support
-  iconURL: https://redis.io/images/redis-white.png
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team
       url: https://capact.io
 spec:
   jsonSchema:
-    # TODO(ContentDeveloper): Adjust the JSON schema if needed.
     value: |-
       {
         "properties": {
+          "region": {
+            "type": "string",
+            "title": "AWS region"
+          },
           "apply_immediately": {
             "type": "boolean",
             "title": "apply_immediately",
@@ -28,11 +30,6 @@ spec:
             "type": "boolean",
             "title": "at_rest_encryption_enabled",
             "description": "Whether to enable encryption at rest."
-          },
-          "auth_token": {
-            "type": "string",
-            "title": "auth_token",
-            "description": "The password used to access a password protected server. Can be specified only if `transit_encryption_enabled = true`."
           },
           "auto_minor_version_upgrade": {
             "type": "string",
@@ -102,11 +99,6 @@ spec:
             "type": "string",
             "title": "multi_az_enabled",
             "description": "Specifies whether to enable Multi-AZ Support for the replication group. If true, `automatic_failover_enabled` must also be enabled. Defaults to false."
-          },
-          "name_prefix": {
-            "type": "string",
-            "title": "name_prefix",
-            "description": "The replication group identifier. This parameter is stored as a lowercase string."
           },
           "node_type": {
             "type": "string",
