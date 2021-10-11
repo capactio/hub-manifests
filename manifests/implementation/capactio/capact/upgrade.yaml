@@ -81,6 +81,7 @@ spec:
                         raw:
                           data: |
                             reuseValues: true
+                            maxHistory: 3
                             chart:
                               version: "<@ version @>"
                               <% if override.helmRepoURL %>
@@ -100,6 +101,7 @@ spec:
                         raw:
                           data: |
                             reuseValues: true
+                            maxHistory: 3
                             chart:
                               version: "<@ version @>"
                               <% if override.helmRepoURL %>
@@ -123,6 +125,7 @@ spec:
                         raw:
                           data: |
                             reuseValues: true
+                            maxHistory: 3
                             chart:
                               version: "<@ version @>"
                               <% if override.helmRepoURL %>
