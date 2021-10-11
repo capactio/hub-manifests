@@ -24,6 +24,7 @@ spec:
           {
             "reuseValues": true,
             "resetValues": false,
+            "maxHistory": 10,
             "chart": {
               "name": "postgresql",
               "repo": "https://charts.bitnami.com/bitnami",
@@ -93,6 +94,12 @@ spec:
                "type": "boolean",
                "title": "Resets the values to the ones built into the chart during upgrade",
                "default": false
+             },
+            "maxHistory": {
+               "$id": "#/properties/maxHistory",
+               "type": "integer",
+               "title": "Limits the maximum number of revisions saved per release.",
+               "default": 10
              },
             "replace": {
               "$id": "#/properties/replace",
