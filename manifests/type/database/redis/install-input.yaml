@@ -1,0 +1,45 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Type
+metadata:
+  prefix: "cap.type.database.redis"
+  name: install-input
+  displayName: Input for database Redis Install
+  description: Input for the database Redis install Action
+  documentationURL: https://redis.io/documentation
+  supportURL: https://redis.io/support
+  iconURL: https://redis.io/images/redis-white.png
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+spec:
+  jsonSchema:
+    value: |-
+      {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "type": "object",
+        "title": "The schema for Redis installation input",
+        "examples": [
+          {
+            "name": "Cluster name",
+            "password": "foo"
+          }
+        ],
+        "required": [
+           "name"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#/properties/name",
+            "type": "string",
+            "title": "Defines a cluster name for the Redis"
+          },
+          "password": {
+            "$id": "#/properties/password",
+            "type": "string",
+            "title": "Defines a password"
+          }
+        },
+        "additionalProperties": false
+      }
