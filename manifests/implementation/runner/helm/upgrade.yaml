@@ -94,7 +94,7 @@ spec:
                   path: "/additional.yaml"
                   optional: true
             container:
-              image: ghcr.io/capactio/helm-runner:530d3dd
+              image: ghcr.io/capactio/pr/helm-runner:PR-531
               env:
                 - name: RUNNER_CONTEXT_PATH
                   value: "{{inputs.artifacts.runner-context.path}}"
