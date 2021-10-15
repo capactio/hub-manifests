@@ -1,0 +1,49 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: cap.implementation.capactio.capact
+  name: scream
+  displayName: "Scream CAPACT"
+  description: "Capact SCREAM Action"
+  documentationURL: https://capact.dev
+  supportURL: https://capact.dev
+  license:
+    name: "Apache 2.0"
+  maintainers:
+    - email: team-dev@capact.dev
+      name: Capact Dev Team
+      url: https://capact.dev
+
+spec:
+  appVersion: "0.3.x"
+  outputTypeInstanceRelations: {}
+
+  implements:
+    - path: cap.interface.capactio.capact.say
+      revision: 0.1.0
+
+  requires:
+    cap.core.type.platform:
+      oneOf:
+        - name: kubernetes
+          revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: say
+        templates:
+        - name: say
+          container:
+            image: docker/whalesay:latest
+            command: [cowsay]
+            args: ["HELLO CAPACT!!!"]
