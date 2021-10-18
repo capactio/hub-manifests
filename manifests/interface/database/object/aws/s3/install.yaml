@@ -1,0 +1,30 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Interface
+metadata:
+  prefix: cap.interface.database.object.aws.s3
+  name: install
+  displayName: Install Action for AWS S3
+  description: Install Action for AWS S3 object store
+  documentationURL: https://aws.amazon.com/s3/
+  supportURL: https://aws.amazon.com/s3/
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  input:
+    parameters:
+      input-parameters:
+        typeRef:
+          path: cap.type.database.object.aws.s3.install-input
+          revision: 0.1.0
+    typeInstances: {}
+
+  output:
+    typeInstances:
+      config:
+        typeRef:
+          path: cap.type.database.object.aws.s3.config
+          revision: 0.1.0

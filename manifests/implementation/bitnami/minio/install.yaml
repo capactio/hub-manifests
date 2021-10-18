@@ -1,0 +1,361 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: cap.implementation.bitnami.minio
+  name: install
+  displayName: MinIO Install Action
+  description: MinIO Install Action for a Helm Chart
+  documentationURL: https://docs.min.io/
+  supportURL: https://min.io/
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+  license:
+    name: "Apache 2.0"
+
+spec:
+  appVersion: "1.0.x"
+  additionalInput:
+    parameters:
+      additional-parameters:
+        typeRef:
+          path: "cap.type.bitnami.minio.install-input"
+          revision: 0.1.0
+
+  outputTypeInstanceRelations:
+    config:
+      uses:
+        - helm-release
+
+  implements:
+    - path: cap.interface.database.object.aws.s3.install
+      revision: 0.1.0
+
+  requires:
+    cap.core.type.platform:
+      oneOf:
+        - name: kubernetes
+          revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.templating.jinja2
+      alias: jinja2
+      methods:
+        - name: template
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.runner.helm
+      alias: helm
+      methods:
+        - name: install
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: deploy
+        templates:
+          - name: deploy
+            inputs:
+              artifacts:
+                - name: input-parameters
+                - name: additional-parameters
+                  optional: true
+            outputs:
+              artifacts: []
+            steps:
+              - - name: prepare-parameters
+                  template: prepare-parameters
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+
+              - - name: create-helm-args
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
+                      - name: configuration
+                        raw:
+                          data:
+                      - name: template
+                        raw:
+                          data: |
+                            generateName: true
+                            chart:
+                              name: "minio"
+                              repo: "https://charts.bitnami.com/bitnami"
+                              version: "8.1.3"
+                            values:
+                              accessKey:
+                                forcePassword: <@ additionalinput.accessKey.forcePassword | default(false) | tojson @>
+                                password: <@ input.accesskey | default(random_word(length=16)) @>
+                              affinity: {}
+                              apiIngress:
+                                annotations: {}
+                                apiVersion: <@ additionalinput.apiIngress.apiVersion | default("") | tojson @>
+                                certManager: <@ additionalinput.apiIngress.certManager | default(false) | tojson @>
+                                enabled: <@ additionalinput.apiIngress.enabled | default(false) | tojson @>
+                                extraHosts: <@ additionalinput.apiIngress.extraHosts | default(None) | tojson @>
+                                extraPaths: <@ additionalinput.apiIngress.extraPaths | default(None) | tojson @>
+                                extraTls: <@ additionalinput.apiIngress.extraTls | default(None) | tojson @>
+                                hostname: <@ additionalinput.apiIngress.hostname | default("minio.local") @>
+                                path: <@ additionalinput.apiIngress.path | default("/") @>
+                                pathType: <@ additionalinput.apiIngress.pathType | default("ImplementationSpecific") @>
+                                secrets: <@ additionalinput.apiIngress.secrets | default(None) | tojson @>
+                                servicePort: <@ additionalinput.apiIngress.servicePort | default("minio-api") @>
+                                tls: <@ additionalinput.apiIngress.tls | default(false) | tojson @>
+                              args: <@ additionalinput.args | default(None) | tojson @>
+                              clientImage:
+                                registry: <@ additionalinput.clientImage.registry | default("docker.io") @>
+                                repository: <@ additionalinput.clientImage.repository | default("bitnami/minio-client") @>
+                                tag: <@ additionalinput.clientImage.tag | default("2021.9.2-debian-10-r17") @>
+                              clusterDomain: <@ additionalinput.clusterDomain | default("cluster.local") @>
+                              command: <@ additionalinput.command | default(None) | tojson @>
+                              commonAnnotations: {}
+                              commonLabels: {}
+                              containerPorts:
+                                api: <@ additionalinput.containerPorts.api | default(9000) @>
+                                console: <@ additionalinput.containerPorts.console | default(9001) @>
+                              containerSecurityContext:
+                                enabled: <@ additionalinput.containerSecurityContext.enabled | default(true) | tojson @>
+                                runAsNonRoot: <@ additionalinput.containerSecurityContext.runAsNonRoot | default(true) | tojson @>
+                                runAsUser: <@ additionalinput.containerSecurityContext.runAsUser | default(1001) @>
+                              customLivenessProbe: {}
+                              customReadinessProbe: {}
+                              customStartupProbe: {}
+                              defaultBuckets: <@ additionalinput.defaultBuckets | default("") | tojson @>
+                              deployment:
+                                updateStrategy:
+                                  type: <@ additionalinput.deployment.updateStrategy.type | default("Recreate") @>
+                              disableWebUI: <@ additionalinput.disableWebUI | default(false) | tojson @>
+                              existingSecret: <@ additionalinput.existingSecret | default("") | tojson @>
+                              extraDeploy: <@ additionalinput.extraDeploy | default(None) | tojson @>
+                              extraEnv: {}
+                              extraEnvVarsCM: <@ additionalinput.extraEnvVarsCM | default("") | tojson @>
+                              extraEnvVarsSecret: <@ additionalinput.extraEnvVarsSecret | default("") | tojson @>
+                              extraVolumeMounts: <@ additionalinput.extraVolumeMounts | default(None) | tojson @>
+                              extraVolumes: <@ additionalinput.extraVolumes | default(None) | tojson @>
+                              forceNewKeys: <@ additionalinput.forceNewKeys | default(false) | tojson @>
+                              fullnameOverride: <@ input.name @>
+                              gateway:
+                                auth:
+                                  azure:
+                                    accessKey: <@ additionalinput.gateway.auth.azure.accessKey | default("") | tojson @>
+                                    secretKey: <@ additionalinput.gateway.auth.azure.secretKey | default("") | tojson @>
+                                    storageAccountKey: <@ additionalinput.gateway.auth.azure.storageAccountKey | default("") | tojson @>
+                                    storageAccountKeyExistingSecret: <@ additionalinput.gateway.auth.azure.storageAccountKeyExistingSecret | default("") | tojson @>
+                                    storageAccountKeyExistingSecretKey: <@ additionalinput.gateway.auth.azure.storageAccountKeyExistingSecretKey | default("") | tojson @>
+                                    storageAccountName: <@ additionalinput.gateway.auth.azure.storageAccountName | default("") | tojson @>
+                                    storageAccountNameExistingSecret: <@ additionalinput.gateway.auth.azure.storageAccountNameExistingSecret | default("") | tojson @>
+                                    storageAccountNameExistingSecretKey: <@ additionalinput.gateway.auth.azure.storageAccountNameExistingSecretKey | default("") | tojson @>
+                                  gcs:
+                                    accessKey: <@ additionalinput.gateway.auth.gcs.accessKey | default("") | tojson @>
+                                    keyJSON: <@ additionalinput.gateway.auth.gcs.keyJSON | default("") | tojson @>
+                                    projectID: <@ additionalinput.gateway.auth.gcs.projectID | default("") | tojson @>
+                                    secretKey: <@ additionalinput.gateway.auth.gcs.secretKey | default("") | tojson @>
+                                  nas:
+                                    accessKey: <@ additionalinput.gateway.auth.nas.accessKey | default("") | tojson @>
+                                    secretKey: <@ additionalinput.gateway.auth.nas.secretKey | default("") | tojson @>
+                                  s3:
+                                    accessKey: <@ additionalinput.gateway.auth.s3.accessKey | default("") | tojson @>
+                                    secretKey: <@ additionalinput.gateway.auth.s3.secretKey | default("") | tojson @>
+                                    serviceEndpoint: <@ additionalinput.gateway.auth.s3.serviceEndpoint | default("https://s3.amazonaws.com") @>
+                                autoscaling:
+                                  enabled: <@ additionalinput.gateway.autoscaling.enabled | default(false) | tojson @>
+                                  maxReplicas: <@ additionalinput.gateway.autoscaling.maxReplicas | default("4") @>
+                                  minReplicas: <@ additionalinput.gateway.autoscaling.minReplicas | default("4") @>
+                                  targetCPU: <@ additionalinput.gateway.autoscaling.targetCPU | default("") | tojson @>
+                                  targetMemory: <@ additionalinput.gateway.autoscaling.targetMemory | default("") | tojson @>
+                                enabled: <@ additionalinput.gateway.enabled | default(false) | tojson @>
+                                priorityClassName: <@ additionalinput.gateway.priorityClassName | default("") | tojson @>
+                                replicaCount: <@ additionalinput.gateway.replicaCount | default(4) @>
+                                type: <@ additionalinput.gateway.type | default("s3") @>
+                                updateStrategy:
+                                  type: <@ additionalinput.gateway.updateStrategy.type | default("Recreate") @>
+                              global:
+                                imagePullSecrets: <@ additionalinput.global.imagePullSecrets | default(None) | tojson @>
+                                imageRegistry: <@ additionalinput.global.imageRegistry | default("") | tojson @>
+                                minio: {}
+                                storageClass: <@ additionalinput.global.storageClass | default("") | tojson @>
+                              hostAliases: <@ additionalinput.hostAliases | default(None) | tojson @>
+                              image:
+                                debug: <@ additionalinput.image.debug | default(false) | tojson @>
+                                pullPolicy: <@ additionalinput.image.pullPolicy | default("IfNotPresent") @>
+                                pullSecrets: <@ additionalinput.image.pullSecrets | default(None) | tojson @>
+                                registry: <@ additionalinput.image.registry | default("docker.io") @>
+                                repository: <@ additionalinput.image.repository | default("bitnami/minio") @>
+                                tag: <@ additionalinput.image.tag | default("2021.9.18-debian-10-r0") @>
+                              ingress:
+                                annotations: {}
+                                apiVersion: <@ additionalinput.ingress.apiVersion | default("") | tojson @>
+                                certManager: <@ additionalinput.ingress.certManager | default(false) | tojson @>
+                                enabled: <@ additionalinput.ingress.enabled | default(false) | tojson @>
+                                extraHosts: <@ additionalinput.ingress.extraHosts | default(None) | tojson @>
+                                extraPaths: <@ additionalinput.ingress.extraPaths | default(None) | tojson @>
+                                extraTls: <@ additionalinput.ingress.extraTls | default(None) | tojson @>
+                                hostname: <@ additionalinput.ingress.hostname | default("minio.local") @>
+                                path: <@ additionalinput.ingress.path | default("/") @>
+                                pathType: <@ additionalinput.ingress.pathType | default("ImplementationSpecific") @>
+                                secrets: <@ additionalinput.ingress.secrets | default(None) | tojson @>
+                                servicePort: <@ additionalinput.ingress.servicePort | default("minio-console") @>
+                                tls: <@ additionalinput.ingress.tls | default(false) | tojson @>
+                              initContainers: <@ additionalinput.initContainers | default(None) | tojson @>
+                              kubeVersion: <@ additionalinput.kubeVersion | default("") | tojson @>
+                              livenessProbe:
+                                enabled: <@ additionalinput.livenessProbe.enabled | default(true) | tojson @>
+                                failureThreshold: <@ additionalinput.livenessProbe.failureThreshold | default(5) @>
+                                initialDelaySeconds: <@ additionalinput.livenessProbe.initialDelaySeconds | default(5) @>
+                                periodSeconds: <@ additionalinput.livenessProbe.periodSeconds | default(5) @>
+                                successThreshold: <@ additionalinput.livenessProbe.successThreshold | default(1) @>
+                                timeoutSeconds: <@ additionalinput.livenessProbe.timeoutSeconds | default(5) @>
+                              metrics:
+                                prometheusAuthType: <@ additionalinput.metrics.prometheusAuthType | default("public") @>
+                                serviceMonitor:
+                                  additionalLabels: {}
+                                  enabled: <@ additionalinput.metrics.serviceMonitor.enabled | default(false) | tojson @>
+                                  honorLabels: <@ additionalinput.metrics.serviceMonitor.honorLabels | default(false) | tojson @>
+                                  interval: <@ additionalinput.metrics.serviceMonitor.interval | default("30s") @>
+                                  namespace: <@ additionalinput.metrics.serviceMonitor.namespace | default("") | tojson @>
+                                  path: <@ additionalinput.metrics.serviceMonitor.path | default("/minio/v2/metrics/cluster") @>
+                                  relabellings: <@ additionalinput.metrics.serviceMonitor.relabellings | default(None) | tojson @>
+                                  scrapeTimeout: <@ additionalinput.metrics.serviceMonitor.scrapeTimeout | default("") | tojson @>
+                              mode: <@ additionalinput.mode | default("standalone") @>
+                              nameOverride: <@ additionalinput.nameOverride | default("") | tojson @>
+                              networkPolicy:
+                                allowExternal: <@ additionalinput.networkPolicy.allowExternal | default(true) | tojson @>
+                                enabled: <@ additionalinput.networkPolicy.enabled | default(false) | tojson @>
+                              nodeAffinityPreset:
+                                key: <@ additionalinput.nodeAffinityPreset.key | default("") | tojson @>
+                                type: <@ additionalinput.nodeAffinityPreset.type | default("") | tojson @>
+                                values: <@ additionalinput.nodeAffinityPreset.values | default(None) | tojson @>
+                              nodeSelector: {}
+                              pdb:
+                                create: <@ additionalinput.pdb.create | default(false) | tojson @>
+                                maxUnavailable: <@ additionalinput.pdb.maxUnavailable | default("") | tojson @>
+                                minAvailable: <@ additionalinput.pdb.minAvailable | default(1) @>
+                              persistence:
+                                accessModes: <@ additionalinput.persistence.accessModes | default(["ReadWriteOnce"]) @>
+                                annotations: {}
+                                enabled: <@ additionalinput.persistence.enabled | default(true) | tojson @>
+                                existingClaim: <@ additionalinput.persistence.existingClaim | default("") | tojson @>
+                                mountPath: <@ additionalinput.persistence.mountPath | default("/data") @>
+                                size: <@ additionalinput.persistence.size | default("8Gi") @>
+                                storageClass: <@ additionalinput.persistence.storageClass | default("") | tojson @>
+                              podAffinityPreset: <@ additionalinput.podAffinityPreset | default("") | tojson @>
+                              podAnnotations: {}
+                              podAntiAffinityPreset: <@ additionalinput.podAntiAffinityPreset | default("soft") @>
+                              podLabels: {}
+                              podSecurityContext:
+                                enabled: <@ additionalinput.podSecurityContext.enabled | default(true) | tojson @>
+                                fsGroup: <@ additionalinput.podSecurityContext.fsGroup | default(1001) @>
+                              readinessProbe:
+                                enabled: <@ additionalinput.readinessProbe.enabled | default(true) | tojson @>
+                                failureThreshold: <@ additionalinput.readinessProbe.failureThreshold | default(5) @>
+                                initialDelaySeconds: <@ additionalinput.readinessProbe.initialDelaySeconds | default(5) @>
+                                periodSeconds: <@ additionalinput.readinessProbe.periodSeconds | default(5) @>
+                                successThreshold: <@ additionalinput.readinessProbe.successThreshold | default(1) @>
+                                timeoutSeconds: <@ additionalinput.readinessProbe.timeoutSeconds | default(1) @>
+                              resources:
+                                limits: {}
+                                requests: {}
+                              schedulerName: <@ additionalinput.schedulerName | default("") | tojson @>
+                              secretKey:
+                                forcePassword: <@ additionalinput.secretKey.forcePassword | default(false) | tojson @>
+                                password: <@ input.secretkey | default(random_word(length=16)) @>
+                              service:
+                                annotations: {}
+                                externalTrafficPolicy: <@ additionalinput.service.externalTrafficPolicy | default("Cluster") @>
+                                loadBalancerIP: <@ additionalinput.service.loadBalancerIP | default("") | tojson @>
+                                loadBalancerSourceRanges: <@ additionalinput.service.loadBalancerSourceRanges | default(None) | tojson @>
+                                nodePorts:
+                                  api: <@ additionalinput.service.nodePorts.api | default("") | tojson @>
+                                  console: <@ additionalinput.service.nodePorts.console | default("") | tojson @>
+                                ports:
+                                  api: <@ additionalinput.service.ports.api | default(9000) @>
+                                  console: <@ additionalinput.service.ports.console | default(9001) @>
+                                type: <@ additionalinput.service.type | default("ClusterIP") @>
+                              serviceAccount:
+                                create: <@ additionalinput.serviceAccount.create | default(true) | tojson @>
+                                name: <@ additionalinput.serviceAccount.name | default("") | tojson @>
+                              sidecars: <@ additionalinput.sidecars | default(None) | tojson @>
+                              startupProbe:
+                                enabled: <@ additionalinput.startupProbe.enabled | default(false) | tojson @>
+                                failureThreshold: <@ additionalinput.startupProbe.failureThreshold | default(60) @>
+                                initialDelaySeconds: <@ additionalinput.startupProbe.initialDelaySeconds | default(0) @>
+                                periodSeconds: <@ additionalinput.startupProbe.periodSeconds | default(10) @>
+                                successThreshold: <@ additionalinput.startupProbe.successThreshold | default(1) @>
+                                timeoutSeconds: <@ additionalinput.startupProbe.timeoutSeconds | default(5) @>
+                              statefulset:
+                                drivesPerNode: <@ additionalinput.statefulset.drivesPerNode | default(1) @>
+                                podManagementPolicy: <@ additionalinput.statefulset.podManagementPolicy | default("Parallel") @>
+                                replicaCount: <@ additionalinput.statefulset.replicaCount | default(4) @>
+                                updateStrategy: <@ additionalinput.statefulset.updateStrategy | default("RollingUpdate") @>
+                                zones: <@ additionalinput.statefulset.zones | default(1) @>
+                              tls:
+                                enabled: <@ additionalinput.tls.enabled | default(false) | tojson @>
+                                existingSecret: <@ additionalinput.tls.existingSecret | default("") | tojson @>
+                                mountPath: <@ additionalinput.tls.mountPath | default("") | tojson @>
+                                secretName: <@ additionalinput.tls.secretName | default("") | tojson @>
+                              tolerations: <@ additionalinput.tolerations | default(None) | tojson @>
+                              useCredentialsFile: <@ additionalinput.useCredentialsFile | default(false) | tojson @>
+                              volumePermissions:
+                                containerSecurityContext:
+                                  runAsUser: <@ additionalinput.volumePermissions.containerSecurityContext.runAsUser | default(0) @>
+                                enabled: <@ additionalinput.volumePermissions.enabled | default(false) | tojson @>
+                                image:
+                                  pullPolicy: <@ additionalinput.volumePermissions.image.pullPolicy | default("Always") @>
+                                  pullSecrets: <@ additionalinput.volumePermissions.image.pullSecrets | default(None) | tojson @>
+                                  registry: <@ additionalinput.volumePermissions.image.registry | default("docker.io") @>
+                                  repository: <@ additionalinput.volumePermissions.image.repository | default("bitnami/bitnami-shell") @>
+                                  tag: <@ additionalinput.volumePermissions.image.tag | default("10-debian-10-r198") @>
+                                resources:
+                                  limits: {}
+                                  requests: {}
+                              
+                            output:
+                              goTemplate: |
+                                endpoint: '{{ include "common.names.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}'
+                                accesskey: '{{ .Values.accessKey.password }}'
+                                secretkey: '{{ .Values.secretKey.password }}'
+
+              - - name: helm-install
+                  capact-action: helm.install
+                  capact-outputTypeInstances:
+                    - name: helm-release
+                      from: helm-release
+                    - name: config
+                      from: additional
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.create-helm-args.outputs.artifacts.render}}"
+                      - name: runner-context
+                        from: "{{workflow.outputs.artifacts.runner-context}}"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalinput.yaml
+                  optional: true
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml

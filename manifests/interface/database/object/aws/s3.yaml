@@ -1,0 +1,14 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: InterfaceGroup
+metadata:
+  prefix: cap.interface.database.object.aws
+  name: s3
+  displayName: AWS S3 Actions
+  description: AWS S3 related Actions
+  documentationURL: https://aws.amazon.com/s3/
+  supportURL: https://aws.amazon.com/s3/
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
