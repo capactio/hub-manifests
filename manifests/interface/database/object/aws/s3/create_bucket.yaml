@@ -1,0 +1,36 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Interface
+metadata:
+  prefix: cap.interface.database.object.aws.s3
+  name: create-bucket
+  displayName: "Create S3 bucket"
+  description: "Create AWS s3 bucket"
+  documentationURL: https://aws.amazon.com/s3/
+  supportURL: https://aws.amazon.com/s3/
+  iconURL: http://media.corporate-ir.net/media_files/IROL/17/176060/Oct18/AWS.png
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  input:
+    parameters:
+      input-parameters:
+        typeRef:
+          path: cap.type.database.object.aws.s3.bucket-create-input
+          revision: 0.1.0
+    typeInstances:
+      s3-config:
+        typeRef:
+          path: cap.type.database.object.aws.s3.config
+          revision: 0.1.0
+        verbs: ["get"]
+
+  output:
+    typeInstances:
+      bucket-config:
+        typeRef:
+          path: cap.type.database.object.aws.s3.bucket-config
+          revision: 0.1.0
