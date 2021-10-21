@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.rocketchat.helm
+  prefix: cap.implementation.rocketchat
   name: install
   displayName: Install Rocket.Chat
   description: Action which installs Rocket.Chat via Helm chart
@@ -14,6 +14,9 @@ metadata:
     - email: team-dev@capact.io
       name: Capact Dev Team
       url: https://capact.io
+  attributes:
+    cap.attribute.containerization.kubernetes.kubeconfig-support:
+      revision: 0.1.0
 
 spec:
   appVersion: "3.6.x"
@@ -23,6 +26,11 @@ spec:
       mongodb:
         typeRef:
           path: cap.type.database.mongodb.config
+          revision: 0.1.0
+        verbs: [ "get" ]
+      kubeconfig:
+        typeRef:
+          path: cap.type.containerization.kubernetes.kubeconfig
           revision: 0.1.0
         verbs: [ "get" ]
     parameters:
@@ -36,6 +44,8 @@ spec:
       uses:
         - rocketchat-helm-release
         - mongodb
+        # TODO(https://github.com/capactio/capact/issues/537): renderer doesn't support relations for additionalInput.typeInstances
+        #- kubeconfig
 
   implements:
     - path: cap.interface.productivity.rocketchat.install
@@ -83,6 +93,8 @@ spec:
                   optional: true
                 - name: additional-parameters
                   optional: true
+                - name: kubeconfig
+                  optional: true
             steps:
               - - name: install-db
                   capact-when: mongodb == nil # conditional execution
@@ -98,6 +110,9 @@ spec:
                             user:
                               username: "mongo"
                             defaultDBName: "mongo"
+                      - name: kubeconfig
+                        from: "{{inputs.artifacts.kubeconfig}}"
+                        optional: true
 
               - - name: prepare-parameters
                   template: prepare-parameters
@@ -145,13 +160,13 @@ spec:
                                 tls:
                                   - secretName: rocketchat-server-tls-<@ random_word(length=5) @>
                                     hosts:
-                                      - <@ input.host @>
+                                      - <@ input.host | default('') @>
                               image:
                                 repository: <@ additionalinput.image.repository | default("docker.io/rocketchat/rocket.chat") @>
                                 tag: <@ additionalinput.image.tag | default("3.13.1") @>
                                 pullPolicy: <@ additionalinput.image.pullPollicy | default("IfNotPresent") @>
 
-                              host: <@ input.host @>
+                              host: <@ input.host | default('') @>
 
                               replicaCount: <@ additionalinput.replicaCount |default(3) @>
                               minAvailable: <@ additionalinput.minAvailable | default(1) @>
@@ -240,7 +255,11 @@ spec:
 
                             output:
                               goTemplate: |
+                                {{- if .Values.host }}
                                 host: "{{ .Values.host }}"
+                                {{- else }}
+                                host: "{{ template "rocketchat.fullname" . }}"
+                                {{- end }}
                                 version: "{{ .Values.image.tag }}"
                       - name: input-parameters
                         from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
@@ -261,6 +280,9 @@ spec:
                         from: "{{steps.render-helm-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
+                      - name: kubeconfig
+                        from: "{{inputs.artifacts.kubeconfig}}"
+                        optional: true
 
           - name: prepare-parameters
             inputs:
@@ -268,7 +290,7 @@ spec:
                 - name: input-parameters
                   path: /yamls/input.yaml
                 - name: additional-parameters
-                  path: /yamls/additionalInput.yaml
+                  path: /yamls/additionalinput.yaml
                   optional: true
                 - name: mongo
                   path: /yamls/mongo.yaml

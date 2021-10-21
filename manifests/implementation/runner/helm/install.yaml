@@ -17,6 +17,14 @@ metadata:
 spec:
   appVersion: "3.x.x"
 
+  additionalInput:
+    typeInstances:
+      kubeconfig:
+        typeRef:
+          path: cap.type.containerization.kubernetes.kubeconfig
+          revision: 0.1.0
+        verbs: [ "get" ]
+
   implements:
     - path: cap.core.interface.runner.generic.run
       revision: 0.1.0
@@ -55,6 +63,9 @@ spec:
                   path: "/runner-args"
                 - name: runner-context
                   path: "/runner-context"
+                - name: kubeconfig
+                  path: "/kubeconfig-ti"
+                  optional: true
             outputs:
               artifacts:
                 - name: helm-release
@@ -63,9 +74,14 @@ spec:
                 - name: additional
                   path: "/additional.yaml"
                   optional: true
+            volumes:
+              - name: tmp
+                emptyDir: { }
             container:
-              image: ghcr.io/capactio/pr/helm-runner:PR-531
+              image: capact-registry.localhost:5000/helm-runner:latest
               env:
+                - name: RUNNER_OPTIONAL_KUBECONFIG_TI
+                  value: "{{inputs.artifacts.kubeconfig.path}}"
                 - name: RUNNER_CONTEXT_PATH
                   value: "{{inputs.artifacts.runner-context.path}}"
                 - name: RUNNER_ARGS_PATH
@@ -78,3 +94,6 @@ spec:
                   value: "{{outputs.artifacts.helm-release.path}}"
                 - name: RUNNER_OUTPUT_ADDITIONAL_FILE_PATH
                   value: "{{outputs.artifacts.additional.path}}"
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp

@@ -1,0 +1,137 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: cap.implementation.rocketchat
+  name: boostrap-cluster
+  displayName: "Boostrap Concourse cluster"
+  description: "Boostrap cluster with Concourse installed"
+  documentationURL: https://rocketchat-ci.org/
+  supportURL: https://rocketchat-ci.org/
+  iconURL: https://rocketchat-ci.org/images/logo-white.svg
+  license:
+    name: "Apache 2.0"
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+  attributes:
+    cap.attribute.containerization.kubernetes.kubeconfig-support:
+      revision: 0.1.0
+
+spec:
+  appVersion: "7.x.x"
+
+  additionalInput:
+    typeInstances:
+      kubeconfig:
+        typeRef:
+          path: cap.type.containerization.kubernetes.kubeconfig
+          revision: 0.1.0
+        verbs: [ "get" ]
+
+  outputTypeInstanceRelations: {}
+
+  implements:
+    - path: cap.interface.productivity.rocketchat.bootstrap-cluster
+      revision: 0.1.0
+
+  requires:
+    cap.core.type.platform:
+      oneOf:
+        - name: kubernetes
+          revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.runner.helm
+      alias: helm
+      methods:
+        - name: install
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.productivity.rocketchat
+      alias: rocketchat
+      methods:
+        - name: install
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.templating.jinja2
+      alias: jinja2
+      methods:
+        - name: template
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.containerization.kubernetes
+      alias: k8s
+      methods:
+        - name: deploy
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: rocketchat-cluster
+        templates:
+          - name: rocketchat-cluster
+            inputs:
+              artifacts:
+                - name: input-parameters
+                - name: kubeconfig
+                  optional: true
+            steps:
+              # Configuration is ignored when already existing cluster is specified (via kubeconfig TI)
+              - - name: render-create-target-cluster-input
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: template
+                        raw:
+                          data: |
+                            name: rocketchat-cluster-<@ random_word(length=5) @>
+                            workers: 2
+                            controlPlanes: 1
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: configuration
+                        raw:
+                          data: ''
+
+              - - name: create-target-cluster
+                  capact-when: kubeconfig == nil
+                  capact-outputTypeInstances:
+                    - name: kubeconfig
+                      from: kubeconfig
+                  capact-action: k8s.deploy
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.render-create-target-cluster-input.outputs.artifacts.render}}"
+
+              - - name: rocketchat-install
+                  capact-action: rocketchat.install
+#                  TODO: https://github.com/capactio/capact/issues/536
+#                  capact-policy:
+#                    rules: # Configures the following behavior for Engine during rendering Action for this step
+#                      - interface: # Rules for Interface with exact path
+#                          path: cap.interface.productivity.rocketchat.install
+#                        oneOf:
+#                          - implementationConstraints: # Find and use an Implementation which:
+#                              path: "cap.implementation.rocketchat.install"
+#                            inject:
+#                              additionalParameters: # Injects additional parameters for the Implementation
+#                                - name: additional-parameters # Name must match one of the parameter defined under additionalInput.parameters in the Implementation
+#                                  value:
+#                                    ingress:
+#                                      enabled: false
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: kubeconfig
+                        from: "{{steps.create-target-cluster.outputs.artifacts.kubeconfig}}"
+                  # TODO: here we cannot pass optional TI, see: https://github.com/capactio/capact/issues/538
+                  #   - name: postgresql
+                  #     optional: true

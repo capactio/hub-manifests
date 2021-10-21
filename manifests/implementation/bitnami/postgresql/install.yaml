@@ -14,14 +14,28 @@ metadata:
     - email: team-dev@capact.io
       name: Capact Dev Team
       url: https://capact.io
+  attributes:
+    cap.attribute.containerization.kubernetes.kubeconfig-support:
+      revision: 0.1.0
 
 spec:
   appVersion: "10,11,12,13"
+
+  # TODO:(https://github.com/capactio/capact/issues/539): This will be moved as an optional input on Interface
+  additionalInput:
+    typeInstances:
+      kubeconfig:
+        typeRef:
+          path: cap.type.containerization.kubernetes.kubeconfig
+          revision: 0.1.0
+        verbs: [ "get" ]
 
   outputTypeInstanceRelations:
     postgresql:
       uses:
         - psql-helm-release
+        # TODO(https://github.com/capactio/capact/issues/537): renderer doesn't support relations for additionalInput.typeInstances
+        #- kubeconfig
 
   implements:
     - path: cap.interface.database.postgresql.install
@@ -60,6 +74,8 @@ spec:
             inputs:
               artifacts:
                 - name: input-parameters # Entrypoint template gets the user parameters in 'input-parameters' artifacts.
+                - name: kubeconfig
+                  optional: true
             outputs:
               artifacts:
                 - name: postgresql
@@ -107,9 +123,11 @@ spec:
                     - name: psql-helm-release
                       from: helm-release
                   arguments:
-
                     artifacts:
                       - name: input-parameters
                         from: "{{steps.create-helm-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
+                      - name: kubeconfig
+                        from: "{{inputs.artifacts.kubeconfig}}"
+                        optional: true
