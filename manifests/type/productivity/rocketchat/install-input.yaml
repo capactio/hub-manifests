@@ -21,7 +21,9 @@ spec:
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
         "title": "The schema for Rocketchat configuration",
-        "required": [],
+        "required": [
+          "host"
+        ],
         "definitions": {
           "hostname": {
             "type": "string",

@@ -394,6 +394,13 @@ spec:
                         from: "{{inputs.artifacts.kubeconfig}}"
                         optional: true
 
+                        # TODO(hack): here we cannot pass optional TI, see: https://github.com/capactio/capact/issues/538
+                        # it works only because we test in Helm runner in file exists under given artifact path
+                        # and we don't create relations to this kubeconfig.
+                      - name: kubeconfig
+                        from: "{{inputs.artifacts.kubeconfig}}"
+                        optional: true
+
           - name: prepare-parameters
             inputs:
               artifacts:
