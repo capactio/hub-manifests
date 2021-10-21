@@ -14,6 +14,9 @@ metadata:
     - email: team-dev@capact.io
       name: Capact Dev Team
       url: https://capact.io
+  attributes:
+    cap.attribute.containerization.kubernetes.kubeconfig-support:
+      revision: 0.1.0
 
 spec:
   appVersion: "4"
@@ -24,11 +27,20 @@ spec:
         typeRef:
           path: cap.type.bitnami.mongodb.install-input
           revision: 0.1.0
+    # TODO(https://github.com/capactio/capact/issues/539): This will be moved as an optional input on Interface
+    typeInstances:
+      kubeconfig:
+        typeRef:
+          path: cap.type.containerization.kubernetes.kubeconfig
+          revision: 0.1.0
+        verbs: [ "get" ]
 
   outputTypeInstanceRelations:
     mongodb:
       uses:
         - mongo-helm-release
+        # TODO(https://github.com/capactio/capact/issues/537): renderer doesn't support relations for additionalInput.typeInstances
+        #- kubeconfig
 
   implements:
     - path: cap.interface.database.mongodb.install
@@ -68,6 +80,8 @@ spec:
               artifacts:
                 - name: input-parameters # Entrypoint template gets the user parameters in 'input-parameters' artifacts.
                 - name: additional-parameters
+                  optional: true
+                - name: kubeconfig
                   optional: true
             outputs:
               artifacts:
@@ -376,6 +390,9 @@ spec:
                         from: "{{steps.render-helm-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
+                      - name: kubeconfig
+                        from: "{{inputs.artifacts.kubeconfig}}"
+                        optional: true
 
           - name: prepare-parameters
             inputs:
@@ -383,11 +400,11 @@ spec:
                 - name: input-parameters
                   path: /yamls/input.yaml
                 - name: additional-parameters
-                  path: /yamls/additionalInput.yaml
+                  path: /yamls/additionalinput.yaml
                   optional: true
             container:
               image: ghcr.io/capactio/pr/infra/merger:PR-428
             outputs:
               artifacts:
-              - name: merged
-                path: /merged.yaml
+                - name: merged
+                  path: /merged.yaml

@@ -83,6 +83,10 @@ spec:
                 - name: input-parameters
                 - name: postgresql
                   optional: true
+            outputs:
+              artifacts:
+                - name: concourse-config
+                  from: "{{steps.helm-install.outputs.artifacts.additional}}"
             steps:
               - - name: install-db
                   capact-when: postgresql == nil # conditional execution
