@@ -55,7 +55,7 @@ spec:
                 - name: message
                   from: hello
 
-        - name: screan
+        - name: scream 
           outputs:
             artifacts:
             - name: hello

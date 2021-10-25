@@ -1,0 +1,7 @@
+rules:
+  - interface:
+      path: cap.interface.capactio.capact.say
+    oneOf:
+    - implementationConstraints:
+        path: "cap.implementation.capactio.capact.scream"
+
