@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact
-  name: scream
-  displayName: "Scream CAPACT"
-  description: "Capact SCREAM Action"
+  prefix: cap.implementation.capactio.capact.examples.hello
+  name: say
+  displayName: "Say Capact"
+  description: "Capact Say Hello Action"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   license:
@@ -20,7 +20,7 @@ spec:
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.say
+    - path: cap.interface.capactio.capact.examples.hello.say
       revision: 0.1.0
 
   requires:
@@ -46,4 +46,4 @@ spec:
           container:
             image: docker/whalesay:latest
             command: [cowsay]
-            args: ["HELLO CAPACT!!!"]
+            args: ["hello capact"]

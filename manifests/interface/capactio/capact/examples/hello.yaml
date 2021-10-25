@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: InterfaceGroup
 metadata:
-  prefix: cap.interface.capactio
-  name: capact
-  displayName: "Capact"
-  description: "Capact is a simple way to manage applications, infrastructure and execute day-two operations."
+  prefix: cap.interface.capactio.capact.examples
+  name: hello
+  displayName: "Hello Capact"
+  description: "Simple Capat Hello World example"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   maintainers:

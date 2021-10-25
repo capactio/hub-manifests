@@ -1,6 +1,6 @@
 rules:
   - interface:
-      path: cap.interface.capactio.capact.say
+      path: cap.interface.capactio.capact.examples.hello.say
     oneOf:
     - implementationConstraints:
         path: "cap.implementation.capactio.capact.scream"

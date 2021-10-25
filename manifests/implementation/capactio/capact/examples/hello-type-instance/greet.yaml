@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact
-  name: hello
-  displayName: "Hello Capact"
-  description: "Capact Hello Action"
+  prefix: cap.implementation.capactio.capact.examples.hello-type-instance
+  name: greet
+  displayName: "Greet Capact"
+  description: "Capact Greet Action"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   license:
@@ -20,7 +20,7 @@ spec:
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.hello
+    - path: cap.interface.capactio.capact.examples.hello-type-instance.greet
       revision: 0.1.0
 
   requires:
@@ -35,7 +35,7 @@ spec:
       methods:
         - name: run
           revision: 0.1.0
-    - interfaceGroupPath: cap.interface.capactio.capact
+    - interfaceGroupPath: cap.interface.capactio.capact.examples.hello-type-instance
       alias: capact
       methods:
         - name: say
@@ -67,6 +67,6 @@ spec:
               - name: message
                 path: /tmp/message.yaml
           container:
-            image: ghcr.io/capactio/yq:4 # Original image: mikefarah/yq:4
-            command: ["sh", "-c"]
-            args: ["sleep 1 && yq e '.greeting' /tmp/message.yaml "]
+            image: docker/whalesay:latest
+            command: [sh, -c ]
+            args: ["cowsay < /tmp/message.yaml"]

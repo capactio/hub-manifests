@@ -3,9 +3,9 @@ revision: 0.1.0
 kind: Interface
 metadata:
   prefix: cap.interface.capactio.capact
-  name: say
-  displayName: "Say"
-  description: "Simple Capact Action"
+  name: greet
+  displayName: "Greet"
+  description: "Capact Greet Action"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   maintainers:
@@ -15,9 +15,4 @@ metadata:
 
 spec:
   input: {}
-  output:
-    typeInstances:
-      message:
-        typeRef:
-          path: cap.type.capactio.capact.message
-          revision: 0.1.0
+  output: {}

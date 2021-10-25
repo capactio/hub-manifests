@@ -1,18 +1,14 @@
 ocfVersion: 0.0.1
 revision: 0.1.0
-kind: Interface
+kind: InterfaceGroup
 metadata:
-  prefix: cap.interface.capactio.capact
-  name: hello
-  displayName: "Hello"
-  description: "Capact Hello Action"
+  prefix: cap.interface.capactio.capact.examples
+  name: hello-type-instance
+  displayName: "Hello Capact"
+  description: "Simple Capat Hello World example using Type Instances"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   maintainers:
     - email: team-dev@capact.dev
       name: Capact Dev Team
       url: https://capact.dev
-
-spec:
-  input: {}
-  output: {}

@@ -3,7 +3,7 @@ revision: 0.1.0
 kind: Type
 metadata:
   name: message
-  prefix: cap.type.capactio.capact
+  prefix: cap.type.capactio.capact.examples.hello-type-instance
   displayName: Capact hello message
   description: Defines Capact hello message
   documentationURL: https://capact.io

@@ -6,6 +6,8 @@ Presented features:
 
 - [Interface](https://github.com/capactio/capact/blob/main/ocf-spec/0.0.1/README.md#interface)
 - [Implementation](https://github.com/capactio/capact/blob/main/ocf-spec/0.0.1/README.md#implementation)
+- [Attributes](https://github.com/capactio/capact/blob/main/ocf-spec/0.0.1/README.md#attribute)
+- [Types and TypeInstances](https://github.com/capactio/capact/blob/main/ocf-spec/0.0.1/README.md#type)
 - [Policies](https://capact.io/docs/next/feature/policies/overview)
 
 # Testing
@@ -13,7 +15,7 @@ Presented features:
 1. Create a new action
 
    ```bash
-   capact act create --name hello cap.interface.capactio.capact.examples.hello.say
+   capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.say
    ```
 
 1. Wait for the action to have a status `READY_TO_RUN`. To get a status run:
@@ -51,7 +53,7 @@ Sometimes you don't want just to say Hello. Sometimes you want to SCREAM HELLO. 
 The policy file allows you to choose a different implementation which says "Hello". This time it will be louder. Create the action again and pass the new policy:
 
 ```bash
-capact act create --name hello cap.interface.capactio.capact.examples.hello.say --action-policy-from-file ./policy.yaml
+capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.say --action-policy-from-file ./policy.yaml
 ```
 
 Repeat steps starting from **Wait for the action to have a status `READY_TO_RUN`.**

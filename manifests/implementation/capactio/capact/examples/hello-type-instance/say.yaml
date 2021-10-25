@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact
+  prefix: cap.implementation.capactio.capact.examples.hello-type-instance
   name: say
   displayName: "Say Capact"
   description: "Capact Say Hello Action"
@@ -21,7 +21,7 @@ spec:
     message: {}
 
   implements:
-    - path: cap.interface.capactio.capact.say
+    - path: cap.interface.capactio.capact.examples.hello-type-instance.say
       revision: 0.1.0
 
   requires:
@@ -63,4 +63,4 @@ spec:
           container:
             image: alpine:latest
             command: [sh, -c]
-            args: ["echo 'greeting: hello capact' >/tmp/hello.yaml"]
+            args: ["sleep 1; echo 'greeting: hello capact' >/tmp/hello.yaml"]

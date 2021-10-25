@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact
-  name: hello
-  displayName: "Hello Capact"
-  description: "Capact Hello Action"
+  prefix: cap.implementation.capactio.capact.examples.hello
+  name: greet
+  displayName: "Greet Capact"
+  description: "Capact Greet Action"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   license:
@@ -20,7 +20,7 @@ spec:
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.hello
+    - path: cap.interface.capactio.capact.examples.hello.greet
       revision: 0.1.0
 
   requires:
@@ -35,7 +35,7 @@ spec:
       methods:
         - name: run
           revision: 0.1.0
-    - interfaceGroupPath: cap.interface.capactio.capact
+    - interfaceGroupPath: cap.interface.capactio.capact.examples.hello
       alias: capact
       methods:
         - name: say
