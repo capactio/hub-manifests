@@ -4,8 +4,8 @@ kind: Type
 metadata:
   prefix: cap.type.database.object.aws.s3
   name: bucket-create-input
-  displayName: Input for S3 bucket config
-  description: Input for AWS S3 bucket config
+  displayName: Input for S3 bucket creation
+  description: Input for AWS S3 bucket creation
   documentationURL: https://aws.amazon.com/s3/
   supportURL: https://aws.amazon.com/s3/
   maintainers:
@@ -18,7 +18,7 @@ spec:
       {
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
-        "title": "The schema for Redis installation input",
+        "title": "The schema for S3 bucket creation",
         "examples": [
           {
             "name": "bucket"

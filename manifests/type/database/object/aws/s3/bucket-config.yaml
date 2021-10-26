@@ -19,7 +19,7 @@ spec:
       {
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
-        "title": "The schema for Redis installation input",
+        "title": "The schema for S3 bucket config",
         "examples": [
           {
             "name": "bucket"
