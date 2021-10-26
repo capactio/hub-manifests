@@ -33,6 +33,11 @@ spec:
             "$id": "#/properties/name",
             "type": "string",
             "title": "Defines a bucket name"
+          },
+          "policy": {
+            "$id": "#/properties/policy",
+            "type": "string",
+            "title": "Defines a bucket policy in JSON"
           }
         },
         "additionalProperties": false
