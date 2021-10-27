@@ -331,12 +331,12 @@ spec:
                               goTemplate: |
                                 <%- set ingressEnabled = additionalinput.apiIngress.enabled | default(false) %>
                                 <%- if ingressEnabled %>
-                                endpoint: <@ additionalinput.apiIngress.hostname | default("minio.local") @>
+                                endpoint: https://<@ additionalinput.apiIngress.hostname | default("minio.local") @>
                                 <%- else %>
-                                endpoint: 'http://{{ include "common.names.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.containerPorts.api }}'
+                                endpoint: http://{{ include "common.names.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.containerPorts.api }}
                                 <%- endif %>
-                                accesskey: '{{ .Values.accessKey.password }}'
-                                secretkey: '{{ .Values.secretKey.password }}'
+                                accesskey: {{ .Values.accessKey.password }}
+                                secretkey: {{ .Values.secretKey.password }}
 
               - - name: helm-install
                   capact-action: helm.install

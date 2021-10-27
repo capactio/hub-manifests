@@ -100,7 +100,7 @@ spec:
                             <% endif %>
 
                             echo "name: <@ input.name @>" > /tmp/out.yaml
-                            echo "policy: <@ input.policy | default('') @>" > /tmp/out.yaml
+                            echo "policy: \"<@ input.policy | default('') @>\"" >> /tmp/out.yaml
 
               - - name: mc-run
                   template: mc
