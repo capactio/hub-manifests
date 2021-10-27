@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact.examples.hello
+  prefix: cap.implementation.capactio.capact.examples.simple
   name: scream
   displayName: "Scream CAPACT"
   description: "Capact SCREAM Action"
@@ -20,7 +20,7 @@ spec:
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.examples.hello.say
+    - path: cap.interface.capactio.capact.examples.simple.say
       revision: 0.1.0
 
   requires:

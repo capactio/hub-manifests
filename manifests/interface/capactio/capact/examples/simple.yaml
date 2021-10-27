@@ -3,9 +3,9 @@ revision: 0.1.0
 kind: InterfaceGroup
 metadata:
   prefix: cap.interface.capactio.capact.examples
-  name: hello-type-instance
+  name: simple
   displayName: "Hello Capact"
-  description: "Simple Capat Hello World example using Type Instances"
+  description: "Simple Capat Hello World example"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   maintainers:

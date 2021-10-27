@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact.examples.hello-type-instance
-  name: scream
-  displayName: "Scream CAPACT"
-  description: "Capact SCREAM Action"
+  prefix: cap.implementation.capactio.capact.examples.typeinstance
+  name: say
+  displayName: "Say Capact"
+  description: "Capact Say Hello Action"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   license:
@@ -14,9 +14,6 @@ metadata:
     - email: team-dev@capact.dev
       name: Capact Dev Team
       url: https://capact.dev
-  attributes:
-    cap.attribute.capactio.capact.examples.loud:
-      revision: 0.1.0
 
 spec:
   appVersion: "0.3.x"
@@ -24,7 +21,7 @@ spec:
     message: {}
 
   implements:
-    - path: cap.interface.capactio.capact.examples.hello-type-instance.say
+    - path: cap.interface.capactio.capact.examples.typeinstance.say
       revision: 0.1.0
 
   requires:
@@ -53,12 +50,12 @@ spec:
                 from: "{{steps.generate-artifact.outputs.artifacts.hello}}"
           steps:
           - - name: generate-artifact
-              template: scream
+              template: echo
               capact-outputTypeInstances:
                 - name: message
                   from: hello
 
-        - name: scream 
+        - name: echo
           outputs:
             artifacts:
             - name: hello
@@ -66,4 +63,4 @@ spec:
           container:
             image: alpine:latest
             command: [sh, -c]
-            args: ["sleep 1; echo 'greeting: HELLO CAPACT' >/tmp/hello.yaml"]
+            args: ["sleep 1; echo 'greeting: hello capact' >/tmp/hello.yaml"]

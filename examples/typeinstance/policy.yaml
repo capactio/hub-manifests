@@ -1,6 +1,6 @@
 rules:
   - interface:
-      path: cap.interface.capactio.capact.examples.hello-type-instance.say
+      path: cap.interface.capactio.capact.examples.typeinstance.say
     oneOf:
     - implementationConstraints:
         attributes:

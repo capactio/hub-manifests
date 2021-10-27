@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact.examples.hello
+  prefix: cap.implementation.capactio.capact.examples.simple
   name: greet
   displayName: "Greet Capact"
   description: "Capact Greet Action"
@@ -20,7 +20,7 @@ spec:
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.examples.hello.greet
+    - path: cap.interface.capactio.capact.examples.simple.greet
       revision: 0.1.0
 
   requires:
@@ -35,7 +35,7 @@ spec:
       methods:
         - name: run
           revision: 0.1.0
-    - interfaceGroupPath: cap.interface.capactio.capact.examples.hello
+    - interfaceGroupPath: cap.interface.capactio.capact.examples.simple
       alias: capact
       methods:
         - name: say
@@ -45,9 +45,9 @@ spec:
     runnerInterface: argo.run
     args:
       workflow:
-        entrypoint: hello
+        entrypoint: simple
         templates:
-        - name: hello
+        - name: simple
           steps:
             - - name: say
                 capact-action: capact.say

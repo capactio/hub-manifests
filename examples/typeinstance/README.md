@@ -15,7 +15,7 @@ Running this example you will learn about the following Capact concepts:
 1. Create a new Action:
 
    ```bash
-   capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.greet
+   capact act create --name hello cap.interface.capactio.capact.examples.typeinstance.greet
    ```
 
 1. Wait for the Action to have the `READY_TO_RUN` status. To its status run:
@@ -53,7 +53,7 @@ Sometimes you don't want to just say "hello". Sometimes you want to scream "HELL
 The Policy file allows you to choose a different Implementation for the `say` Interface. This time it will be louder. Create the Action again, and pass [the Action Policy](./policy.yaml):
 
 ```bash
-capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.greet --action-policy-from-file ./policy.yaml
+capact act create --name hello cap.interface.capactio.capact.examples.typeinstance.greet --action-policy-from-file ./policy.yaml
 ```
 
 Repeat steps starting from **Wait for the action to have a status `READY_TO_RUN`.**

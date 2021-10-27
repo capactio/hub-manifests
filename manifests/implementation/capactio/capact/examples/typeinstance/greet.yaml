@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact.examples.hello-type-instance
+  prefix: cap.implementation.capactio.capact.examples.typeinstance
   name: greet
   displayName: "Greet Capact"
   description: "Capact Greet Action"
@@ -20,7 +20,7 @@ spec:
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.examples.hello-type-instance.greet
+    - path: cap.interface.capactio.capact.examples.typeinstance.greet
       revision: 0.1.0
 
   requires:
@@ -35,7 +35,7 @@ spec:
       methods:
         - name: run
           revision: 0.1.0
-    - interfaceGroupPath: cap.interface.capactio.capact.examples.hello-type-instance
+    - interfaceGroupPath: cap.interface.capactio.capact.examples.typeinstance
       alias: capact
       methods:
         - name: say

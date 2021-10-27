@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Interface
 metadata:
-  prefix: cap.interface.capactio.capact.examples.hello-type-instance
+  prefix: cap.interface.capactio.capact.examples.simple
   name: say
   displayName: "Say"
   description: "Simple Capact Action"
@@ -15,9 +15,4 @@ metadata:
 
 spec:
   input: {}
-  output:
-    typeInstances:
-      message:
-        typeRef:
-          path: cap.type.capactio.capact.examples.hello-type-instance.message
-          revision: 0.1.0
+  output: {}

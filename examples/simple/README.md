@@ -12,7 +12,7 @@ Running this example you will learn about the following Capact concepts:
 1. Create a new Action:
 
    ```bash
-   capact act create --name hello cap.interface.capactio.capact.examples.hello.greet
+   capact act create --name hello cap.interface.capactio.capact.examples.simple.greet
    ```
 
 1. Wait for the Action to have the `READY_TO_RUN` status. To its status run:
@@ -50,7 +50,7 @@ Sometimes you don't want to just say "hello". Sometimes you want to scream "HELL
 The Policy file allows you to choose a different Implementation for the `say` Interface. This time it will be louder. Create the Action again, and pass [the Action Policy](./policy.yaml):
 
 ```bash
-capact act create --name hello cap.interface.capactio.capact.examples.hello.greet --action-policy-from-file ./policy.yaml
+capact act create --name hello cap.interface.capactio.capact.examples.simple.greet --action-policy-from-file ./policy.yaml
 ```
 
 Repeat the instruction steps starting from the step No 2 ("Wait for the action to have a status `READY_TO_RUN`").
