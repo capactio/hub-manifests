@@ -1,0 +1,8 @@
+rules:
+  - interface:
+      path: cap.interface.capactio.capact.examples.typeinstance.say
+    oneOf:
+    - implementationConstraints:
+        attributes:
+          - path: cap.attribute.capactio.capact.examples.loud
+            revision: "0.1.0"

@@ -1,0 +1,18 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Interface
+metadata:
+  prefix: cap.interface.capactio.capact.examples.typeinstance
+  name: greet
+  displayName: "Greet"
+  description: "Capact Greet Action"
+  documentationURL: https://capact.dev
+  supportURL: https://capact.dev
+  maintainers:
+    - email: team-dev@capact.dev
+      name: Capact Dev Team
+      url: https://capact.dev
+
+spec:
+  input: {}
+  output: {}
