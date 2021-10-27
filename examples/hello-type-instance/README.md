@@ -1,8 +1,8 @@
 # Description
 
-Simple hello world example. Depending on policy one of two implementation is used.
+A bit more advanced "hello world" example, where TypeInstance is used. There are two Implementations for a given Interface. Depending on the Policy, a different Implementation is selected.
 
-Presented features:
+Running this example you will learn about the following Capact concepts:
 
 - [Interface](https://github.com/capactio/capact/blob/main/ocf-spec/0.0.1/README.md#interface)
 - [Implementation](https://github.com/capactio/capact/blob/main/ocf-spec/0.0.1/README.md#implementation)
@@ -10,21 +10,21 @@ Presented features:
 - [Types and TypeInstances](https://github.com/capactio/capact/blob/main/ocf-spec/0.0.1/README.md#type)
 - [Policies](https://capact.io/docs/next/feature/policies/overview)
 
-# Testing
+## Instruction
 
-1. Create a new action
+1. Create a new Action:
 
    ```bash
-   capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.say
+   capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.greet
    ```
 
-1. Wait for the action to have a status `READY_TO_RUN`. To get a status run:
+1. Wait for the Action to have the `READY_TO_RUN` status. To its status run:
 
    ```bash
    capact act get hello
    ```
 
-1. When status is `READY_TO_RUN`, run the action:
+1. When the status is `READY_TO_RUN`, run the Action:
 
    ```bash
    capact act run hello
@@ -36,24 +36,24 @@ Presented features:
    capact act watch hello
    ```
 
-1. When command finished, note the name of the last Pod. It's in the column `PODNAME`. See it's logs:
+1. Once the Action is finished, note the name of the Pod for the `print` workflow step (column `PODNAME`). Read its logs with the following command:
 
    ```bash
    kubectl logs <PODNAME> main
    ```
 
-1. Delete the action:
-
-   ```bash
-   capact act delete hello
-   ```
-
-Sometimes you don't want just to say Hello. Sometimes you want to SCREAM HELLO. Capact allows you to do it :)
-
-The policy file allows you to choose a different implementation which says "Hello". This time it will be louder. Create the action again and pass the new policy:
+1. Delete the Action:
+	
+    ```bash
+    capact act delete hello
+    ```
+	
+Sometimes you don't want to just say "hello". Sometimes you want to scream "HELLO!". Capact allows you to do it 🙂
+	
+The Policy file allows you to choose a different Implementation for the `say` Interface. This time it will be louder. Create the Action again, and pass [the Action Policy](./policy.yaml):
 
 ```bash
-capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.say --action-policy-from-file ./policy.yaml
+capact act create --name hello cap.interface.capactio.capact.examples.hello-type-instance.greet --action-policy-from-file ./policy.yaml
 ```
 
 Repeat steps starting from **Wait for the action to have a status `READY_TO_RUN`.**
