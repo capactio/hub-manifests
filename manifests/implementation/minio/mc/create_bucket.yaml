@@ -1,0 +1,142 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: cap.implementation.bitnami.minio.mc
+  name: create-bucket
+  displayName: Create S3 bucket
+  description: Create S3 bucket using MinIO client
+  documentationURL: https://docs.min.io/
+  supportURL: https://min.io/
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+  license:
+    name: "Apache 2.0"
+
+spec:
+  appVersion: "2021-10-07"
+
+  outputTypeInstanceRelations:
+    bucket-config:
+      uses:
+        - s3-config
+
+  implements:
+    - path: cap.interface.database.object.aws.s3.create-bucket
+      revision: 0.1.0
+
+  requires:
+    cap.core.type.platform:
+      oneOf:
+        - name: kubernetes
+          revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.templating.jinja2
+      alias: jinja2
+      methods:
+        - name: template
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: create
+        templates:
+          - name: create
+            inputs:
+              artifacts:
+                - name: input-parameters
+                - name: s3-config
+            outputs:
+              artifacts:
+                - name: bucket-config
+                  from: "{{steps.mc-run.outputs.artifacts.output}}"
+
+            steps:
+              - - name: prepare-parameters
+                  template: prepare-parameters
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: s3
+                        from: "{{inputs.artifacts.s3-config}}"
+
+              - - name: create-script
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
+                      - name: configuration
+                        raw:
+                          data:
+                      - name: template
+                        raw:
+                          data: |
+                            set -e
+
+                            mc alias set minio "<@ s3.endpoint @>" "<@ s3.accesskey @>" "<@ s3.secretkey @>"
+                            mc mb "minio/<@ input.name @>"
+
+                            <% set json = input.policy | default("") %>
+                            <% if json != "" %>
+                            policy=/tmp/policy.json
+
+                            cat << EOF >$policy
+                            <@ json @>
+                            EOF
+
+                            mc policy set-json $policy "minio/<@ input.name @>"
+                            <% endif %>
+
+                            echo "name: <@ input.name @>" > /tmp/out.yaml
+                            echo "policy: \"<@ input.policy | default('') @>\"" >> /tmp/out.yaml
+
+              - - name: mc-run
+                  template: mc
+                  capact-outputTypeInstances:
+                    - name: bucket-config
+                      from: output
+                  arguments:
+                    artifacts:
+                      - name: script
+                        from: "{{steps.create-script.outputs.artifacts.render}}"
+
+          - name: mc
+            inputs:
+              artifacts:
+                - name: script
+                  path: /tmp/script.sh
+            outputs:
+              artifacts:
+                - name: output
+                  path: /tmp/out.yaml
+            container:
+              image: minio/mc:RELEASE.2021-10-07T04-19-58Z
+              entrypoint: ''
+              command: [sh]
+              args: [/tmp/script.sh]
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: s3
+                  path: /yamls/s3.yaml
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml

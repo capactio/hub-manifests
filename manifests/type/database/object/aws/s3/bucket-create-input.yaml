@@ -1,0 +1,43 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Type
+metadata:
+  prefix: cap.type.database.object.aws.s3
+  name: bucket-create-input
+  displayName: Input for S3 bucket creation
+  description: Input for AWS S3 bucket creation
+  documentationURL: https://aws.amazon.com/s3/
+  supportURL: https://aws.amazon.com/s3/
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+spec:
+  jsonSchema:
+    value: |-
+      {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "type": "object",
+        "title": "The schema for S3 bucket creation",
+        "examples": [
+          {
+            "name": "bucket"
+          }
+        ],
+        "required": [
+           "name"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#/properties/name",
+            "type": "string",
+            "title": "Defines a bucket name"
+          },
+          "policy": {
+            "$id": "#/properties/policy",
+            "type": "string",
+            "title": "Defines bucket IAM Policy "
+          }
+        },
+        "additionalProperties": false
+      }
