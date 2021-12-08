@@ -77,7 +77,7 @@ jobs:
           exit 1      
 
       - name: Validate manifests
-        run: capact manifest validate --server-side $(find ./manifests -regex ".*\.yaml")
+        run: capact manifest validate --server-side --recursive ./manifests
  
       - name: Dump cluster info
         if: ${{ failure() }}
