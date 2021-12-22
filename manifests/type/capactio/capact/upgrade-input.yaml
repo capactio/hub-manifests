@@ -271,4 +271,4 @@ spec:
           }
         },
         "additionalProperties":true
-      }\
+      }
