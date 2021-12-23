@@ -8,7 +8,7 @@ metadata:
   description: "The World's Most Advanced Open Source Relational Database"
   documentationURL: https://www.postgresql.org/docs/
   supportURL: https://www.postgresql.org/
-  iconURL: https://www.postgresql.org/media/img/about/press/elephant.png
+  iconURL: https://storage.googleapis.com/dashboard-icons/postgresql.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team

@@ -8,6 +8,7 @@ metadata:
   description: AWS S3 related Actions
   documentationURL: https://aws.amazon.com/s3/
   supportURL: https://aws.amazon.com/s3/
+  iconURL: https://storage.googleapis.com/dashboard-icons/s3.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team

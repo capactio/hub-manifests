@@ -8,7 +8,7 @@ metadata:
   description: "Concourse is an open-source continuous thing-doer. Built on the simple mechanics of resources, tasks, and jobs."
   documentationURL: https://concourse-ci.org/
   supportURL: https://concourse-ci.org/
-  iconURL: https://concourse-ci.org/images/logo-white.svg
+  iconURL: https://storage.googleapis.com/dashboard-icons/concourse.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team

@@ -7,6 +7,7 @@ metadata:
   displayName: "Argo Runner"
   description: "Interfaces for Argo Runner actions"
   documentationURL: https://capact.io
+  iconURL: https://storage.googleapis.com/dashboard-icons/argo-workflows.png
   supportURL: https://capact.io
   maintainers:
     - email: team-dev@capact.io

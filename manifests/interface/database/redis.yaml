@@ -8,7 +8,7 @@ metadata:
   description: "Redis related Interfaces"
   documentationURL: https://redis.io/documentation
   supportURL: https://redis.io/support
-  iconURL: https://redis.io/images/redis-white.png
+  iconURL: https://storage.googleapis.com/dashboard-icons/redis-icon.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team

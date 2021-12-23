@@ -8,6 +8,7 @@ metadata:
   description: "Interfaces for Generic Runner actions"
   documentationURL: https://capact.io
   supportURL: https://capact.io
+  iconURL: https://storage.googleapis.com/dashboard-icons/glyph-capact.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team

@@ -8,7 +8,7 @@ metadata:
   description: "Prepare to take off with the ultimate chat platform, experience the next level of team communications"
   documentationURL: https://docs.rocket.chat/
   supportURL: https://rocket.chat/
-  iconURL: https://528977-1685022-raikfcquaxqncofqfm.stackpathdns.com/assets/img/header/logo.svg
+  iconURL: https://storage.googleapis.com/dashboard-icons/rocket_chat.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team

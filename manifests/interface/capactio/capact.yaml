@@ -6,6 +6,7 @@ metadata:
   name: capact
   displayName: "Capact"
   description: "Capact is a simple way to manage applications, infrastructure and execute day-two operations."
+  iconURL: https://storage.googleapis.com/dashboard-icons/glyph-capact.svg
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   maintainers:

@@ -6,6 +6,7 @@ metadata:
   name: typeinstance
   displayName: "Hello Capact"
   description: "Simple Capat Hello World example using Type Instances"
+  iconURL: https://storage.googleapis.com/dashboard-icons/glyph-capact.svg
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   maintainers:

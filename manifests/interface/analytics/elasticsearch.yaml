@@ -4,8 +4,9 @@ kind: InterfaceGroup
 metadata:
   prefix: cap.interface.analytics
   name: elasticsearch
-  displayName: "Elasticsearch installation"
+  displayName: "Elasticsearch"
   description: "Elasticsearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured, and unstructured."
+  iconURL: https://storage.googleapis.com/dashboard-icons/glyph-elastic-cluster-color.svg
   documentationURL: https://www.elastic.co/what-is/elasticsearch
   supportURL: https://github.com/elastic/elasticsearch/issues
   maintainers:

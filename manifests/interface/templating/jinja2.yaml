@@ -8,6 +8,7 @@ metadata:
   description: "Jinja is a modern and designer-friendly templating language for Python, modelled after Django’s templates"
   documentationURL: https://jinja.palletsprojects.com/en/2.11.x/
   supportURL: https://jinja.palletsprojects.com/en/2.11.x/
+  iconURL: https://storage.googleapis.com/dashboard-icons/jinja2.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team
