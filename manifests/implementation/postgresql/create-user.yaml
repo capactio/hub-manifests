@@ -55,7 +55,7 @@ spec:
             inputs:
               artifacts:
                 - name: postgresql
-                - name: user-input
+                - name: input-parameters
             outputs:
               artifacts:
                 - name: user
@@ -81,7 +81,7 @@ spec:
                             EOF
                             sync
                       - name: input-parameters
-                        from: "{{inputs.artifacts.user-input}}"
+                        from: "{{inputs.artifacts.input-parameters}}"
                       - name: configuration
                         raw:
                           data: "prefix: input"

@@ -23,7 +23,7 @@ spec:
           revision: 0.1.0
         verbs: ["get"]
     parameters:
-      user-input:
+      input-parameters:
         typeRef:
           path: cap.type.database.postgresql.user-input
           revision: 0.1.0
