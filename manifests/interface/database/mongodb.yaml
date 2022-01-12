@@ -8,7 +8,7 @@ metadata:
   description: "The database for modern applications"
   documentationURL: https://docs.mongodb.com/manual/
   supportURL: https://www.mongodb.com/
-  iconURL: https://webassets.mongodb.com/_com_assets/cms/MongoDB_Logo_FullColorBlack_RGB-4td3yuxzjs.png
+  iconURL: https://storage.googleapis.com/dashboard-icons/mongodb.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team

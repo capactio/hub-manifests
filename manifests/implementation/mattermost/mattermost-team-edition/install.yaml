@@ -119,7 +119,7 @@ spec:
                     artifacts:
                       - name: postgresql
                         from: "{{steps.install-db.outputs.artifacts.postgresql}}"
-                      - name: user-input
+                      - name: input-parameters
                         raw:
                           data: |
                             name: mattermost

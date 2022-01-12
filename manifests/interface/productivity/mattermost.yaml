@@ -8,7 +8,7 @@ metadata:
   description: "Mattermost is an open source collaboration tool for developers."
   documentationURL: https://docs.mattermost.com/
   supportURL: https://docs.mattermost.com/
-  iconURL: https://docs.mattermost.com/_static/images/Mattermost-Logo-Blue.svg
+  iconURL: https://storage.googleapis.com/dashboard-icons/mattermost.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team
