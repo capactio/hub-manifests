@@ -219,7 +219,7 @@ spec:
                                 "description": "Specifies Gateway password."
                               }
                             },
-                            "additionalProperties": false
+                            "additionalProperties": true
                           }
                         },
                         "additionalProperties": false
@@ -236,7 +236,7 @@ spec:
                         "$ref": "#/definitions/resources"
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": true
                   },
                   "hub-public": {
                     "$id": "#/properties/override/properties/capactValues/properties/hub-public",
@@ -247,13 +247,13 @@ spec:
                         "$ref": "#/definitions/resources"
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": true
                   }
                 },
                 "additionalProperties": true
               },
               "neo4jValues": {
-                "$id": "#/properties/override/properties/capactValues",
+                "$id": "#/properties/override/properties/neo4jValues",
                 "type": "object",
                 "description": "Specifies overrides for Neo4j component.",
                 "properties": {
