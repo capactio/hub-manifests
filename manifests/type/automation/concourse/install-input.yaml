@@ -36,5 +36,5 @@ spec:
             "$ref": "#/definitions/hostname"
           }
         },
-        "additionalProperties": true
+        "additionalProperties": false
       }

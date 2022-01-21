@@ -56,10 +56,9 @@ spec:
           "superuser": {
             "$id": "#/properties/superuser",
             "type": "object",
-            "title": "Defines superuser details",
+            "title": "Superuser details",
             "required": [
-              "username",
-              "password"
+              "username"
             ],
             "properties": {
               "username": {

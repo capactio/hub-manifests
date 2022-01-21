@@ -5,7 +5,7 @@ metadata:
   prefix: cap.interface.database.object.aws.s3
   name: create-bucket
   displayName: "Create S3 bucket"
-  description: "Create AWS s3 bucket"
+  description: "Create AWS S3 bucket"
   documentationURL: https://aws.amazon.com/s3/
   supportURL: https://aws.amazon.com/s3/
   iconURL: http://media.corporate-ir.net/media_files/IROL/17/176060/Oct18/AWS.png

@@ -4,8 +4,8 @@ kind: InterfaceGroup
 metadata:
   prefix: cap.interface.database.object.aws
   name: s3
-  displayName: AWS S3 Actions
-  description: AWS S3 related Actions
+  displayName: AWS S3
+  description: AWS S3 storage
   documentationURL: https://aws.amazon.com/s3/
   supportURL: https://aws.amazon.com/s3/
   iconURL: https://storage.googleapis.com/dashboard-icons/s3.svg

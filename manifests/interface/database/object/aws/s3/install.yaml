@@ -4,7 +4,7 @@ kind: Interface
 metadata:
   prefix: cap.interface.database.object.aws.s3
   name: install
-  displayName: Install Action for AWS S3
+  displayName: Install
   description: Install Action for AWS S3 object store
   documentationURL: https://aws.amazon.com/s3/
   supportURL: https://aws.amazon.com/s3/
