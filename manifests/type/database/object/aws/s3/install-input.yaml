@@ -18,7 +18,7 @@ spec:
       {
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
-        "title": "The schema for MinIO installation input",
+        "title": "The schema for S3 installation input",
         "examples": [
           {
             "name": "Cluster name",
@@ -33,17 +33,17 @@ spec:
           "name": {
             "$id": "#/properties/name",
             "type": "string",
-            "title": "Defines a cluster name for the MinIO"
+            "title": "S3 installation name"
           },
           "accesskey": {
             "$id": "#/properties/accesskey",
             "type": "string",
-            "title": "Defines MinIO access Key"
+            "title": "Access Key"
           },
           "secretkey": {
             "$id": "#/properties/secretkey",
             "type": "string",
-            "title": "Defines MinIO secret Key"
+            "title": "Secret Key"
           }
         },
         "additionalProperties": false

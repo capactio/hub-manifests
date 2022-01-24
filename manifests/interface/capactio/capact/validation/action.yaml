@@ -4,8 +4,8 @@ kind: InterfaceGroup
 metadata:
   prefix: cap.interface.capactio.capact.validation
   name: action
-  displayName: "Capact E2E actions test manifests"
-  description: "Manifests used for testing Capact actions"
+  displayName: "Capact E2E tests for Actions"
+  description: "Manifests used for testing Capact Actions"
   iconURL: https://storage.googleapis.com/dashboard-icons/glyph-capact.svg
   documentationURL: https://capact.io
   supportURL: https://capact.io

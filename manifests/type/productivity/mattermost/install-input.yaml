@@ -19,251 +19,304 @@ spec:
       {
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
+        "title": "Mattermost installation parameters",
+         "required": [
+           "host"
+        ],
         "properties": {
           "host": {
             "$id": "#/properties/host",
             "type": "string",
-            "title": "Host of the Mattermost instance"
+            "title": "Host of the Mattermost Instance"
           },
           "configJSON": {
             "$id": "#/properties/configJSON",
             "type": "object",
+            "title": "Configuration",
             "properties": {
               "ServiceSettings": {
+                "title": "Service Settings",
                 "$id": "#/properties/configJSON/properties/ServiceSettings",
                 "type": "object",
                 "properties": {
                   "LicenseFileLocation": {
+                    "title": "License File Location",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/LicenseFileLocation",
                     "type": "string",
                     "default": ""
                   },
                   "ListenAddress": {
+                    "title": "Listen Address",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/ListenAddress",
                     "type": "string",
                     "default": ":8065"
                   },
                   "ConnectionSecurity": {
+                    "title": "Connection Security",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/ConnectionSecurity",
                     "type": "string",
                     "default": ""
                   },
                   "TLSCertFile": {
+                    "title": "TLS Cert File",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/TLSCertFile",
                     "type": "string",
                     "default": ""
                   },
                   "TLSKeyFile": {
+                    "title": "TLS Key File",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/TLSKeyFile",
                     "type": "string",
                     "default": ""
                   },
                   "UseLetsEncrypt": {
+                    "title": "Use Lets Encrypt",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/UseLetsEncrypt",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "LetsEncryptCertificateCacheFile": {
+                    "title": "Lets Encrypt Certificate Cache File",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/LetsEncryptCertificateCacheFile",
                     "type": "string",
                     "default": "./config/letsencrypt.cache"
                   },
                   "Forward80To443": {
+                    "title": "Forward 80 To 443",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/Forward80To443",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "ReadTimeout": {
+                    "title": "Read Timeout",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/ReadTimeout",
                     "type": "number",
                     "default": 300
                   },
                   "WriteTimeout": {
+                    "title": "Write Timeout",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/WriteTimeout",
                     "type": "number",
                     "default": 300
                   },
                   "MaximumLoginAttempts": {
+                    "title": "Maximum Login Attempts",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/MaximumLoginAttempts",
                     "type": "number",
                     "default": 10
                   },
                   "GoroutineHealthThreshold": {
+                    "title": "Goroutine Health Threshold",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/GoroutineHealthThreshold",
                     "type": "number",
                     "default": -1
                   },
                   "GoogleDeveloperKey": {
+                    "title": "Google Developer Key",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/GoogleDeveloperKey",
                     "type": "string",
                     "default": ""
                   },
                   "EnableOAuthServiceProvider": {
+                    "title": "Enable OAuth Service Provider",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableOAuthServiceProvider",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableIncomingWebhooks": {
+                    "title": "Enable Incoming Webhooks",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableIncomingWebhooks",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableOutgoingWebhooks": {
+                    "title": "Enable Outgoing Webhooks",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableOutgoingWebhooks",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableCommands": {
+                    "title": "Enable Commands",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableCommands",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableOnlyAdminIntegrations": {
+                    "title": "Enable Only Admin Integrations",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableOnlyAdminIntegrations",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnablePostUsernameOverride": {
+                    "title": "Enable Post Username Override",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnablePostUsernameOverride",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnablePostIconOverride": {
+                    "title": "Enable Post Icon Override",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnablePostIconOverride",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableBotAccountCreation": {
+                    "title": "Enable Bot Account Creation",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableBotAccountCreation",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableUserAccessTokens": {
+                    "title": "Enable User Access Tokens",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableUserAccessTokens",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableLinkPreviews": {
+                    "title": "Enable Link Previews",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableLinkPreviews",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableTesting": {
+                    "title": "Enable Testing",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableTesting",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableDeveloper": {
+                    "title": "Enable Developer",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableDeveloper",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableSecurityFixAlert": {
+                    "title": "Enable Security Fix Alert",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableSecurityFixAlert",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableInsecureOutgoingConnections": {
+                    "title": "Enable Insecure Outgoing Connections",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableInsecureOutgoingConnections",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnableMultifactorAuthentication": {
+                    "title": "Enable Multifactor Authentication",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableMultifactorAuthentication",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EnforceMultifactorAuthentication": {
+                    "title": "Enforce Multifactor Authentication",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnforceMultifactorAuthentication",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "AllowCorsFrom": {
+                    "title": "Allow Cors From",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/AllowCorsFrom",
                     "type": "string",
                     "default": ""
                   },
                   "SessionLengthWebInDays": {
+                    "title": "Session Length Web In Days",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/SessionLengthWebInDays",
                     "type": "number",
                     "default": 30
                   },
                   "SessionLengthMobileInDays": {
+                    "title": "Session Length Mobile In Days",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/SessionLengthMobileInDays",
                     "type": "number",
                     "default": 30
                   },
                   "SessionLengthSSOInDays": {
+                    "title": "Session Length SSO In Days",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/SessionLengthSSOInDays",
                     "type": "number",
                     "default": 30
                   },
                   "SessionCacheInMinutes": {
+                    "title": "Session Cache In Minutes",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/SessionCacheInMinutes",
                     "type": "number",
                     "default": 10
                   },
                   "WebsocketSecurePort": {
+                    "title": "Websocket Secure Port",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/WebsocketSecurePort",
                     "type": "number",
                     "default": 443
                   },
                   "WebsocketPort": {
+                    "title": "Websocket Port",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/WebsocketPort",
                     "type": "number",
                     "default": 80
                   },
                   "WebserverMode": {
+                    "title": "Webserver Mode",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/WebserverMode",
                     "type": "string",
                     "default": "gzip"
                   },
                   "EnableCustomEmoji": {
+                    "title": "Enable Custom Emoji",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableCustomEmoji",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "RestrictCustomEmojiCreation": {
+                    "title": "Restrict Custom Emoji Creation",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/RestrictCustomEmojiCreation",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPostDelete": {
+                    "title": "Restrict Post Delete",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/RestrictPostDelete",
                     "type": "string",
                     "default": "all"
                   },
                   "AllowEditPost": {
+                    "title": "Allow Edit Post",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/AllowEditPost",
                     "type": "string",
                     "default": "always"
                   },
                   "PostEditTimeLimit": {
+                    "title": "Post Edit Time Limit",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/PostEditTimeLimit",
                     "type": "number",
                     "default": 300
                   },
                   "TimeBetweenUserTypingUpdatesMilliseconds": {
+                    "title": "Time Between User Typing Updates Milliseconds",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/TimeBetweenUserTypingUpdatesMilliseconds",
                     "type": "number",
                     "default": 5000
                   },
                   "EnablePostSearch": {
+                    "title": "Enable Post Search",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnablePostSearch",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableUserTypingMessages": {
+                    "title": "Enable User Typing Messages",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableUserTypingMessages",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableUserStatuses": {
+                    "title": "Enable User Statuses",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/EnableUserStatuses",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "ClusterLogTimeoutMilliseconds": {
+                    "title": "Cluster Log Timeout Milliseconds",
                     "$id": "#/properties/configJSON/properties/ServiceSettings/properties/ClusterLogTimeoutMilliseconds",
                     "type": "number",
                     "default": 2000
@@ -271,110 +324,132 @@ spec:
                 }
               },
               "TeamSettings": {
+                "title": "Team Settings",
                 "$id": "#/properties/configJSON/properties/TeamSettings",
                 "type": "object",
                 "properties": {
                   "SiteName": {
+                    "title": "Site Name",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/SiteName",
                     "type": "string",
                     "default": "Mattermost"
                   },
                   "MaxUsersPerTeam": {
+                    "title": "Max Users Per Team",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/MaxUsersPerTeam",
                     "type": "number",
                     "default": 50000
                   },
                   "EnableTeamCreation": {
+                    "title": "Enable Team Creation",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/EnableTeamCreation",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableUserCreation": {
+                    "title": "Enable User Creation",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/EnableUserCreation",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableOpenServer": {
+                    "title": "Enable Open Server",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/EnableOpenServer",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "RestrictCreationToDomains": {
+                    "title": "Restrict Creation To Domains",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictCreationToDomains",
                     "type": "string",
                     "default": ""
                   },
                   "EnableCustomBrand": {
+                    "title": "Enable Custom Brand",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/EnableCustomBrand",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "CustomBrandText": {
+                    "title": "Custom Brand Text",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/CustomBrandText",
                     "type": "string",
                     "default": ""
                   },
                   "CustomDescriptionText": {
+                    "title": "Custom Description Text",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/CustomDescriptionText",
                     "type": "string",
                     "default": ""
                   },
                   "RestrictDirectMessage": {
+                    "title": "Restrict Direct Message",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictDirectMessage",
                     "type": "string",
                     "default": "any"
                   },
                   "RestrictTeamInvite": {
+                    "title": "Restrict Team Invite",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictTeamInvite",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPublicChannelManagement": {
+                    "title": "Restrict Public Channel Management",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictPublicChannelManagement",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPrivateChannelManagement": {
+                    "title": "Restrict Private Channel Management",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictPrivateChannelManagement",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPublicChannelCreation": {
+                    "title": "Restrict Public Channel Creation",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictPublicChannelCreation",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPrivateChannelCreation": {
+                    "title": "Restrict Private Channel Creation",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictPrivateChannelCreation",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPublicChannelDeletion": {
+                    "title": "Restrict Public Channel Deletion",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictPublicChannelDeletion",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPrivateChannelDeletion": {
+                    "title": "Restrict Private Channel Deletion",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictPrivateChannelDeletion",
                     "type": "string",
                     "default": "all"
                   },
                   "RestrictPrivateChannelManageMembers": {
+                    "title": "Restrict Private Channel Manage Members",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/RestrictPrivateChannelManageMembers",
                     "type": "string",
                     "default": "all"
                   },
                   "UserStatusAwayTimeout": {
+                    "title": "User Status Away Timeout",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/UserStatusAwayTimeout",
                     "type": "number",
                     "default": 300
                   },
                   "MaxChannelsPerTeam": {
+                    "title": "Max Channels Per Team",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/MaxChannelsPerTeam",
                     "type": "number",
                     "default": 50000
                   },
                   "MaxNotificationsPerChannel": {
+                    "title": "Max Notifications Per Channel",
                     "$id": "#/properties/configJSON/properties/TeamSettings/properties/MaxNotificationsPerChannel",
                     "type": "number",
                     "default": 1000
@@ -382,50 +457,66 @@ spec:
                 }
               },
               "SqlSettings": {
+                "title": "Sql Settings",
                 "$id": "#/properties/configJSON/properties/SqlSettings",
                 "type": "object",
                 "properties": {
                   "DriverName": {
+                    "title": "Driver Name",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/DriverName",
                     "type": "string",
                     "default": ""
                   },
                   "DataSource": {
+                    "title": "Data Source",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/DataSource",
                     "type": "string",
                     "default": ""
                   },
                   "DataSourceReplicas": {
+                    "title": "Data Source Replicas",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/DataSourceReplicas",
                     "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
                     "default": []
                   },
                   "DataSourceSearchReplicas": {
+                    "title": "Data Source Search Replicas",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/DataSourceSearchReplicas",
                     "type": "array",
+                    "items": {
+                      "type": "string"
+                    },                    
                     "default": []
                   },
                   "MaxIdleConns": {
+                    "title": "Max Idle Conns",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/MaxIdleConns",
                     "type": "number",
                     "default": 20
                   },
                   "MaxOpenConns": {
+                    "title": "Max Open Conns",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/MaxOpenConns",
                     "type": "number",
                     "default": 35
                   },
                   "Trace": {
+                    "title": "trace",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/Trace",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "AtRestEncryptKey": {
+                    "title": "At Rest Encrypt Key",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/AtRestEncryptKey",
                     "type": "string",
                     "default": ""
                   },
                   "QueryTimeout": {
+                    "title": "Query Timeout",
                     "$id": "#/properties/configJSON/properties/SqlSettings/properties/QueryTimeout",
                     "type": "number",
                     "default": 30
@@ -433,334 +524,400 @@ spec:
                 }
               },
               "LogSettings": {
+                "title": "Log Settings",
                 "$id": "#/properties/configJSON/properties/LogSettings",
                 "type": "object",
                 "properties": {
                   "EnableConsole": {
+                    "title": "Enable Console",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/EnableConsole",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "ConsoleLevel": {
+                    "title": "Console Level",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/ConsoleLevel",
                     "type": "string",
                     "default": "INFO"
                   },
                   "EnableFile": {
+                    "title": "Enable File",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/EnableFile",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "FileLevel": {
+                    "title": "File Level",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/FileLevel",
                     "type": "string",
                     "default": "INFO"
                   },
                   "FileFormat": {
+                    "title": "File Format",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/FileFormat",
                     "type": "string",
                     "default": ""
                   },
                   "FileLocation": {
+                    "title": "File Location",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/FileLocation",
                     "type": "string",
                     "default": ""
                   },
                   "EnableWebhookDebugging": {
+                    "title": "Enable Webhook Debugging",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/EnableWebhookDebugging",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableDiagnostics": {
+                    "title": "Enable Diagnostics",
                     "$id": "#/properties/configJSON/properties/LogSettings/properties/EnableDiagnostics",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   }
                 }
               },
               "PasswordSettings": {
+                "title": "Password Settings",
                 "$id": "#/properties/configJSON/properties/PasswordSettings",
                 "type": "object",
                 "properties": {
                   "MinimumLength": {
+                    "title": "Minimum Length",
                     "$id": "#/properties/configJSON/properties/PasswordSettings/properties/MinimumLength",
                     "type": "number",
                     "default": 5
                   },
                   "Lowercase": {
+                    "title": "Lowercase",
                     "$id": "#/properties/configJSON/properties/PasswordSettings/properties/Lowercase",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "Number": {
+                    "title": "Number",
                     "$id": "#/properties/configJSON/properties/PasswordSettings/properties/Number",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "Uppercase": {
+                    "title": "Uppercase",
                     "$id": "#/properties/configJSON/properties/PasswordSettings/properties/Uppercase",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "Symbol": {
+                    "title": "Symbol",
                     "$id": "#/properties/configJSON/properties/PasswordSettings/properties/Symbol",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   }
                 }
               },
               "FileSettings": {
+                "title": "File Settings",
                 "$id": "#/properties/configJSON/properties/FileSettings",
                 "type": "object",
                 "properties": {
                   "EnableFileAttachments": {
+                    "title": "Enable File Attachments",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/EnableFileAttachments",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "MaxFileSize": {
+                    "title": "Max File Size",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/MaxFileSize",
                     "type": "number",
                     "default": 52428800
                   },
                   "DriverName": {
+                    "title": "Driver Name",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/DriverName",
                     "type": "string",
                     "default": "local"
                   },
                   "Directory": {
+                    "title": "directory",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/Directory",
                     "type": "string",
                     "default": "./data/"
                   },
                   "EnablePublicLink": {
+                    "title": "Enable Public Link",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/EnablePublicLink",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "PublicLinkSalt": {
+                    "title": "Public Link Salt",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/PublicLinkSalt",
                     "type": "string",
                     "default": ""
                   },
                   "ThumbnailWidth": {
+                    "title": "Thumbnail Width",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/ThumbnailWidth",
                     "type": "number",
                     "default": 120
                   },
                   "ThumbnailHeight": {
+                    "title": "Thumbnail Height",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/ThumbnailHeight",
                     "type": "number",
                     "default": 100
                   },
                   "PreviewWidth": {
+                    "title": "Preview Width",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/PreviewWidth",
                     "type": "number",
                     "default": 1024
                   },
                   "PreviewHeight": {
+                    "title": "Preview Height",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/PreviewHeight",
                     "type": "number",
                     "default": 0
                   },
                   "ProfileWidth": {
+                    "title": "Profile Width",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/ProfileWidth",
                     "type": "number",
                     "default": 128
                   },
                   "ProfileHeight": {
+                    "title": "Profile Height",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/ProfileHeight",
                     "type": "number",
                     "default": 128
                   },
                   "InitialFont": {
+                    "title": "Initial Font",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/InitialFont",
                     "type": "string",
                     "default": "luximbi.ttf"
                   },
                   "AmazonS3AccessKeyId": {
+                    "title": "Amazon S3 Access Key ID",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/AmazonS3AccessKeyId",
                     "type": "string",
                     "default": ""
                   },
                   "AmazonS3SecretAccessKey": {
+                    "title": "Amazon S3 Secret Access Key",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/AmazonS3SecretAccessKey",
                     "type": "string",
                     "default": ""
                   },
                   "AmazonS3Bucket": {
+                    "title": "Amazon S3 Bucket",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/AmazonS3Bucket",
                     "type": "string",
                     "default": ""
                   },
                   "AmazonS3Region": {
+                    "title": "Amazon S3 Region",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/AmazonS3Region",
                     "type": "string",
                     "default": ""
                   },
                   "AmazonS3Endpoint": {
+                    "title": "Amazon S3 Endpoint",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/AmazonS3Endpoint",
                     "type": "string",
                     "default": "s3.amazonaws.com"
                   },
                   "AmazonS3SSL": {
+                    "title": "Amazon S3 S S L",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/AmazonS3SSL",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "AmazonS3SignV2": {
+                    "title": "Amazon S3 Sign V2",
                     "$id": "#/properties/configJSON/properties/FileSettings/properties/AmazonS3SignV2",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   }
                 }
               },
               "EmailSettings": {
+                "title": "Email Settings",
                 "$id": "#/properties/configJSON/properties/EmailSettings",
                 "type": "object",
                 "properties": {
                   "EnableSignUpWithEmail": {
+                    "title": "Enable Sign Up With Email",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/EnableSignUpWithEmail",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableSignInWithEmail": {
+                    "title": "Enable Sign In With Email",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/EnableSignInWithEmail",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableSignInWithUsername": {
+                    "title": "Enable Sign In With Username",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/EnableSignInWithUsername",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "SendEmailNotifications": {
+                    "title": "Send Email Notifications",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/SendEmailNotifications",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "RequireEmailVerification": {
+                    "title": "Require Email Verification",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/RequireEmailVerification",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "FeedbackName": {
+                    "title": "Feedback Name",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/FeedbackName",
                     "type": "string",
                     "default": ""
                   },
                   "FeedbackEmail": {
+                    "title": "Feedback Email",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/FeedbackEmail",
                     "type": "string",
                     "default": ""
                   },
                   "FeedbackOrganization": {
+                    "title": "Feedback Organization",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/FeedbackOrganization",
                     "type": "string",
                     "default": ""
                   },
                   "SMTPUsername": {
+                    "title": "SMTP Username",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/SMTPUsername",
                     "type": "string",
                     "default": ""
                   },
                   "SMTPPassword": {
+                    "title": "SMTP Password",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/SMTPPassword",
                     "type": "string",
                     "default": ""
                   },
                   "EnableSMTPAuth": {
+                    "title": "Enable SMTP Auth",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/EnableSMTPAuth",
                     "type": "string",
                     "default": ""
                   },
                   "SMTPServer": {
+                    "title": "SMTP Server",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/SMTPServer",
                     "type": "string",
                     "default": ""
                   },
                   "SMTPPort": {
+                    "title": "SMTP Port",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/SMTPPort",
                     "type": "string",
                     "default": ""
                   },
                   "ConnectionSecurity": {
+                    "title": "Connection Security",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/ConnectionSecurity",
                     "type": "string",
                     "default": ""
                   },
                   "InviteSalt": {
+                    "title": "Invite Salt",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/InviteSalt",
                     "type": "string",
                     "default": ""
                   },
                   "SendPushNotifications": {
+                    "title": "Send Push Notifications",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/SendPushNotifications",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "PushNotificationServer": {
+                    "title": "Push Notification Server",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/PushNotificationServer",
                     "type": "string",
                     "default": "https://push-test.mattermost.com"
                   },
                   "PushNotificationContents": {
+                    "title": "Push Notification Contents",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/PushNotificationContents",
                     "type": "string",
                     "default": "generic"
                   },
                   "EnableEmailBatching": {
+                    "title": "Enable Email Batching",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/EnableEmailBatching",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "EmailBatchingBufferSize": {
+                    "title": "Email Batching Buffer Size",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/EmailBatchingBufferSize",
                     "type": "number",
                     "default": 256
                   },
                   "EmailBatchingInterval": {
+                    "title": "Email Batching Interval",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/EmailBatchingInterval",
                     "type": "number",
                     "default": 30
                   },
                   "SkipServerCertificateVerification": {
+                    "title": "Skip Server Certificate Verification",
                     "$id": "#/properties/configJSON/properties/EmailSettings/properties/SkipServerCertificateVerification",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   }
                 }
               },
               "RateLimitSettings": {
+                "title": "Rate Limit Settings",
                 "$id": "#/properties/configJSON/properties/RateLimitSettings",
                 "type": "object",
                 "properties": {
                   "Enable": {
+                    "title": "enable",
                     "$id": "#/properties/configJSON/properties/RateLimitSettings/properties/Enable",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "PerSec": {
+                    "title": "Per Sec",
                     "$id": "#/properties/configJSON/properties/RateLimitSettings/properties/PerSec",
                     "type": "number",
                     "default": 10
                   },
                   "MaxBurst": {
+                    "title": "Max Burst",
                     "$id": "#/properties/configJSON/properties/RateLimitSettings/properties/MaxBurst",
                     "type": "number",
                     "default": 100
                   },
                   "MemoryStoreSize": {
+                    "title": "Memory Store Size",
                     "$id": "#/properties/configJSON/properties/RateLimitSettings/properties/MemoryStoreSize",
                     "type": "number",
                     "default": 10000
                   },
                   "VaryByRemoteAddr": {
+                    "title": "Vary By Remote Addr",
                     "$id": "#/properties/configJSON/properties/RateLimitSettings/properties/VaryByRemoteAddr",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "VaryByHeader": {
+                    "title": "Vary By Header",
                     "$id": "#/properties/configJSON/properties/RateLimitSettings/properties/VaryByHeader",
                     "type": "string",
                     "default": ""
@@ -768,51 +925,61 @@ spec:
                 }
               },
               "PrivacySettings": {
+                "title": "Privacy Settings",
                 "$id": "#/properties/configJSON/properties/PrivacySettings",
                 "type": "object",
                 "properties": {
                   "ShowEmailAddress": {
+                    "title": "Show Email Address",
                     "$id": "#/properties/configJSON/properties/PrivacySettings/properties/ShowEmailAddress",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "ShowFullName": {
+                    "title": "Show Full Name",
                     "$id": "#/properties/configJSON/properties/PrivacySettings/properties/ShowFullName",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   }
                 }
               },
               "SupportSettings": {
+                "title": "Support Settings",
                 "$id": "#/properties/configJSON/properties/SupportSettings",
                 "type": "object",
                 "properties": {
                   "TermsOfServiceLink": {
+                    "title": "Terms Of Service Link",
                     "$id": "#/properties/configJSON/properties/SupportSettings/properties/TermsOfServiceLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/default-terms/"
                   },
                   "PrivacyPolicyLink": {
+                    "title": "Privacy Policy Link",
                     "$id": "#/properties/configJSON/properties/SupportSettings/properties/PrivacyPolicyLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/default-privacy-policy/"
                   },
                   "AboutLink": {
+                    "title": "About Link",
                     "$id": "#/properties/configJSON/properties/SupportSettings/properties/AboutLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/default-about/"
                   },
                   "HelpLink": {
+                    "title": "Help Link",
                     "$id": "#/properties/configJSON/properties/SupportSettings/properties/HelpLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/default-help/"
                   },
                   "ReportAProblemLink": {
+                    "title": "Report A Problem Link",
                     "$id": "#/properties/configJSON/properties/SupportSettings/properties/ReportAProblemLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/default-report-a-problem/"
                   },
                   "SupportEmail": {
+                    "title": "Support Email",
                     "$id": "#/properties/configJSON/properties/SupportSettings/properties/SupportEmail",
                     "type": "string",
                     "default": "feedback@mattermost.com"
@@ -820,71 +987,85 @@ spec:
                 }
               },
               "AnnouncementSettings": {
+                "title": "Announcement Settings",
                 "$id": "#/properties/configJSON/properties/AnnouncementSettings",
                 "type": "object",
                 "properties": {
                   "EnableBanner": {
+                    "title": "Enable Banner",
                     "$id": "#/properties/configJSON/properties/AnnouncementSettings/properties/EnableBanner",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "BannerText": {
+                    "title": "Banner Text",
                     "$id": "#/properties/configJSON/properties/AnnouncementSettings/properties/BannerText",
                     "type": "string",
                     "default": ""
                   },
                   "BannerColor": {
+                    "title": "Banner Color",
                     "$id": "#/properties/configJSON/properties/AnnouncementSettings/properties/BannerColor",
                     "type": "string",
                     "default": "#f2a93b"
                   },
                   "BannerTextColor": {
+                    "title": "Banner Text Color",
                     "$id": "#/properties/configJSON/properties/AnnouncementSettings/properties/BannerTextColor",
                     "type": "string",
                     "default": "#333333"
                   },
                   "AllowBannerDismissal": {
+                    "title": "Allow Banner Dismissal",
                     "$id": "#/properties/configJSON/properties/AnnouncementSettings/properties/AllowBannerDismissal",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   }
                 }
               },
               "GitLabSettings": {
+                "title": "Git Lab Settings",
                 "$id": "#/properties/configJSON/properties/GitLabSettings",
                 "type": "object",
                 "properties": {
                   "Enable": {
+                    "title": "Enable",
                     "$id": "#/properties/configJSON/properties/GitLabSettings/properties/Enable",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "Secret": {
+                    "title": "Secret",
                     "$id": "#/properties/configJSON/properties/GitLabSettings/properties/Secret",
                     "type": "string",
                     "default": ""
                   },
                   "Id": {
+                    "title": "ID",
                     "$id": "#/properties/configJSON/properties/GitLabSettings/properties/Id",
                     "type": "string",
                     "default": ""
                   },
                   "Scope": {
+                    "title": "Scope",
                     "$id": "#/properties/configJSON/properties/GitLabSettings/properties/Scope",
                     "type": "string",
                     "default": ""
                   },
                   "AuthEndpoint": {
+                    "title": "Auth Endpoint",
                     "$id": "#/properties/configJSON/properties/GitLabSettings/properties/AuthEndpoint",
                     "type": "string",
                     "default": ""
                   },
                   "TokenEndpoint": {
+                    "title": "Token Endpoint",
                     "$id": "#/properties/configJSON/properties/GitLabSettings/properties/TokenEndpoint",
                     "type": "string",
                     "default": ""
                   },
                   "UserApiEndpoint": {
+                    "title": "User API Endpoint",
                     "$id": "#/properties/configJSON/properties/GitLabSettings/properties/UserApiEndpoint",
                     "type": "string",
                     "default": ""
@@ -892,20 +1073,24 @@ spec:
                 }
               },
               "LocalizationSettings": {
+                "title": "Localization Settings",
                 "$id": "#/properties/configJSON/properties/LocalizationSettings",
                 "type": "object",
                 "properties": {
                   "DefaultServerLocale": {
+                    "title": "Default Server Locale",
                     "$id": "#/properties/configJSON/properties/LocalizationSettings/properties/DefaultServerLocale",
                     "type": "string",
                     "default": "en"
                   },
                   "DefaultClientLocale": {
+                    "title": "Default Client Locale",
                     "$id": "#/properties/configJSON/properties/LocalizationSettings/properties/DefaultClientLocale",
                     "type": "string",
                     "default": "en"
                   },
                   "AvailableLocales": {
+                    "title": "Available Locales",
                     "$id": "#/properties/configJSON/properties/LocalizationSettings/properties/AvailableLocales",
                     "type": "string",
                     "default": ""
@@ -913,20 +1098,24 @@ spec:
                 }
               },
               "NativeAppSettings": {
+                "title": "Native App Settings",
                 "$id": "#/properties/configJSON/properties/NativeAppSettings",
                 "type": "object",
                 "properties": {
                   "AppDownloadLink": {
+                    "title": "App Download Link",
                     "$id": "#/properties/configJSON/properties/NativeAppSettings/properties/AppDownloadLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/downloads/"
                   },
                   "AndroidAppDownloadLink": {
+                    "title": "Android App Download Link",
                     "$id": "#/properties/configJSON/properties/NativeAppSettings/properties/AndroidAppDownloadLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/mattermost-android-app/"
                   },
                   "IosAppDownloadLink": {
+                    "title": "Ios App Download Link",
                     "$id": "#/properties/configJSON/properties/NativeAppSettings/properties/IosAppDownloadLink",
                     "type": "string",
                     "default": "https://about.mattermost.com/mattermost-ios-app/"
@@ -934,10 +1123,12 @@ spec:
                 }
               },
               "AnalyticsSettings": {
+                "title": "Analytics Settings",
                 "$id": "#/properties/configJSON/properties/AnalyticsSettings",
                 "type": "object",
                 "properties": {
                   "MaxUsersForStatistics": {
+                    "title": "Max Users For Statistics",
                     "$id": "#/properties/configJSON/properties/AnalyticsSettings/properties/MaxUsersForStatistics",
                     "type": "number",
                     "default": 2500
@@ -945,45 +1136,54 @@ spec:
                 }
               },
               "WebrtcSettings": {
+                "title": "Webrtc Settings",
                 "$id": "#/properties/configJSON/properties/WebrtcSettings",
                 "type": "object",
                 "properties": {
                   "Enable": {
+                    "title": "Enable",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/Enable",
-                    "type": "number",
+                    "type": "boolean",
                     "default": false
                   },
                   "GatewayWebsocketUrl": {
+                    "title": "Gateway Websocket URL",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/GatewayWebsocketUrl",
                     "type": "string",
                     "default": ""
                   },
                   "GatewayAdminUrl": {
+                    "title": "Gateway Admin URL",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/GatewayAdminUrl",
                     "type": "string",
                     "default": ""
                   },
                   "GatewayAdminSecret": {
+                    "title": "Gateway Admin Secret",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/GatewayAdminSecret",
                     "type": "string",
                     "default": ""
                   },
                   "StunURI": {
+                    "title": "Stun URI",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/StunURI",
                     "type": "string",
                     "default": ""
                   },
                   "TurnURI": {
+                    "title": "Turn URI",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/TurnURI",
                     "type": "string",
                     "default": ""
                   },
                   "TurnUsername": {
+                    "title": "Turn Username",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/TurnUsername",
                     "type": "string",
                     "default": ""
                   },
                   "TurnSharedKey": {
+                    "title": "Turn Shared Key",
                     "$id": "#/properties/configJSON/properties/WebrtcSettings/properties/TurnSharedKey",
                     "type": "string",
                     "default": ""
@@ -991,26 +1191,34 @@ spec:
                 }
               },
               "DisplaySettings": {
+                "title": "Display Settings",
                 "$id": "#/properties/configJSON/properties/DisplaySettings",
                 "type": "object",
                 "properties": {
                   "CustomUrlSchemes": {
+                    "title": "Custom URL Schemes",
                     "$id": "#/properties/configJSON/properties/DisplaySettings/properties/CustomUrlSchemes",
                     "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
                     "default": []
                   },
                   "ExperimentalTimezone": {
+                    "title": "Experimental Timezone",
                     "$id": "#/properties/configJSON/properties/DisplaySettings/properties/ExperimentalTimezone",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   }
                 }
               },
               "TimezoneSettings": {
+                "title": "Timezone Settings",
                 "$id": "#/properties/configJSON/properties/TimezoneSettings",
                 "type": "object",
                 "properties": {
                   "SupportedTimezonesPath": {
+                    "title": "Supported Timezones Path",
                     "$id": "#/properties/configJSON/properties/TimezoneSettings/properties/SupportedTimezonesPath",
                     "type": "string",
                     "default": "timezones.json"
@@ -1018,35 +1226,42 @@ spec:
                 }
               },
               "PluginSettings": {
+                "title": "Plugin Settings",
                 "$id": "#/properties/configJSON/properties/PluginSettings",
                 "type": "object",
                 "properties": {
                   "Enable": {
+                    "title": "Enable",
                     "$id": "#/properties/configJSON/properties/PluginSettings/properties/Enable",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "EnableUploads": {
+                    "title": "Enable Uploads",
                     "$id": "#/properties/configJSON/properties/PluginSettings/properties/EnableUploads",
-                    "type": "number",
+                    "type": "boolean",
                     "default": true
                   },
                   "Directory": {
+                    "title": "Directory",
                     "$id": "#/properties/configJSON/properties/PluginSettings/properties/Directory",
                     "type": "string",
                     "default": "./plugins"
                   },
                   "ClientDirectory": {
+                    "title": "Client Directory",
                     "$id": "#/properties/configJSON/properties/PluginSettings/properties/ClientDirectory",
                     "type": "string",
                     "default": "./client/plugins"
                   },
                   "Plugins": {
+                    "title": "Plugins",
                     "$id": "#/properties/configJSON/properties/PluginSettings/properties/Plugins",
                     "type": "object",
                     "properties": {}
                   },
                   "PluginStates": {
+                    "title": "Plugin States",
                     "$id": "#/properties/configJSON/properties/PluginSettings/properties/PluginStates",
                     "type": "object",
                     "properties": {}

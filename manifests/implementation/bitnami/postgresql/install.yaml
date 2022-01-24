@@ -100,7 +100,7 @@ spec:
                                 enabled: true
                               global:
                                 postgresql:
-                                  postgresqlDatabase: <@ defaultDBName @>
+                                  postgresqlDatabase: <@ defaultDBName | default('postgres') @>
                                   postgresqlPassword: <@ superuser.password | default(random_word(length=16)) @>
                             output:
                               goTemplate: |

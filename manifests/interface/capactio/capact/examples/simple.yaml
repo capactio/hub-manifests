@@ -4,8 +4,8 @@ kind: InterfaceGroup
 metadata:
   prefix: cap.interface.capactio.capact.examples
   name: simple
-  displayName: "Hello Capact"
-  description: "Simple Capat Hello World example"
+  displayName: "Hello Capact (Simple)"
+  description: "Simple Capact Hello World example"
   iconURL: https://storage.googleapis.com/dashboard-icons/glyph-capact.svg
   documentationURL: https://capact.dev
   supportURL: https://capact.dev

@@ -33,12 +33,12 @@ spec:
           "name": {
             "$id": "#/properties/name",
             "type": "string",
-            "title": "Defines a cluster name for the Redis"
+            "title": "Redis instance name"
           },
           "password": {
             "$id": "#/properties/password",
             "type": "string",
-            "title": "Defines a password"
+            "title": "Password"
           }
         },
         "additionalProperties": false

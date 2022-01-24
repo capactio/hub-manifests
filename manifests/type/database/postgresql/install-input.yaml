@@ -28,17 +28,11 @@ spec:
            "defaultDBName": "default_db"
          }
        ],
-       "required": [
-           "superuser"
-       ],
        "properties": {
          "superuser": {
            "$id": "#/properties/superuser",
            "type": "object",
-           "title": "Defines superuser details",
-           "required": [
-               "password"
-           ],
+           "title": "Superuser details",
            "properties": {
              "username": {
                "$id": "#/properties/superuser/properties/username",
