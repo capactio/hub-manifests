@@ -65,7 +65,7 @@ jobs:
             --helm-repo=@latest \
             --increase-resource-limits=false \
             --version=@latest \
-            --capact-overrides="global.gateway.auth.username=$CAPACT_GATEWAY_USERNAME,global.gateway.auth.password=$CAPACT_GATEWAY_PASSWORD,hub-public.populator.manifestsLocation.repository=$CAPACT_MANIFEST_REPOSITORY,hub-public.populator.manifestsLocation.branch=$CAPACT_MANIFEST_BRANCH" \
+            --capact-overrides="global.gateway.auth.username=$CAPACT_GATEWAY_USERNAME,global.gateway.auth.password=$CAPACT_GATEWAY_PASSWORD,hub-public.populator.manifestsLocations[0].repository=$CAPACT_MANIFEST_REPOSITORY,hub-public.populator.manifestsLocations[0].branch=$CAPACT_MANIFEST_BRANCH" \
             --install-component="$CAPACT_INSTALL_COMPONENTS" \
             --timeout=10m
 
