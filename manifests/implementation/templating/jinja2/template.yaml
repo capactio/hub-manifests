@@ -38,7 +38,6 @@ spec:
                   path: "/template.yml"
                 - name: input-parameters
                   path: "/values.yml"
-                  optional: true
                 - name: configuration
                   path: "/configuration.yaml"
             outputs:

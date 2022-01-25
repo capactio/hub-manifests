@@ -55,7 +55,7 @@ spec:
             inputs:
               artifacts:
                 - name: postgresql
-                - name: database-input
+                - name: input-parameters
             outputs:
               artifacts:
                 - name: database
