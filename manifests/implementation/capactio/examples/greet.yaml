@@ -2,7 +2,7 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact.examples.typeinstance
+  prefix: cap.implementation.capact.examples
   name: greet
   displayName: "Greet Capact"
   description: "Capact Greet Action"
@@ -16,18 +16,12 @@ metadata:
       url: https://capact.dev
 
 spec:
-  appVersion: "0.3.x"
+  appVersion: "1.0.x"
   outputTypeInstanceRelations: {}
 
   implements:
-    - path: cap.interface.capactio.capact.examples.typeinstance.greet
+    - path: cap.interface.capactio.examples.greet
       revision: 0.1.0
-
-  requires:
-    cap.core.type.platform:
-      oneOf:
-        - name: kubernetes
-          revision: 0.1.0
 
   imports:
     - interfaceGroupPath: cap.interface.runner.argo
@@ -35,8 +29,8 @@ spec:
       methods:
         - name: run
           revision: 0.1.0
-    - interfaceGroupPath: cap.interface.capactio.capact.examples.typeinstance
-      alias: capact
+    - interfaceGroupPath: cap.interface.capactio.examples
+      alias: examples
       methods:
         - name: say
           revision: 0.1.0
@@ -50,10 +44,7 @@ spec:
         - name: hello
           steps:
             - - name: get-message
-                capact-action: capact.say
-                capact-outputTypeInstances:
-                  - name: message
-                    from: message
+                capact-action: examples.say
             - - name: print
                 template: print
                 arguments:

@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Attribute
 metadata:
-  prefix: cap.attribute.capactio.capact.examples
-  name: loud
-  displayName: Loud
-  description: Loud attribute
+  prefix: cap.attribute.capactio.examples
+  name: be-positive
+  displayName: Be Positive
+  description: Be Positive
   documentationURL: https://capact.io
   maintainers:
     - email: team-dev@capact.io

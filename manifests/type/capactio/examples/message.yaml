@@ -2,8 +2,8 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Type
 metadata:
+  prefix: cap.type.capactio.examples
   name: message
-  prefix: cap.type.capactio.capact.examples.typeinstance
   displayName: Capact hello message
   description: Defines Capact hello message
   documentationURL: https://capact.io
@@ -21,17 +21,17 @@ spec:
         "title": "The schema for Capact configuration",
         "examples": [
           {
-            "greeting": "hello"
+            "message": "hello"
           }
         ],
         "required": [
-          "greeting"
+          "message"
         ],
         "properties": {
-          "greeting": {
-            "$id": "#/properties/greeting",
+          "message": {
+            "$id": "#/properties/message",
             "type": "string",
-            "title": "Capact greeting message."
+            "title": "Capact example message."
           }
         },
         "additionalProperties": false
