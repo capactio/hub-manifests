@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Interface
 metadata:
-  prefix: cap.interface.capactio.capact.examples.simple
-  name: greet
-  displayName: "Greet"
-  description: "Capact Greet Action"
+  prefix: cap.interface.capactio.examples
+  name: say
+  displayName: "Say"
+  description: "Simple Capact Action"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   maintainers:
@@ -15,4 +15,9 @@ metadata:
 
 spec:
   input: {}
-  output: {}
+  output:
+    typeInstances:
+      message:
+        typeRef:
+          path: cap.type.capactio.examples.message
+          revision: 0.1.0

@@ -1,0 +1,63 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: cap.implementation.capactio.examples
+  name: ricky
+  displayName: "Say they Ricky sentence"
+  description: "Returns the most famous sentence"
+  documentationURL: https://capact.dev
+  supportURL: https://capact.dev
+  license:
+    name: "Apache 2.0"
+  maintainers:
+    - email: team-dev@capact.dev
+      name: Capact Dev Team
+      url: https://capact.dev
+  attributes:
+    cap.attribute.capactio.examples.be-positive:
+      revision: 0.1.0
+
+spec:
+  appVersion: "1.0.x"
+  outputTypeInstanceRelations:
+    message: { }
+
+  implements:
+    - path: cap.interface.capactio.examples.say
+      revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: say
+        templates:
+          - name: say
+            outputs:
+              artifacts:
+                - name: message
+                  from: "{{steps.generate-artifact.outputs.artifacts.hello}}"
+            steps:
+              - - name: generate-artifact
+                  template: ricky
+                  capact-outputTypeInstances:
+                    - name: message
+                      from: hello
+
+          - name: ricky
+            outputs:
+              artifacts:
+                - name: hello
+                  path: /tmp/hello.yaml
+            container:
+              image: alpine:latest
+              command: [ sh, -c ]
+              args: [ "sleep 1; echo 'message: Never gonna give you up' >/tmp/hello.yaml" ]

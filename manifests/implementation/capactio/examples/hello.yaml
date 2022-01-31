@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Implementation
 metadata:
-  prefix: cap.implementation.capactio.capact.examples.typeinstance
-  name: scream
-  displayName: "Scream CAPACT"
-  description: "Capact SCREAM Action"
+  prefix: cap.implementation.capactio.examples
+  name: hello
+  displayName: "Say Capact Hello"
+  description: "Returns simple Capact Hello World"
   documentationURL: https://capact.dev
   supportURL: https://capact.dev
   license:
@@ -14,24 +14,15 @@ metadata:
     - email: team-dev@capact.dev
       name: Capact Dev Team
       url: https://capact.dev
-  attributes:
-    cap.attribute.capactio.capact.examples.loud:
-      revision: 0.1.0
 
 spec:
-  appVersion: "0.3.x"
+  appVersion: "1.0.x"
   outputTypeInstanceRelations:
     message: {}
 
   implements:
-    - path: cap.interface.capactio.capact.examples.typeinstance.say
+    - path: cap.interface.capactio.examples.say
       revision: 0.1.0
-
-  requires:
-    cap.core.type.platform:
-      oneOf:
-        - name: kubernetes
-          revision: 0.1.0
 
   imports:
     - interfaceGroupPath: cap.interface.runner.argo
@@ -53,12 +44,12 @@ spec:
                 from: "{{steps.generate-artifact.outputs.artifacts.hello}}"
           steps:
           - - name: generate-artifact
-              template: scream
+              template: echo
               capact-outputTypeInstances:
                 - name: message
                   from: hello
 
-        - name: scream 
+        - name: echo
           outputs:
             artifacts:
             - name: hello
@@ -66,4 +57,4 @@ spec:
           container:
             image: alpine:latest
             command: [sh, -c]
-            args: ["sleep 1; echo 'greeting: HELLO CAPACT' >/tmp/hello.yaml"]
+            args: ["sleep 1; echo 'message: Hello from Capact' >/tmp/hello.yaml"]

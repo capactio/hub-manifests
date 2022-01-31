@@ -2,9 +2,9 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: InterfaceGroup
 metadata:
-  prefix: cap.interface.capactio.capact.examples
-  name: simple
-  displayName: "Hello Capact (Simple)"
+  prefix: cap.interface.capactio
+  name: examples
+  displayName: "Hello Capact"
   description: "Simple Capact Hello World example"
   iconURL: https://storage.googleapis.com/dashboard-icons/glyph-capact.svg
   documentationURL: https://capact.dev
