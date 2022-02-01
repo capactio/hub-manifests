@@ -55,7 +55,7 @@ spec:
             inputs:
               artifacts:
                 - name: postgresql
-                - name: database-input
+                - name: input-parameters
             outputs:
               artifacts:
                 - name: database
@@ -92,7 +92,7 @@ spec:
                       - name: template
                         from: "{{steps.render-create-db-script.outputs.artifacts.render}}"
                       - name: input-parameters
-                        from: "{{inputs.artifacts.database-input}}"
+                        from: "{{inputs.artifacts.input-parameters}}"
                       - name: configuration
                         raw:
                           data: ""

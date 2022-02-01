@@ -148,7 +148,7 @@ spec:
                     artifacts:
                       - name: postgresql
                         from: "{{steps.install-db.outputs.artifacts.postgresql}}"
-                      - name: database-input
+                      - name: input-parameters
                         from: "{{steps.render-create-db-args.outputs.artifacts.render}}"
 
               - - name: prepare-parameters
