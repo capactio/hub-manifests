@@ -1,8 +1,9 @@
-rules:
-  - interface:
-      path: cap.interface.capactio.examples.say
-    oneOf:
-      - implementationConstraints:
-          attributes:
-            - path: cap.attribute.capactio.examples.be-positive
-              revision: 0.1.0
+interface:
+  rules:
+    - interface:
+        path: cap.interface.capactio.examples.say
+      oneOf:
+        - implementationConstraints:
+            attributes:
+              - path: cap.attribute.capactio.examples.be-positive
+                revision: 0.1.0

@@ -4,8 +4,8 @@ kind: Type
 metadata:
   prefix: "cap.type.aws.redis"
   name: install-input
-  displayName: "Input for AWS Elasitcache Redis install"
-  description: Input for the AWS Elasticache Redis install Action
+  displayName: "Input for AWS ElastiCache for Redis install"
+  description: Input for the AWS ElastiCache Redis install Action
   documentationURL: https://redis.io/documentation
   supportURL: https://redis.io/support
   maintainers:
