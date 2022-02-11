@@ -6,7 +6,7 @@ metadata:
   name: passing-a
   license:
     name: "Apache 2.0"
-  displayName: Passing Capact test action
+  displayName: Passing Capact test action that uses default storage backend
   description: ""
   documentationURL: "https://capact.io"
   maintainers:
@@ -24,12 +24,6 @@ spec:
   outputTypeInstanceRelations:
     testUpload:
       uses: []
-
-  requires:
-    cap.core.type.platform:
-      oneOf:
-        - name: kubernetes
-          revision: 0.1.0
 
   imports:
     - interfaceGroupPath: cap.interface.runner.argo
