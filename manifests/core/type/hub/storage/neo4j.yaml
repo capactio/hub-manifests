@@ -15,25 +15,25 @@ metadata:
 spec:
   jsonSchema:
     value: |-
-       {
-           "$schema": "http://json-schema.org/draft-07/schema",
-           "type": "object",
-           "title": "The root schema for built-in Local Hub storage",
-           "required": [
-               "acceptValue",
-               "contextSchema"
-           ],
-           "properties": {
-               "contextSchema": {
-       			  "$id": "#/properties/contextSchema",
-                   "type": "null",
-                   "const": null
-               },
-               "acceptValue": {
-                   "$id": "#/properties/acceptValue",
-                   "type": "boolean",
-                   "const": false
-               }
-           },
-           "additionalProperties": false
-       }
+      {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "type": "object",
+        "title": "The root schema for built-in Local Hub storage",
+        "required": [
+          "acceptValue",
+          "contextSchema"
+        ],
+        "properties": {
+          "contextSchema": {
+            "$id": "#/properties/contextSchema",
+            "type": "null",
+            "const": null
+          },
+          "acceptValue": {
+            "$id": "#/properties/acceptValue",
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "additionalProperties": false
+      }
