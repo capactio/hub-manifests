@@ -105,7 +105,7 @@ spec:
                             output:
                               goTemplate: |
                                 host: '{{ template "common.names.fullname" . }}.{{ .Release.Namespace }}'
-                                port: '{{ template "postgresql.port" . }}'
+                                port: {{ template "postgresql.port" . }}
                                 defaultDBName: '{{ template "postgresql.database" . }}'
                                 superuser:
                                   # It cannot be changed
