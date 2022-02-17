@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Type
 metadata:
-  name: cloud-foundry
+  name: nomad
   prefix: cap.type.platform
-  displayName: Cloud Foundry Platform
-  description: This Type indicates that a given platform is a Cloud Foundry installation.
+  displayName: Nomad Platform
+  description: This Type indicates that a given platform is a Nomad installation.
   documentationURL: https://capact.io
   supportURL: https://capact.io
   maintainers:
@@ -23,7 +23,7 @@ spec:
       {
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
-        "title": "The Cloud Foundry configuration",
+        "title": "The Nomad configuration",
         "required": [
           "version"
         ],
