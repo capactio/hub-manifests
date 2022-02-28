@@ -6,7 +6,7 @@ metadata:
   name: passing-b
   license:
     name: "Apache 2.0"
-  displayName: Passing Capact test action
+  displayName: Passing Capact test action that uses Helm storage
   description: ""
   documentationURL: "https://capact.io"
   maintainers:
@@ -38,6 +38,11 @@ spec:
         - name: single-key
           alias: injected
           revision: 0.1.0
+    cap.core.type.hub.storage:
+      allOf:
+        - name: cap.type.helm.storage
+          revision: 0.1.0
+          alias: helm-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.argo
@@ -65,6 +70,7 @@ spec:
                   capact-outputTypeInstances:
                     - name: testUpload
                       from: upload
+                      backend: helm-storage
 
           - name: test
             inputs:

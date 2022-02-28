@@ -188,7 +188,7 @@ spec:
                             output:
                               goTemplate:
                                 host: "{{ .instance_ip_addr }}"
-                                port: "{{ .port }}"
+                                port: {{ .port }}
                                 defaultDBName: "{{ .defaultDBName }}"
                                 superuser:
                                   username: "{{ .username }}"
