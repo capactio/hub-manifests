@@ -48,7 +48,7 @@ jobs:
 
       - name: Download the latest Capact CLI
         run: |
-          curl -Lo ./capact https://storage.googleapis.com/capactio-binaries/latest/capact-linux-amd64
+          curl -Lo ./capact https://storage.googleapis.com/capactio-binaries/latest/capact_linux_amd64/capact
           chmod +x ./capact
           mv ./capact /usr/local/bin/capact
 
