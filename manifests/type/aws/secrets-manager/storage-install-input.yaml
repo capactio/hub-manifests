@@ -3,10 +3,10 @@ revision: 0.1.0
 kind: Type
 metadata:
   prefix: "cap.type.aws.secrets-manager"
-  name: storage-input-parameters
-  displayName: Input for aws.secrets-manager.storage
-  description: Input for the "aws.secrets-manager.storage Action"
-  documentationURL: https://aws.amazon.com/secrets-manager/
+  name: storage-install-input
+  displayName: Additional input
+  description: Additional input for AWS Secrets Manager storage installation
+  documentationURL: https://capact.io/docs
   supportURL: https://aws.amazon.com/secrets-manager/
   iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg
   maintainers:
@@ -15,7 +15,6 @@ metadata:
       url: https://capact.io
 spec:
   jsonSchema:
-    # TODO(ContentDeveloper): Adjust the JSON schema if needed.
     value: |-
       {
         "properties": {
