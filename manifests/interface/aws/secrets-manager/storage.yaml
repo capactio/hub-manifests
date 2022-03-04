@@ -1,0 +1,32 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Interface
+metadata:
+  prefix: "cap.interface.aws.secrets-manager"
+  name: "storage"
+  displayName: "storage"
+  description: "storage action for aws.secrets-manager"
+  documentationURL: https://aws.amazon.com/secrets-manager/
+  supportURL: https://aws.amazon.com/secrets-manager/
+  iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  input:
+    parameters:
+      input-parameters:
+        typeRef:
+          path: cap.type.aws.secrets-manager.storage-input
+          revision: 0.1.0
+    typeInstances: {}
+
+  output:
+    typeInstances:
+      config:
+        typeRef:
+          path: cap.type.aws.secrets-manager.config
+          revision: 0.1.0
+    
