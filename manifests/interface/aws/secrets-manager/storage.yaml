@@ -2,10 +2,10 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: InterfaceGroup
 metadata:
-  prefix: "cap.interface.aws"
-  name: "secrets-manager"
-  displayName: "AWS Secrets Manager"
-  description: "AWS Secrets Manager Interfaces"
+  prefix: "cap.interface.aws.secrets-manager"
+  name: "storage"
+  displayName: "AWS Secrets Manager Storage"
+  description: "Interfaces for AWS Secrets Manager Storage"
   documentationURL: https://capact.io/docs
   supportURL: https://aws.amazon.com/secrets-manager
   iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg

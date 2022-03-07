@@ -7,7 +7,7 @@ metadata:
   displayName: Additional input
   description: Additional input for AWS Secrets Manager storage installation
   documentationURL: https://capact.io/docs
-  supportURL: https://aws.amazon.com/secrets-manager/
+  supportURL: https://aws.amazon.com/secrets-manager
   iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg
   maintainers:
     - email: team-dev@capact.io

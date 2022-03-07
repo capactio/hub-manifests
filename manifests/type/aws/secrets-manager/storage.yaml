@@ -7,13 +7,15 @@ metadata:
   displayName: AWS Secrets Manager storage
   description: AWS Secrets Manager storage backend for Capact Local Hub
   documentationURL: https://aws.amazon.com/secrets-manager/
-  supportURL: https://aws.amazon.com/secrets-manager/
+  supportURL: https://aws.amazon.com/secrets-manager
   iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team
       url: https://capact.io
 spec:
+  additionalRefs:
+    - cap.core.type.hub.storage
   jsonSchema:
     value: |-
       {
@@ -21,10 +23,16 @@ spec:
         "type": "object",
         "title": "The root schema for AWS Secrets Manager Local Hub storage",
         "required": [
+          "url",
           "acceptValue",
           "contextSchema"
         ],
         "properties": {
+          "url": {
+              "$id": "#/properties/url",
+              "type": "string",
+              "format": "uri"
+          },
           "contextSchema": {
             "$id": "#/properties/contextSchema",
             "type": "null",
