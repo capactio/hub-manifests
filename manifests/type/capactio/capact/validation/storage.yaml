@@ -1,0 +1,63 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Type
+metadata:
+  prefix: "cap.type.capactio.capact.validation"
+  name: storage
+  displayName: Validation storage
+  description: Test storage for Capact functionality validation
+  documentationURL: https://capact.io
+  supportURL: https://capact.io
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+spec:
+  additionalRefs:
+    - cap.core.type.hub.storage
+  jsonSchema:
+    value: |-
+      {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "type": "object",
+        "title": "The root schema for Capact Validation Local Hub storage",
+        "required": [
+          "url",
+          "acceptValue",
+          "contextSchema"
+        ],
+        "properties": {
+          "url": {
+            "$id": "#/properties/url",
+            "type": "string",
+            "format": "uri"
+          },
+          "contextSchema": {
+            "$id": "#/properties/contextSchema",
+            "const": {
+                "$schema": "http://json-schema.org/draft-07/schema",
+                "type": "object",
+                "required": [
+                  "provider"
+                ],
+                "properties": {
+                  "provider": {
+                    "$id": "#/properties/context/properties/provider",
+                    "type": "string",
+                    "enum": [
+                      "aws_secretsmanager",
+                      "dotenv"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+          },
+          "acceptValue": {
+            "$id": "#/properties/acceptValue",
+            "type": "boolean",
+            "const": true
+          }
+        },
+        "additionalProperties": false
+      }
