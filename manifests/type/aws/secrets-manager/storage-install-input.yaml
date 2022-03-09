@@ -1,0 +1,251 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Type
+metadata:
+  prefix: "cap.type.aws.secrets-manager"
+  name: storage-install-input
+  displayName: Additional input
+  description: Additional input for AWS Secrets Manager storage installation
+  documentationURL: https://capact.io/docs
+  supportURL: https://aws.amazon.com/secrets-manager
+  iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+spec:
+  jsonSchema:
+    value: |-
+      {
+        "properties": {
+          "additionalEnvs": {
+            "properties": {},
+            "type": "object",
+            "title": "AdditionalEnvs",
+            "$id": "#/properties/additionalEnvs"
+          },
+          "affinity": {
+            "properties": {},
+            "type": "object",
+            "title": "Affinity",
+            "$id": "#/properties/affinity"
+          },
+          "autoscaling": {
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled",
+                "default": false,
+                "$id": "#/properties/autoscaling/properties/enabled"
+              },
+              "maxReplicas": {
+                "type": "number",
+                "title": "MaxReplicas",
+                "default": 100,
+                "$id": "#/properties/autoscaling/properties/maxReplicas"
+              },
+              "minReplicas": {
+                "type": "number",
+                "title": "MinReplicas",
+                "default": 1,
+                "$id": "#/properties/autoscaling/properties/minReplicas"
+              },
+              "targetCPUUtilizationPercentage": {
+                "type": "number",
+                "title": "TargetCPUUtilizationPercentage",
+                "default": 80,
+                "$id": "#/properties/autoscaling/properties/targetCPUUtilizationPercentage"
+              }
+            },
+            "type": "object",
+            "title": "Autoscaling",
+            "$id": "#/properties/autoscaling"
+          },
+          "global": {
+            "properties": {
+              "containerRegistry": {
+                "properties": {
+                  "overrideTag": {
+                    "type": "string",
+                    "title": "OverrideTag",
+                    "default": "latest",
+                    "$id": "#/properties/global/properties/containerRegistry/properties/overrideTag"
+                  },
+                  "path": {
+                    "type": "string",
+                    "title": "Path",
+                    "default": "ghcr.io/capactio",
+                    "$id": "#/properties/global/properties/containerRegistry/properties/path"
+                  }
+                },
+                "type": "object",
+                "title": "ContainerRegistry",
+                "$id": "#/properties/global/properties/containerRegistry"
+              }
+            },
+            "type": "object",
+            "title": "Global",
+            "$id": "#/properties/global"
+          },
+          "image": {
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "default": "secret-storage-backend",
+                "$id": "#/properties/image/properties/name"
+              },
+              "pullPolicy": {
+                "type": "string",
+                "title": "PullPolicy",
+                "default": "IfNotPresent",
+                "$id": "#/properties/image/properties/pullPolicy"
+              }
+            },
+            "type": "object",
+            "title": "Image",
+            "$id": "#/properties/image"
+          },
+          "imagePullSecrets": {
+            "type": "array",
+            "title": "ImagePullSecrets",
+            "default": [],
+            "$id": "#/properties/imagePullSecrets"
+          },
+          "nodeSelector": {
+            "properties": {},
+            "type": "object",
+            "title": "NodeSelector",
+            "$id": "#/properties/nodeSelector"
+          },
+          "podAnnotations": {
+            "properties": {},
+            "type": "object",
+            "title": "PodAnnotations",
+            "$id": "#/properties/podAnnotations"
+          },
+          "podSecurityContext": {
+            "properties": {},
+            "type": "object",
+            "title": "PodSecurityContext",
+            "$id": "#/properties/podSecurityContext"
+          },
+          "replicaCount": {
+            "type": "number",
+            "title": "ReplicaCount",
+            "default": 1,
+            "$id": "#/properties/replicaCount"
+          },
+          "resources": {
+            "properties": {
+              "limits": {
+                "properties": {
+                  "cpu": {
+                    "type": "string",
+                    "title": "Cpu",
+                    "default": "100m",
+                    "$id": "#/properties/resources/properties/limits/properties/cpu"
+                  },
+                  "memory": {
+                    "type": "string",
+                    "title": "Memory",
+                    "default": "32Mi",
+                    "$id": "#/properties/resources/properties/limits/properties/memory"
+                  }
+                },
+                "type": "object",
+                "title": "Limits",
+                "$id": "#/properties/resources/properties/limits"
+              },
+              "requests": {
+                "properties": {
+                  "cpu": {
+                    "type": "string",
+                    "title": "Cpu",
+                    "default": "30m",
+                    "$id": "#/properties/resources/properties/requests/properties/cpu"
+                  },
+                  "memory": {
+                    "type": "string",
+                    "title": "Memory",
+                    "default": "16Mi",
+                    "$id": "#/properties/resources/properties/requests/properties/memory"
+                  }
+                },
+                "type": "object",
+                "title": "Requests",
+                "$id": "#/properties/resources/properties/requests"
+              }
+            },
+            "type": "object",
+            "title": "Resources",
+            "$id": "#/properties/resources"
+          },
+          "securityContext": {
+            "properties": {},
+            "type": "object",
+            "title": "SecurityContext",
+            "$id": "#/properties/securityContext"
+          },
+          "service": {
+            "properties": {
+              "port": {
+                "type": "number",
+                "title": "Port",
+                "default": 50051,
+                "$id": "#/properties/service/properties/port"
+              },
+              "type": {
+                "type": "string",
+                "title": "Type",
+                "default": "ClusterIP",
+                "$id": "#/properties/service/properties/type"
+              }
+            },
+            "type": "object",
+            "title": "Service",
+            "$id": "#/properties/service"
+          },
+          "serviceAccount": {
+            "properties": {
+              "annotations": {
+                "properties": {},
+                "type": "object",
+                "title": "Annotations",
+                "$id": "#/properties/serviceAccount/properties/annotations"
+              },
+              "create": {
+                "type": "boolean",
+                "title": "Create",
+                "default": true,
+                "$id": "#/properties/serviceAccount/properties/create"
+              },
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "default": "",
+                "$id": "#/properties/serviceAccount/properties/name"
+              }
+            },
+            "type": "object",
+            "title": "ServiceAccount",
+            "$id": "#/properties/serviceAccount"
+          },
+          "supportedProviders": {
+            "type": "array",
+            "title": "SupportedProviders",
+            "default": [
+              "dotenv"
+            ],
+            "$id": "#/properties/supportedProviders"
+          },
+          "tolerations": {
+            "type": "array",
+            "title": "Tolerations",
+            "default": [],
+            "$id": "#/properties/tolerations"
+          }
+        },
+        "type": "object",
+        "$id": "#"
+      }

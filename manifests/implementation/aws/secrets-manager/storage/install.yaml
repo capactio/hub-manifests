@@ -1,0 +1,192 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: "cap.implementation.aws.secrets-manager.storage"
+  name: install
+  displayName: "Install"
+  description: "Installs AWS Secrets Manager storage"
+  documentationURL: https://capact.io/docs
+  supportURL: https://aws.amazon.com/secrets-manager
+  iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+  license:
+    name: "Apache 2.0"
+  attributes:
+    cap.attribute.cloud.provider.aws:
+      revision: 0.1.0
+
+spec:
+  appVersion: "0.x"
+
+  additionalInput:
+    parameters:
+      additional-parameters:
+        typeRef:
+          path: "cap.type.aws.secrets-manager.storage-install-input"
+          revision: 0.1.0
+
+  outputTypeInstanceRelations:
+    aws-sm-storage:
+      uses:
+        - helm-release
+
+  implements:
+    - path: cap.interface.aws.secrets-manager.storage.install
+      revision: 0.1.0
+
+  requires:
+    cap.core.type.platform:
+      oneOf:
+        - name: kubernetes
+          revision: 0.1.0
+    cap.type.aws.auth:
+      allOf:
+        - name: credentials
+          alias: aws-credentials
+          revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.templating.jinja2
+      alias: jinja2
+      methods:
+        - name: template
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.runner.helm
+      alias: helm
+      methods:
+        - name: install
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: install
+        templates:
+          - name: install
+            inputs:
+              artifacts:
+                - name: input-parameters
+                - name: additional-parameters
+                  optional: true
+            outputs:
+              artifacts:
+                - name: aws-sm-storage
+                  from: "{{steps.helm-install.outputs.artifacts.additional}}"
+            steps:
+              - - name: prepare-parameters
+                  template: prepare-parameters
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: credentials
+                        from: "{{workflow.outputs.artifacts.aws-credentials}}"
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+
+# TODO: Once Helm storage is implemented (https://github.com/capactio/capact/issues/650), remove usage of output and use TypeInstance projection instead
+              - - name: create-helm-args
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
+                      - name: configuration
+                        raw:
+                          data:
+                      - name: template
+                        raw:
+                          data: |
+                            generateName: true
+                            chart:
+                              name: "secret-storage-backend"
+                              repo: "https://storage.googleapis.com/capactio-latest-charts"
+                              version: "0.6.0-8ae1909"
+                            values:
+                              supportedProviders:
+                                - "aws_secretsmanager"
+                              additionalEnvs:
+                                AWS_DEFAULT_REGION: "<@ input.region | default('eu-west-1') @>"
+                                AWS_ACCESS_KEY_ID: "<@ credentials.accessKeyID @>"
+                                AWS_SECRET_ACCESS_KEY: "<@ credentials.secretAccessKey @>"
+                              affinity: <@ additionalinput.affinity | default({}) @>
+                              autoscaling:
+                                enabled: <@ additionalinput.autoscaling.enabled | default(false) | tojson @>
+                                maxReplicas: <@ additionalinput.autoscaling.maxReplicas | default(100) @>
+                                minReplicas: <@ additionalinput.autoscaling.minReplicas | default(1) @>
+                                targetCPUUtilizationPercentage: <@ additionalinput.autoscaling.targetCPUUtilizationPercentage | default(80) @>
+                              global:
+                                containerRegistry:
+                                  overrideTag: <@ additionalinput.global.containerRegistry.overrideTag | default("95643d2") @>
+                                  path: <@ additionalinput.global.containerRegistry.path | default("ghcr.io/capactio") @>
+                              image:
+                                name: <@ additionalinput.image.name | default("secret-storage-backend") @>
+                                pullPolicy: <@ additionalinput.image.pullPolicy | default("IfNotPresent") @>
+                              imagePullSecrets: <@ additionalinput.imagePullSecrets | default([]) | tojson @>
+                              nodeSelector: <@ additionalinput.nodeSelector | default({}) @>
+                              podAnnotations: <@ additionalinput.podAnnotations | default({}) @>
+                              podSecurityContext: <@ additionalinput.podSecurityContext | default({}) @>
+                              replicaCount: <@ additionalinput.replicaCount | default(1) @>
+                              resources:
+                                limits:
+                                  cpu: <@ additionalinput.resources.limits.cpu | default("100m") @>
+                                  memory: <@ additionalinput.resources.limits.memory | default("32Mi") @>
+                                requests:
+                                  cpu: <@ additionalinput.resources.requests.cpu | default("30m") @>
+                                  memory: <@ additionalinput.resources.requests.memory | default("16Mi") @>
+                              securityContext: <@ additionalinput.securityContext | default({}) @>
+                              service:
+                                port: <@ additionalinput.service.port | default(50051) @>
+                                type: <@ additionalinput.service.type | default("ClusterIP") @>
+                              serviceAccount:
+                                annotations: <@ additionalinput.serviceAccount.annotations | default({}) @>
+                                create: <@ additionalinput.serviceAccount.create | default(true) | tojson @>
+                                name: <@ additionalinput.serviceAccount.name | default("") | tojson @>
+                              tolerations: <@ additionalinput.tolerations | default([]) | tojson @>
+                            output:
+                              goTemplate: |
+                                url: '{{ include "secret-storage-backend.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.port }}'
+                                contextSchema: null
+                                acceptValue: true 
+
+              - - name: helm-install
+                  capact-action: helm.install
+                  capact-outputTypeInstances:
+                    - name: helm-release
+                      from: helm-release
+                    - name: aws-sm-storage
+                      from: additional
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.create-helm-args.outputs.artifacts.render}}"
+                      - name: runner-context
+                        from: "{{workflow.outputs.artifacts.runner-context}}"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: credentials
+                  path: /yamls/credentials.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalinput.yaml
+                  optional: true
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+              - name: merged
+                path: /merged.yaml

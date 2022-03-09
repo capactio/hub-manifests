@@ -2,28 +2,37 @@ ocfVersion: 0.0.1
 revision: 0.1.0
 kind: Type
 metadata:
-  name: neo4j
-  prefix: cap.core.type.hub.storage
-  displayName: Built-in Local Hub storage
-  description: Built-in Local Hub storage in which static data can be stored.
-  documentationURL: https://capact.io/docs
-  supportURL: https://capact.io
+  prefix: "cap.type.aws.secrets-manager"
+  name: storage
+  displayName: AWS Secrets Manager storage
+  description: AWS Secrets Manager storage backend for Capact Local Hub
+  documentationURL: https://aws.amazon.com/secrets-manager/
+  supportURL: https://aws.amazon.com/secrets-manager
+  iconURL: https://storage.googleapis.com/dashboard-icons/aws.svg
   maintainers:
     - email: team-dev@capact.io
       name: Capact Dev Team
       url: https://capact.io
 spec:
+  additionalRefs:
+    - cap.core.type.hub.storage
   jsonSchema:
     value: |-
       {
         "$schema": "http://json-schema.org/draft-07/schema",
         "type": "object",
-        "title": "The root schema for built-in Local Hub storage",
+        "title": "The root schema for AWS Secrets Manager Local Hub storage",
         "required": [
+          "url",
           "acceptValue",
           "contextSchema"
         ],
         "properties": {
+          "url": {
+              "$id": "#/properties/url",
+              "type": "string",
+              "format": "uri"
+          },
           "contextSchema": {
             "$id": "#/properties/contextSchema",
             "type": "null",
