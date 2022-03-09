@@ -82,7 +82,7 @@ spec:
                         from: "{{inputs.artifacts.postgresql}}"
                       - name: configuration
                         raw:
-                          data: ""
+                          data: "strip-value: true"
 
               - - name: fill-params-in-create-db-script
                   capact-action: jinja2.template

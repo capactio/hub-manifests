@@ -173,7 +173,7 @@ spec:
                 - name: postgresql
                   path: /yamls/postgresql.yaml
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:20c169b
             outputs:
               artifacts:
               - name: merged

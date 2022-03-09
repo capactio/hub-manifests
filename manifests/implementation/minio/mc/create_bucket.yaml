@@ -135,7 +135,7 @@ spec:
                 - name: s3
                   path: /yamls/s3.yaml
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:20c169b
             outputs:
               artifacts:
               - name: merged

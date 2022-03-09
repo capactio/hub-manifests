@@ -478,7 +478,7 @@ spec:
                 - name: user
                   path: /yamls/user.yaml
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:20c169b
             outputs:
               artifacts:
               - name: merged

@@ -406,7 +406,7 @@ spec:
                   path: /yamls/additionalinput.yaml
                   optional: true
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:20c169b
             outputs:
               artifacts:
                 - name: merged

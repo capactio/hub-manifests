@@ -96,7 +96,7 @@ spec:
                         from: "{{inputs.artifacts.postgresql}}"
                       - name: configuration
                         raw:
-                          data: ""
+                          data: "strip-value: true"
 
               - - name: create-user
                   template: create-psql-user
