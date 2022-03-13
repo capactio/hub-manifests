@@ -128,7 +128,7 @@ spec:
                                 targetCPUUtilizationPercentage: <@ additionalinput.autoscaling.targetCPUUtilizationPercentage | default(80) @>
                               global:
                                 containerRegistry:
-                                  overrideTag: <@ additionalinput.global.containerRegistry.overrideTag | default("95643d2") @>
+                                  overrideTag: <@ additionalinput.global.containerRegistry.overrideTag | default("834cd44") @>
                                   path: <@ additionalinput.global.containerRegistry.path | default("ghcr.io/capactio") @>
                               image:
                                 name: <@ additionalinput.image.name | default("secret-storage-backend") @>
