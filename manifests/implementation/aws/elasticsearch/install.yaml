@@ -464,7 +464,7 @@ spec:
                 - name: basicAuth
                   path: /yamls/basicAuth.yaml
             container:
-              image: ghcr.io/capactio/pr/infra/merger:20c169b
+              image: ghcr.io/capactio/pr/infra/merger:PR-657
             outputs:
               artifacts:
               - name: merged

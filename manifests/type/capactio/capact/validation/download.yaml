@@ -24,7 +24,9 @@ spec:
             "key": "example key"
           }
         ],
-        "required": [],
+        "required": [
+            "key"
+        ],
         "properties": {
           "key": {
            "$id": "#/properties/key",
