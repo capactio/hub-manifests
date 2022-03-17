@@ -68,7 +68,7 @@ spec:
                   capact-outputTypeInstances:
                     - name: testUpload
                       from: upload
-                      backend: helm-storage
+                      backend: validation-storage
 
           - name: test
             inputs:
