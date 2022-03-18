@@ -34,24 +34,7 @@ spec:
           },
           "contextSchema": {
             "$id": "#/properties/contextSchema",
-            "const": {
-                "$schema": "http://json-schema.org/draft-07/schema",
-                "type": "object",
-                "required": [
-                  "provider"
-                ],
-                "properties": {
-                  "provider": {
-                    "$id": "#/properties/context/properties/provider",
-                    "type": "string",
-                    "enum": [
-                      "aws_secretsmanager",
-                      "dotenv"
-                    ]
-                  }
-                },
-                "additionalProperties": false
-              }
+            "const": "\n\t{\n      \"$schema\": \"http://json-schema.org/draft-07/schema\",\n      \"type\": \"object\",\n      \"required\": [\n        \"provider\"\n      ],\n      \"properties\": {\n        \"provider\": {\n          \"$id\": \"#/properties/context/properties/provider\",\n          \"type\": \"string\",\n          \"enum\": [\n            \"aws_secretsmanager\",\n            \"dotenv\"\n          ]\n        }\n      },\n      \"additionalProperties\": false\n    }\n"
           },
           "acceptValue": {
             "$id": "#/properties/acceptValue",
