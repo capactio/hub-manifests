@@ -3,10 +3,10 @@ revision: 0.1.0
 kind: Type
 metadata:
   name: storage
-  prefix: cap.type.helm
-  displayName: Helm chart storage
+  prefix: cap.type.helm.release
+  displayName: Helm release chart storage
   description: Describes Helm storage
-  documentationURL: https://helm.sh/docs
+  documentationURL: https://capact.io/docs
   supportURL: https://helm.sh
   maintainers:
     - email: team-dev@capact.io
