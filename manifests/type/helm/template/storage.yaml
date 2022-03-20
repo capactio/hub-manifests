@@ -38,12 +38,12 @@ spec:
               "$schema": "http://json-schema.org/draft-07/schema",
               "type": "object",
               "required": [
-                "template",
+                "goTemplate",
                 "release"
               ],
               "properties": {
-                "template": {
-                  "$id": "#/properties/context/properties/template",
+                "goTemplate": {
+                  "$id": "#/properties/context/properties/goTemplate",
                   "type": "string"
                 },
                 "release": {
