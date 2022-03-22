@@ -1,0 +1,46 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Type
+metadata:
+  name: storage
+  prefix: cap.type.helm.release
+  displayName: Helm release chart storage
+  description: Describes Helm storage
+  documentationURL: https://capact.io/docs
+  supportURL: https://helm.sh
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  additionalRefs:
+    - cap.core.type.hub.storage
+  jsonSchema:
+    value: |-
+      {
+          "$schema": "http://json-schema.org/draft-07/schema",
+          "type": "object",
+          "title": "The root schema",
+          "required": [
+              "url",
+              "contextSchema",
+              "acceptValue"
+          ],
+          "properties": {
+              "url": {
+                  "$id": "#/properties/url",
+                  "type": "string",
+                  "format": "uri"
+              },
+              "contextSchema": {
+                  "const": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema\",\n  \"type\": \"object\",\n  \"required\": [\n    \"name\",\n    \"namespace\",\n    \"chartLocation\"\n  ],\n  \"properties\": {\n    \"name\": {\n      \"$id\": \"#/properties/context/properties/name\",\n      \"type\": \"string\"\n    },\n    \"namespace\": {\n      \"$id\": \"#/properties/context/properties/namespace\",\n      \"type\": \"string\"\n    },\n    \"chartLocation\": {\n      \"$id\": \"#/properties/context/properties/chartLocation\",\n      \"type\": \"string\"\n    },\n    \"driver\": {\n      \"$id\": \"#/properties/context/properties/driver\",\n      \"type\": \"string\",\n      \"default\": \"secrets\",\n      \"enum\": [\n        \"secrets\",\n        \"configmaps\",\n        \"sql\"\n      ]\n    }\n  },\n  \"additionalProperties\": false\n}"
+              },
+              "acceptValue": {
+                  "$id": "#/properties/acceptValue",
+                  "type": "boolean",
+                  "const": false
+              }
+          },
+          "additionalProperties": false
+      }

@@ -40,7 +40,7 @@ spec:
           revision: 0.1.0
     cap.core.type.hub.storage:
       allOf:
-        - name: cap.type.helm.storage
+        - name: cap.type.helm.release.storage
           revision: 0.1.0
           alias: helm-storage
 

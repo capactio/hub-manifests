@@ -1,0 +1,59 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Interface
+metadata:
+  prefix: "cap.interface.helm.storage"
+  name: "install"
+  displayName: "Install"
+  description: "Installs Helm Release and Helm Template storage backends"
+  documentationURL: https://capact.io/docs
+  supportURL: https://helm.sh/
+  iconURL: https://storage.googleapis.com/dashboard-icons/helm.svg
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  input:
+    typeInstances: {}
+    parameters:
+      input-parameters:
+        jsonSchema:
+          value: |-
+            {
+              "$schema": "http://json-schema.org/draft-07/schema",
+              "type": "object",
+              "definitions": {
+                  "semVer": {
+                    "type": "string",
+                    "minLength": 5,
+                    "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                    "title": "Semantic Versioning version",
+                    "examples": [
+                      "1.19.0",
+                      "2.0.1-alpha1"
+                    ]
+                  }
+              },
+              "properties": {
+                "version": {
+                  "$id": "#/properties/version",
+                  "description": "Version",
+                  "default": "0.6.0-bb9b779",
+                  "$ref": "#/definitions/semVer"
+                }
+              },
+              "additionalProperties": false
+            }
+
+  output:
+    typeInstances:
+      helm-release-storage:
+        typeRef:
+          path: cap.type.helm.release.storage
+          revision: 0.1.0
+      helm-template-storage:
+        typeRef:
+          path: cap.type.helm.template.storage
+          revision: 0.1.0
