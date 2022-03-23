@@ -46,6 +46,14 @@ spec:
       oneOf:
         - name: kubernetes
           revision: 0.1.0
+    cap.core.type.hub.storage:
+      allOf:
+        - name: cap.type.helm.release.storage
+          revision: 0.1.0
+          alias: helm-release-storage
+        - name: cap.type.helm.template.storage
+          revision: 0.1.0
+          alias: helm-template-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.helm
@@ -103,25 +111,31 @@ spec:
                                   postgresqlDatabase: <@ defaultDBName | default('postgres') @>
                                   postgresqlPassword: <@ superuser.password | default(random_word(length=16)) @>
                             output:
-                              goTemplate: |
-                                host: '{{ template "common.names.fullname" . }}.{{ .Release.Namespace }}'
-                                port: {{ template "postgresql.port" . }}
-                                defaultDBName: '{{ template "postgresql.database" . }}'
-                                superuser:
-                                  # It cannot be changed
-                                  username: 'postgres'
-                                  password: '{{ template "postgresql.password" . }}'
+                              helmRelease:
+                                useHelmReleaseStorage: true
+                              additional:
+                                useHelmTemplateStorage: false # TODO: Toggle to true and make sure it can be reused in umbrella workflows
+                                goTemplate: |
+                                  host: '{{ template "common.names.fullname" . }}.{{ .Release.Namespace }}'
+                                  port: {{ template "postgresql.port" . }}
+                                  defaultDBName: '{{ template "postgresql.database" . }}'
+                                  superuser:
+                                    # It cannot be changed
+                                    username: 'postgres'
+                                    password: '{{ template "postgresql.password" . }}'
                       - name: configuration
                         raw:
-                          data: |
+                          data: "unpackValue: true"
 
               - - name: helm-install
                   capact-action: helm.install
                   capact-outputTypeInstances: # Defines which artifacts are output TypeInstances
                     - name: postgresql
                       from: additional
+                      backend: helm-template-storage
                     - name: psql-helm-release
                       from: helm-release
+                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters

@@ -145,9 +145,13 @@ spec:
                               securityContext: <@ additionalinput.securityContext | default({}) | tojson @>
                               tolerations: <@ additionalinput.tolerations | default([]) | tojson @>
                             output:
-                              goTemplate: |
-                                releaseSvcUrl: '{{ include "helm-storage-backend.fullname" . }}-release.{{ .Release.Namespace }}:{{ .Values.helmReleaseBackend.service.port }}'
-                                templateSvcUrl: '{{ include "helm-storage-backend.fullname" . }}-template.{{ .Release.Namespace }}:{{ .Values.helmTemplateBackend.service.port }}'
+                              helmRelease:
+                                useHelmReleaseStorage: false
+                              additional:
+                                useHelmTemplateStorage: false  
+                                goTemplate: |
+                                  releaseSvcUrl: '{{ include "helm-storage-backend.fullname" . }}-release.{{ .Release.Namespace }}:{{ .Values.helmReleaseBackend.service.port }}'
+                                  templateSvcUrl: '{{ include "helm-storage-backend.fullname" . }}-template.{{ .Release.Namespace }}:{{ .Values.helmTemplateBackend.service.port }}'
 
               - - name: helm-install
                   capact-action: helm.install
@@ -173,93 +177,95 @@ spec:
                             set -e
                             
                             cat << EOF > /tmp/helm-release
-                            url: "<@ releaseSvcUrl @>"
-                            acceptValue: false
-                            contextSchema: |-
-                              {
-                                "\$schema": "http://json-schema.org/draft-07/schema",
-                                "type": "object",
-                                "required": [
-                                  "name",
-                                  "namespace",
-                                  "chartLocation"
-                                ],
-                                "properties": {
-                                  "name": {
-                                    "\$id": "#/properties/context/properties/name",
-                                    "type": "string"
+                            value:
+                              url: "<@ releaseSvcUrl @>"
+                              acceptValue: false
+                              contextSchema: |-
+                                {
+                                  "\$schema": "http://json-schema.org/draft-07/schema",
+                                  "type": "object",
+                                  "required": [
+                                    "name",
+                                    "namespace",
+                                    "chartLocation"
+                                  ],
+                                  "properties": {
+                                    "name": {
+                                      "\$id": "#/properties/context/properties/name",
+                                      "type": "string"
+                                    },
+                                    "namespace": {
+                                      "\$id": "#/properties/context/properties/namespace",
+                                      "type": "string"
+                                    },
+                                    "chartLocation": {
+                                      "\$id": "#/properties/context/properties/chartLocation",
+                                      "type": "string"
+                                    },
+                                    "driver": {
+                                      "\$id": "#/properties/context/properties/driver",
+                                      "type": "string",
+                                      "default": "secrets",
+                                      "enum": [
+                                        "secrets",
+                                        "configmaps",
+                                        "sql"
+                                      ]
+                                    }
                                   },
-                                  "namespace": {
-                                    "\$id": "#/properties/context/properties/namespace",
-                                    "type": "string"
-                                  },
-                                  "chartLocation": {
-                                    "\$id": "#/properties/context/properties/chartLocation",
-                                    "type": "string"
-                                  },
-                                  "driver": {
-                                    "\$id": "#/properties/context/properties/driver",
-                                    "type": "string",
-                                    "default": "secrets",
-                                    "enum": [
-                                      "secrets",
-                                      "configmaps",
-                                      "sql"
-                                    ]
-                                  }
-                                },
-                                "additionalProperties": false
-                              }
+                                  "additionalProperties": false
+                                }
                             EOF
                             
                             cat << EOF > /tmp/helm-template
-                            url: "<@ templateSvcUrl @>"
-                            acceptValue: false
-                            contextSchema: |-
-                              {
-                                "\$schema": "http://json-schema.org/draft-07/schema",
-                                "type": "object",
-                                "required": [
-                                  "goTemplate",
-                                  "release"
-                                ],
-                                "properties": {
-                                  "goTemplate": {
-                                    "\$id": "#/properties/context/properties/goTemplate",
-                                    "type": "string"
-                                  },
-                                  "release": {
-                                    "required": [
-                                      "name",
-                                      "namespace"
-                                    ],
-                                    "\$id": "#/properties/context/properties/release",
-                                    "type": "object",
-                                    "additionalProperties": false,
-                                    "properties": {
-                                      "name": {
-                                        "\$id": "#/properties/context/properties/release/properties/name",
-                                        "type": "string"
-                                      },
-                                      "namespace": {
-                                        "\$id": "#/properties/context/properties/release/properties/namespace",
-                                        "type": "string"
-                                      },
-                                      "driver": {
-                                        "\$id": "#/properties/context/properties/release/properties/driver",
-                                        "type": "string",
-                                        "default": "secrets",
-                                        "enum": [
-                                          "secrets",
-                                          "configmaps",
-                                          "sql"
-                                        ]
+                            value:
+                              url: "<@ templateSvcUrl @>"
+                              acceptValue: false
+                              contextSchema: |-
+                                {
+                                  "\$schema": "http://json-schema.org/draft-07/schema",
+                                  "type": "object",
+                                  "required": [
+                                    "goTemplate",
+                                    "release"
+                                  ],
+                                  "properties": {
+                                    "goTemplate": {
+                                      "\$id": "#/properties/context/properties/goTemplate",
+                                      "type": "string"
+                                    },
+                                    "release": {
+                                      "required": [
+                                        "name",
+                                        "namespace"
+                                      ],
+                                      "\$id": "#/properties/context/properties/release",
+                                      "type": "object",
+                                      "additionalProperties": false,
+                                      "properties": {
+                                        "name": {
+                                          "\$id": "#/properties/context/properties/release/properties/name",
+                                          "type": "string"
+                                        },
+                                        "namespace": {
+                                          "\$id": "#/properties/context/properties/release/properties/namespace",
+                                          "type": "string"
+                                        },
+                                        "driver": {
+                                          "\$id": "#/properties/context/properties/release/properties/driver",
+                                          "type": "string",
+                                          "default": "secrets",
+                                          "enum": [
+                                            "secrets",
+                                            "configmaps",
+                                            "sql"
+                                          ]
+                                        }
                                       }
                                     }
-                                  }
-                                },
-                                "additionalProperties": false
-                              }
+                                  },
+                                  "additionalProperties": false
+                                }
                             EOF
                             
                             # To avoid rare "no such file or directory" errors
@@ -310,7 +316,7 @@ spec:
                   path: /yamls/additionalinput.yaml
                   optional: true
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:PR-657
             outputs:
               artifacts:
                 - name: merged

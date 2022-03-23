@@ -36,13 +36,19 @@ spec:
               "postgresqlPassword": "s3cr3t"
             },
             "output": {
-              "goTemplate": {
-                "host": "{{ template \"postgresql.primary.fullname\" . }}",
-                "port": "{{ template \"postgresql.port\" . }}",
-                "defaultDBName": "{{ template \"postgresql.database\" . }}",
-                "superuser": {
-                  "username": "{{ template \"postgresql.username\" . }}",
-                  "password": "{{ template \"postgresql.password\" . }}"
+              "helmRelease": {
+                "useHelmReleaseStorage": true
+              },
+              "additional": {
+                "useHelmTemplateStorage": true,
+                "goTemplate": {
+                  "host": "{{ template \"postgresql.primary.fullname\" . }}",
+                  "port": "{{ template \"postgresql.port\" . }}",
+                  "defaultDBName": "{{ template \"postgresql.database\" . }}",
+                  "superuser": {
+                    "username": "{{ template \"postgresql.username\" . }}",
+                    "password": "{{ template \"postgresql.password\" . }}"
+                  }
                 }
               }
             }
@@ -51,89 +57,113 @@ spec:
         "additionalProperties": false,
         "required": [],
         "properties": {
-            "chart": {
-              "$id": "#/properties/chart",
-              "type": "object",
-              "title": "The chart data. If not provided, the ones from existing Helm Release are used.",
-              "required": [],
-              "properties": {
-                "name": {
-                  "$id": "#/properties/chart/properties/name",
-                  "type": "string",
-                  "title": "The name of Chart",
-                  "default": ""
-                },
-                "version": {
-                  "$id": "#/properties/chart/properties/version",
-                  "type": "string",
-                  "title": "Specify the exact chart version to use. If this is not specified, the latest version is used",
-                  "default": ""
-                },
-                "repo": {
-                  "$id": "#/properties/repo",
-                  "type": "string",
-                  "title": "Chart repository URL where to locate the requested chart"
+          "chart": {
+            "$id": "#/properties/chart",
+            "type": "object",
+            "title": "The chart data. If not provided, the ones from existing Helm Release are used.",
+            "required": [],
+            "properties": {
+              "name": {
+                "$id": "#/properties/chart/properties/name",
+                "type": "string",
+                "title": "The name of Chart",
+                "default": ""
+              },
+              "version": {
+                "$id": "#/properties/chart/properties/version",
+                "type": "string",
+                "title": "Specify the exact chart version to use. If this is not specified, the latest version is used",
+                "default": ""
+              },
+              "repo": {
+                "$id": "#/properties/repo",
+                "type": "string",
+                "title": "Chart repository URL where to locate the requested chart"
+              }
+            },
+            "additionalProperties": false
+          },
+          "noHooks": {
+            "$id": "#/properties/noHooks",
+            "type": "boolean",
+            "title": "Prevent hooks from running during install",
+            "default": false
+          },
+          "reuseValues": {
+            "$id": "#/properties/reuseValues",
+            "type": "boolean",
+            "title": "Reuses the last release's values and merge in any overrides during upgrade",
+            "default": false
+          },
+          "resetValues": {
+            "$id": "#/properties/resetValues",
+            "type": "boolean",
+            "title": "Resets the values to the ones built into the chart during upgrade",
+            "default": false
+          },
+          "maxHistory": {
+            "$id": "#/properties/maxHistory",
+            "type": "integer",
+            "title": "Limits the maximum number of revisions saved per release.",
+            "default": 10
+          },
+          "replace": {
+            "$id": "#/properties/replace",
+            "type": "boolean",
+            "title": "Re-use the given name, only if that name is a deleted release which remains in the history. This is unsafe in production",
+            "default": false
+          },
+          "values": {
+            "$id": "#/properties/values",
+            "type": "object",
+            "title": "The values for chart",
+            "additionalProperties": true
+          },
+          "valuesFromFile": {
+            "$id": "#/properties/valuesFromFile",
+            "type": "string",
+            "title": "The path for file with values for chart"
+          },
+          "output": {
+            "properties": {
+              "helmRelease": {
+                "$id": "#/properties/output/properties/helmRelease",
+                "type": "object",
+                "title": "The parameters for Helm Release output",
+                "additionalProperties": false,
+                "properties": {
+                  "useHelmReleaseStorage": {
+                    "$id": "#/properties/output/properties/helmRelease/properties/useHelmReleaseStorage",
+                    "type": "boolean",
+                    "title": "Specifies whether to use Helm Release storage",
+                    "default": false
+                  }
                 }
               },
-              "additionalProperties": false
-            },
-            "noHooks": {
-              "$id": "#/properties/noHooks",
-              "type": "boolean",
-              "title": "Prevent hooks from running during install",
-              "default": false
-            },
-            "reuseValues": {
-              "$id": "#/properties/reuseValues",
-              "type": "boolean",
-              "title": "Reuses the last release's values and merge in any overrides during upgrade",
-              "default": false
-            },
-            "resetValues": {
-               "$id": "#/properties/resetValues",
-               "type": "boolean",
-               "title": "Resets the values to the ones built into the chart during upgrade",
-               "default": false
-             },
-            "maxHistory": {
-               "$id": "#/properties/maxHistory",
-               "type": "integer",
-               "title": "Limits the maximum number of revisions saved per release.",
-               "default": 10
-             },
-            "replace": {
-              "$id": "#/properties/replace",
-              "type": "boolean",
-              "title": "Re-use the given name, only if that name is a deleted release which remains in the history. This is unsafe in production",
-              "default": false
-            },
-            "values": {
-              "$id": "#/properties/values",
-              "type": "object",
-              "title": "The values for chart",
-              "additionalProperties": true
-            },
-            "valuesFromFile": {
-              "$id": "#/properties/valuesFromFile",
-              "type": "string",
-              "title": "The path for file with values for chart"
-            },
-            "output": {
-              "$id": "#/properties/output",
-              "type": "object",
-              "title": "The parameters for output files",
-              "additionalProperties": false,
-              "required": [
-                "goTemplate"
-              ],
-              "properties": {
-                "goTemplate": {
-                  "$id": "#/properties/output/properties/goTemplate",
-                  "type": "object",
-                  "title": "Defines additional data to extract from Helm release and save as additional output. Support Go template syntax.",
-                  "additionalProperties": true
+              "additional": {
+                "$id": "#/properties/output/properties/additional",
+                "type": "object",
+                "title": "The parameters for additional output",
+                "required": [
+                  "goTemplate"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "useHelmTemplateStorage": {
+                    "$id": "#/properties/output/properties/additional/properties/useHelmTemplateStorage",
+                    "type": "boolean",
+                    "title": "Specifies whether to use Helm Template storage",
+                    "default": false
+                  },
+                  "goTemplate": {
+                    "$id": "#/properties/output/properties/goTemplate",
+                    "type": "object",
+                    "title": "Defines additional data to extract from Helm release and save as additional output. Support Go template syntax.",
+                    "additionalProperties": true
+                  }
                 }
               }
             }
+          }
         }
       }
