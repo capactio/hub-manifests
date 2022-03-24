@@ -411,6 +411,7 @@ spec:
                       - name: configuration
                         raw:
                           data: |
+                            unpackValue: true
                             prefix: input
                       - name: template
                         raw:
@@ -464,7 +465,7 @@ spec:
                 - name: basicAuth
                   path: /yamls/basicAuth.yaml
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:PR-657
             outputs:
               artifacts:
               - name: merged

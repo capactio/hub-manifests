@@ -38,11 +38,9 @@ spec:
         - name: single-key
           alias: injected
           revision: 0.1.0
-    cap.core.type.hub.storage:
-      allOf:
-        - name: cap.type.helm.release.storage
+        - name: storage
           revision: 0.1.0
-          alias: helm-storage
+          alias: validation-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.argo
@@ -70,7 +68,7 @@ spec:
                   capact-outputTypeInstances:
                     - name: testUpload
                       from: upload
-                      backend: helm-storage
+                      backend: validation-storage
 
           - name: test
             inputs:
@@ -86,4 +84,4 @@ spec:
             container:
               image: alpine:latest
               command: ["sh", "-c"]
-              args: ["echo 'Implementation B' && cp /input /upload && echo 'key: true' > /expected && diff /expected /injected && sleep 1"]
+              args: ["echo 'Implementation B' && cp /input /upload && printf 'value:\n  key: true\n' > /expected && diff /expected /injected && sleep 1"]

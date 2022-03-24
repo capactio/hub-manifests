@@ -137,7 +137,7 @@ spec:
                         from: "{{steps.create-user.outputs.artifacts.user}}"
                       - name: configuration
                         raw:
-                          data: |
+                          data: "unpackValue: true"
 
               - - name: create-db
                   capact-action: postgresql.create-db
@@ -478,7 +478,7 @@ spec:
                 - name: user
                   path: /yamls/user.yaml
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:PR-657
             outputs:
               artifacts:
               - name: merged

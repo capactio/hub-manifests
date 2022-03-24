@@ -273,7 +273,7 @@ spec:
                 - name: mongo
                   path: /yamls/mongo.yaml
             container:
-              image: ghcr.io/capactio/pr/infra/merger:PR-428
+              image: ghcr.io/capactio/pr/infra/merger:PR-657
             outputs:
               artifacts:
                 - name: merged
