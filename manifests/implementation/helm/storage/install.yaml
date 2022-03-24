@@ -269,7 +269,7 @@ spec:
                         from: "{{steps.helm-install.outputs.artifacts.additional}}"
                       - name: configuration
                         raw:
-                          data: ""
+                          data: "unpackValue: true"
 
               - - name: produce-output
                   template: produce-output-tmpl
