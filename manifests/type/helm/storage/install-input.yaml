@@ -1,0 +1,275 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Type
+metadata:
+  prefix: "cap.type.helm.storage"
+  name: install-input
+  displayName: Additional input
+  description: Additional input for Helm Release and Helm Template storage backends instllation
+  documentationURL: https://capact.io/docs
+  supportURL: https://helm.sh/
+  iconURL: https://storage.googleapis.com/dashboard-icons/helm.svg
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  jsonSchema:
+    value: |-
+      {
+        "properties": {
+          "affinity": {
+            "properties": {},
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Affinity",
+            "$id": "#/properties/affinity"
+          },
+          "autoscaling": {
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled",
+                "default": false,
+                "$id": "#/properties/autoscaling/properties/enabled"
+              },
+              "maxReplicas": {
+                "type": "number",
+                "title": "MaxReplicas",
+                "default": 100,
+                "$id": "#/properties/autoscaling/properties/maxReplicas"
+              },
+              "minReplicas": {
+                "type": "number",
+                "title": "MinReplicas",
+                "default": 1,
+                "$id": "#/properties/autoscaling/properties/minReplicas"
+              },
+              "targetCPUUtilizationPercentage": {
+                "type": "number",
+                "title": "TargetCPUUtilizationPercentage",
+                "default": 80,
+                "$id": "#/properties/autoscaling/properties/targetCPUUtilizationPercentage"
+              }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Autoscaling",
+            "$id": "#/properties/autoscaling"
+          },
+          "global": {
+            "properties": {
+              "containerRegistry": {
+                "properties": {
+                  "overrideTag": {
+                    "type": "string",
+                    "title": "OverrideTag",
+                    "default": "latest",
+                    "$id": "#/properties/global/properties/containerRegistry/properties/overrideTag"
+                  },
+                  "path": {
+                    "type": "string",
+                    "title": "Path",
+                    "default": "ghcr.io/capactio",
+                    "$id": "#/properties/global/properties/containerRegistry/properties/path"
+                  }
+                },
+                "additionalProperties": true,
+                "type": "object",
+                "title": "ContainerRegistry",
+                "$id": "#/properties/global/properties/containerRegistry"
+              }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Global",
+            "$id": "#/properties/global"
+          },
+          "helmReleaseBackend": {
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled",
+                "default": true,
+                "$id": "#/properties/helmReleaseBackend/properties/enabled"
+              },
+              "service": {
+                "properties": {
+                  "port": {
+                    "type": "number",
+                    "title": "Port",
+                    "default": 50051,
+                    "$id": "#/properties/helmReleaseBackend/properties/service/properties/port"
+                  },
+                  "type": {
+                    "type": "string",
+                    "title": "Type",
+                    "default": "ClusterIP",
+                    "$id": "#/properties/helmReleaseBackend/properties/service/properties/type"
+                  }
+                },
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Service",
+                "$id": "#/properties/helmReleaseBackend/properties/service"
+              }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "HelmReleaseBackend",
+            "$id": "#/properties/helmReleaseBackend"
+          },
+          "helmTemplateBackend": {
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled",
+                "default": true,
+                "$id": "#/properties/helmTemplateBackend/properties/enabled"
+              },
+              "service": {
+                "properties": {
+                  "port": {
+                    "type": "number",
+                    "title": "Port",
+                    "default": 50052,
+                    "$id": "#/properties/helmTemplateBackend/properties/service/properties/port"
+                  },
+                  "type": {
+                    "type": "string",
+                    "title": "Type",
+                    "default": "ClusterIP",
+                    "$id": "#/properties/helmTemplateBackend/properties/service/properties/type"
+                  }
+                },
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Service",
+                "$id": "#/properties/helmTemplateBackend/properties/service"
+              }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "HelmTemplateBackend",
+            "$id": "#/properties/helmTemplateBackend"
+          },
+          "image": {
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name",
+                "default": "helm-storage-backend",
+                "$id": "#/properties/image/properties/name"
+              },
+              "pullPolicy": {
+                "type": "string",
+                "title": "PullPolicy",
+                "default": "IfNotPresent",
+                "$id": "#/properties/image/properties/pullPolicy"
+              }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Image",
+            "$id": "#/properties/image"
+          },
+          "imagePullSecrets": {
+            "type": "array",
+            "title": "ImagePullSecrets",
+            "default": [],
+            "$id": "#/properties/imagePullSecrets"
+          },
+          "nodeSelector": {
+            "properties": {},
+            "additionalProperties": true,
+            "type": "object",
+            "title": "NodeSelector",
+            "$id": "#/properties/nodeSelector"
+          },
+          "podAnnotations": {
+            "properties": {},
+            "additionalProperties": true,
+            "type": "object",
+            "title": "PodAnnotations",
+            "$id": "#/properties/podAnnotations"
+          },
+          "podSecurityContext": {
+            "properties": {},
+            "additionalProperties": true,
+            "type": "object",
+            "title": "PodSecurityContext",
+            "$id": "#/properties/podSecurityContext"
+          },
+          "replicaCount": {
+            "type": "number",
+            "title": "ReplicaCount",
+            "default": 1,
+            "$id": "#/properties/replicaCount"
+          },
+          "resources": {
+            "properties": {
+              "limits": {
+                "properties": {
+                  "cpu": {
+                    "type": "string",
+                    "title": "Cpu",
+                    "default": "100m",
+                    "$id": "#/properties/resources/properties/limits/properties/cpu"
+                  },
+                  "memory": {
+                    "type": "string",
+                    "title": "Memory",
+                    "default": "32Mi",
+                    "$id": "#/properties/resources/properties/limits/properties/memory"
+                  }
+                },
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Limits",
+                "$id": "#/properties/resources/properties/limits"
+              },
+              "requests": {
+                "properties": {
+                  "cpu": {
+                    "type": "string",
+                    "title": "Cpu",
+                    "default": "30m",
+                    "$id": "#/properties/resources/properties/requests/properties/cpu"
+                  },
+                  "memory": {
+                    "type": "string",
+                    "title": "Memory",
+                    "default": "16Mi",
+                    "$id": "#/properties/resources/properties/requests/properties/memory"
+                  }
+                },
+                "additionalProperties": true,
+                "type": "object",
+                "title": "Requests",
+                "$id": "#/properties/resources/properties/requests"
+              }
+            },
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Resources",
+            "$id": "#/properties/resources"
+          },
+          "securityContext": {
+            "properties": {},
+            "additionalProperties": true,
+            "type": "object",
+            "title": "SecurityContext",
+            "$id": "#/properties/securityContext"
+          },
+          "tolerations": {
+            "type": "array",
+            "title": "Tolerations",
+            "default": [],
+            "$id": "#/properties/tolerations"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "$id": "#"
+      }

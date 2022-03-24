@@ -1,0 +1,47 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Type
+metadata:
+  name: storage
+  prefix: cap.type.helm.template
+  displayName: Helm template chart storage
+  description: Describes Helm template storage
+  documentationURL: https://capact.io/docs
+  supportURL: https://helm.sh
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+
+spec:
+  additionalRefs:
+    - cap.core.type.hub.storage
+  jsonSchema:
+    # TODO: Change globally `contextSchema` to object
+    value: |-
+      {
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "type": "object",
+        "title": "The root schema",
+        "required": [
+          "url",
+          "contextSchema",
+          "acceptValue"
+        ],
+        "properties": {
+          "url": {
+            "$id": "#/properties/url",
+            "type": "string",
+            "format": "uri"
+          },
+          "contextSchema": {
+            "const": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema\",\n  \"type\": \"object\",\n  \"required\": [\n    \"goTemplate\",\n    \"release\"\n  ],\n  \"properties\": {\n    \"goTemplate\": {\n      \"$id\": \"#/properties/context/properties/goTemplate\",\n      \"type\": \"string\"\n    },\n    \"release\": {\n      \"required\": [\n        \"name\",\n        \"namespace\"\n      ],\n      \"$id\": \"#/properties/context/properties/release\",\n      \"type\": \"object\",\n      \"additionalProperties\": false,\n      \"properties\": {\n        \"name\": {\n          \"$id\": \"#/properties/context/properties/release/properties/name\",\n          \"type\": \"string\"\n        },\n        \"namespace\": {\n          \"$id\": \"#/properties/context/properties/release/properties/namespace\",\n          \"type\": \"string\"\n        },\n        \"driver\": {\n          \"$id\": \"#/properties/context/properties/release/properties/driver\",\n          \"type\": \"string\",\n          \"default\": \"secrets\",\n          \"enum\": [\n            \"secrets\",\n            \"configmaps\",\n            \"sql\"\n          ]\n        }\n      }\n    }\n  },\n  \"additionalProperties\": false\n}"
+          },
+          "acceptValue": {
+            "$id": "#/properties/acceptValue",
+            "type": "boolean",
+            "const": false
+          }
+        },
+        "additionalProperties": false
+      }

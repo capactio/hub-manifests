@@ -1,0 +1,317 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: Implementation
+metadata:
+  prefix: "cap.implementation.helm.storage"
+  name: install
+  displayName: "Install"
+  description: "Installs Helm Release and Helm Template storage backends"
+  documentationURL: https://capact.io/docs
+  supportURL: https://helm.sh/
+  iconURL: https://storage.googleapis.com/dashboard-icons/helm.svg
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
+  license:
+    name: "Apache 2.0"
+
+spec:
+  appVersion: "0.x"
+  additionalInput:
+    parameters:
+      additional-parameters:
+        typeRef:
+          path: "cap.type.helm.storage.install-input"
+          revision: 0.1.0
+
+  outputTypeInstanceRelations:
+    helm-release-storage:
+      uses:
+        - helm-release
+    helm-template-storage:
+      uses:
+        - helm-release
+
+  implements:
+    - path: "cap.interface.helm.storage.install"
+      revision: 0.1.0
+
+  requires:
+    cap.core.type.platform:
+      oneOf:
+        - name: kubernetes
+          revision: 0.1.0
+
+  imports:
+    - interfaceGroupPath: cap.interface.runner.argo
+      alias: argo
+      methods:
+        - name: run
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.templating.jinja2
+      alias: jinja2
+      methods:
+        - name: template
+          revision: 0.1.0
+    - interfaceGroupPath: cap.interface.runner.helm
+      alias: helm
+      methods:
+        - name: install
+          revision: 0.1.0
+
+  action:
+    runnerInterface: argo.run
+    args:
+      workflow:
+        entrypoint: deploy
+        templates:
+          - name: deploy
+            inputs:
+              artifacts:
+                - name: input-parameters
+                - name: additional-parameters
+                  optional: true
+            outputs:
+              artifacts:
+                - name: helm-release-storage
+                  from: "{{steps.produce-output.outputs.artifacts.helm-release}}"
+                - name: helm-template-storage
+                  from: "{{steps.produce-output.outputs.artifacts.helm-template}}"
+            steps:
+              - - name: prepare-parameters
+                  template: prepare-parameters
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{inputs.artifacts.input-parameters}}"
+                      - name: additional-parameters
+                        from: "{{inputs.artifacts.additional-parameters}}"
+                        optional: true
+
+              - - name: create-helm-args
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
+                      - name: configuration
+                        raw:
+                          data: ""
+                      - name: template
+                        raw:
+                          data: |
+                            generateName: true
+                            chart:
+                              name: "helm-storage-backend"
+                              repo: "https://storage.googleapis.com/capactio-latest-charts"
+                              version: <@ input.version | default("0.6.0-bb9b779") @>
+                            values:
+                              affinity: <@ additionalinput.affinity | default({}) | tojson @>
+                              autoscaling:
+                                enabled: <@ additionalinput.autoscaling.enabled | default(false) | tojson @>
+                                maxReplicas: <@ additionalinput.autoscaling.maxReplicas | default(100) @>
+                                minReplicas: <@ additionalinput.autoscaling.minReplicas | default(1) @>
+                                targetCPUUtilizationPercentage: <@ additionalinput.autoscaling.targetCPUUtilizationPercentage | default(80) @>
+                              global:
+                                containerRegistry:
+                                  overrideTag: <@ additionalinput.global.containerRegistry.overrideTag | default("bb9b779") @>
+                                  path: <@ additionalinput.global.containerRegistry.path | default("ghcr.io/capactio") @>
+                              helmReleaseBackend:
+                                enabled: <@ additionalinput.helmReleaseBackend.enabled | default(true) | tojson @>
+                                service:
+                                  port: <@ additionalinput.helmReleaseBackend.service.port | default(50051) @>
+                                  type: <@ additionalinput.helmReleaseBackend.service.type | default("ClusterIP") @>
+                              helmTemplateBackend:
+                                enabled: <@ additionalinput.helmTemplateBackend.enabled | default(true) | tojson @>
+                                service:
+                                  port: <@ additionalinput.helmTemplateBackend.service.port | default(50052) @>
+                                  type: <@ additionalinput.helmTemplateBackend.service.type | default("ClusterIP") @>
+                              image:
+                                name: <@ additionalinput.image.name | default("helm-storage-backend") @>
+                                pullPolicy: <@ additionalinput.image.pullPolicy | default("IfNotPresent") @>
+                              imagePullSecrets: <@ additionalinput.imagePullSecrets | default([]) | tojson @>
+                              nodeSelector: <@ additionalinput.nodeSelector | default({}) | tojson @>
+                              podAnnotations: <@ additionalinput.podAnnotations | default({}) | tojson @>
+                              podSecurityContext: <@ additionalinput.podSecurityContext | default({}) | tojson @>
+                              replicaCount: <@ additionalinput.replicaCount | default(1) @>
+                              resources:
+                                limits:
+                                  cpu: <@ additionalinput.resources.limits.cpu | default("100m") @>
+                                  memory: <@ additionalinput.resources.limits.memory | default("32Mi") @>
+                                requests:
+                                  cpu: <@ additionalinput.resources.requests.cpu | default("30m") @>
+                                  memory: <@ additionalinput.resources.requests.memory | default("16Mi") @>
+                              securityContext: <@ additionalinput.securityContext | default({}) | tojson @>
+                              tolerations: <@ additionalinput.tolerations | default([]) | tojson @>
+                            output:
+                              goTemplate: |
+                                releaseSvcUrl: '{{ include "helm-storage-backend.fullname" . }}-release.{{ .Release.Namespace }}:{{ .Values.helmReleaseBackend.service.port }}'
+                                templateSvcUrl: '{{ include "helm-storage-backend.fullname" . }}-template.{{ .Release.Namespace }}:{{ .Values.helmTemplateBackend.service.port }}'
+
+              - - name: helm-install
+                  capact-action: helm.install
+                  capact-outputTypeInstances:
+                    - name: helm-release
+                      from: helm-release
+                  arguments:
+                    artifacts:
+                      - name: input-parameters
+                        from: "{{steps.create-helm-args.outputs.artifacts.render}}"
+                      - name: runner-context
+                        from: "{{workflow.outputs.artifacts.runner-context}}"
+
+              - - name: render-output-script
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: template
+                        raw:
+                          data: |
+                            #!/bin/sh                            
+
+                            set -e
+                            
+                            cat << EOF > /tmp/helm-release
+                            url: "<@ releaseSvcUrl @>"
+                            acceptValue: false
+                            contextSchema: |-
+                              {
+                                "\$schema": "http://json-schema.org/draft-07/schema",
+                                "type": "object",
+                                "required": [
+                                  "name",
+                                  "namespace",
+                                  "chartLocation"
+                                ],
+                                "properties": {
+                                  "name": {
+                                    "\$id": "#/properties/context/properties/name",
+                                    "type": "string"
+                                  },
+                                  "namespace": {
+                                    "\$id": "#/properties/context/properties/namespace",
+                                    "type": "string"
+                                  },
+                                  "chartLocation": {
+                                    "\$id": "#/properties/context/properties/chartLocation",
+                                    "type": "string"
+                                  },
+                                  "driver": {
+                                    "\$id": "#/properties/context/properties/driver",
+                                    "type": "string",
+                                    "default": "secrets",
+                                    "enum": [
+                                      "secrets",
+                                      "configmaps",
+                                      "sql"
+                                    ]
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            EOF
+                            
+                            cat << EOF > /tmp/helm-template
+                            url: "<@ templateSvcUrl @>"
+                            acceptValue: false
+                            contextSchema: |-
+                              {
+                                "\$schema": "http://json-schema.org/draft-07/schema",
+                                "type": "object",
+                                "required": [
+                                  "goTemplate",
+                                  "release"
+                                ],
+                                "properties": {
+                                  "goTemplate": {
+                                    "\$id": "#/properties/context/properties/goTemplate",
+                                    "type": "string"
+                                  },
+                                  "release": {
+                                    "required": [
+                                      "name",
+                                      "namespace"
+                                    ],
+                                    "\$id": "#/properties/context/properties/release",
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                      "name": {
+                                        "\$id": "#/properties/context/properties/release/properties/name",
+                                        "type": "string"
+                                      },
+                                      "namespace": {
+                                        "\$id": "#/properties/context/properties/release/properties/namespace",
+                                        "type": "string"
+                                      },
+                                      "driver": {
+                                        "\$id": "#/properties/context/properties/release/properties/driver",
+                                        "type": "string",
+                                        "default": "secrets",
+                                        "enum": [
+                                          "secrets",
+                                          "configmaps",
+                                          "sql"
+                                        ]
+                                      }
+                                    }
+                                  }
+                                },
+                                "additionalProperties": false
+                              }
+                            EOF
+                            
+                            # To avoid rare "no such file or directory" errors
+                            # See also: https://github.com/argoproj/argo-workflows/issues/1256
+                            sleep 1
+                      - name: input-parameters
+                        from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                      - name: configuration
+                        raw:
+                          data: ""
+
+              - - name: produce-output
+                  template: produce-output-tmpl
+                  capact-outputTypeInstances:
+                    - name: helm-release-storage
+                      from: helm-release
+                    - name: helm-template-storage
+                      from: helm-template
+                  arguments:
+                    artifacts:
+                      - name: script
+                        from: "{{steps.render-output-script.outputs.artifacts.render}}"
+
+          - name: produce-output-tmpl
+            inputs:
+              artifacts:
+                - name: script
+                  path: /script
+                  mode: 0755
+            outputs:
+              artifacts:
+                - name: helm-release
+                  path: /tmp/helm-release
+                - name: helm-template
+                  path: /tmp/helm-template
+            container:
+              image: alpine:3.7
+              command: [ sh ]
+              args:
+                - "{{inputs.artifacts.script.path}}"
+
+          - name: prepare-parameters
+            inputs:
+              artifacts:
+                - name: input-parameters
+                  path: /yamls/input.yaml
+                - name: additional-parameters
+                  path: /yamls/additionalinput.yaml
+                  optional: true
+            container:
+              image: ghcr.io/capactio/pr/infra/merger:PR-428
+            outputs:
+              artifacts:
+                - name: merged
+                  path: /merged.yaml

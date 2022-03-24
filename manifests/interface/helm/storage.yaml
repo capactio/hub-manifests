@@ -1,0 +1,15 @@
+ocfVersion: 0.0.1
+revision: 0.1.0
+kind: InterfaceGroup
+metadata:
+  prefix: "cap.interface.helm"
+  name: "storage"
+  displayName: "Helm Storage"
+  description: "Interfaces for Helm Storage"
+  documentationURL: https://capact.io/docs
+  supportURL: https://helm.sh/
+  iconURL: https://storage.googleapis.com/dashboard-icons/helm.svg
+  maintainers:
+    - email: team-dev@capact.io
+      name: Capact Dev Team
+      url: https://capact.io
