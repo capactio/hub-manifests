@@ -118,7 +118,7 @@ spec:
                               username: superuser
                             defaultDBName: postgres
 
-              # TODO: Make PostgreSQL TypeInstance dynamic and ensure
+              # TODO: Make PostgreSQL config TypeInstance dynamic and ensure it can be used in umbrella workflow
 
               - - name: create-user
                   capact-action: postgresql.create-user

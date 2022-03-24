@@ -51,9 +51,10 @@ spec:
         - name: cap.type.helm.release.storage
           revision: 0.1.0
           alias: helm-release-storage
-        - name: cap.type.helm.template.storage
-          revision: 0.1.0
-          alias: helm-template-storage
+# TODO: Uncomment once dynamic TypeInstances are supported in umbrella workflow
+#        - name: cap.type.helm.template.storage
+#          revision: 0.1.0
+#          alias: helm-template-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.helm

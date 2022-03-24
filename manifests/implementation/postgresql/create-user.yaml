@@ -76,8 +76,9 @@ spec:
 
 
                             cat <<EOF > /user.yaml
-                            name: <@ input.name @>
-                            password: <@ password @>
+                            value:
+                              name: <@ input.name @>
+                              password: <@ password @>
                             EOF
                             sync
                       - name: input-parameters
