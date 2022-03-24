@@ -225,7 +225,7 @@ spec:
                         from: "{{steps.terraform-apply.outputs.artifacts.additional}}"
                       - name: configuration
                         raw:
-                          data: ""
+                          data: "unpackValue: true"
                       - name: template
                         raw:
                           data: |
@@ -247,7 +247,7 @@ spec:
                         from: "{{steps.terraform-apply.outputs.artifacts.additional}}"
                       - name: configuration
                         raw:
-                          data: ""
+                          data: "unpackValue: true"
                       - name: template
                         raw:
                           data: |

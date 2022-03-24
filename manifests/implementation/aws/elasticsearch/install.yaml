@@ -411,6 +411,7 @@ spec:
                       - name: configuration
                         raw:
                           data: |
+                            unpackValue: true
                             prefix: input
                       - name: template
                         raw:

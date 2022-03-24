@@ -137,7 +137,7 @@ spec:
                         from: "{{steps.create-user.outputs.artifacts.user}}"
                       - name: configuration
                         raw:
-                          data: |
+                          data: "unpackValue: true"
 
               - - name: create-db
                   capact-action: postgresql.create-db
