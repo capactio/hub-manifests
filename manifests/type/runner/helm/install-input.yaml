@@ -34,13 +34,19 @@ spec:
               "postgresqlPassword": "s3cr3t"
             },
             "output": {
-              "goTemplate": {
-                "host": "{{ template \"postgresql.primary.fullname\" . }}",
-                "port": "{{ template \"postgresql.port\" . }}",
-                "defaultDBName": "{{ template \"postgresql.database\" . }}",
-                "superuser": {
-                  "username": "{{ template \"postgresql.username\" . }}",
-                  "password": "{{ template \"postgresql.password\" . }}"
+              "helmRelease": {
+                "useHelmReleaseStorage": true
+              },
+              "additional": {
+                "useHelmTemplateStorage": true,
+                "goTemplate": {
+                  "host": "{{ template \"postgresql.primary.fullname\" . }}",
+                  "port": "{{ template \"postgresql.port\" . }}",
+                  "defaultDBName": "{{ template \"postgresql.database\" . }}",
+                  "superuser": {
+                    "username": "{{ template \"postgresql.username\" . }}",
+                    "password": "{{ template \"postgresql.password\" . }}"
+                  }
                 }
               }
             }
@@ -116,19 +122,54 @@ spec:
           "output": {
             "$id": "#/properties/output",
             "type": "object",
-            "title": "The parameters for output files",
+            "title": "The parameters for outputs",
             "additionalProperties": false,
-            "required": [
-              "goTemplate"
-            ],
             "properties": {
               "goTemplate": {
                 "$id": "#/properties/output/properties/goTemplate",
-                "type": "object",
-                "title": "Defines additional data to extract from Helm release and save as additional output. Support Go template syntax.",
+                "type": "string",
+                "title": "Deprecated: Use additional.goTemplate instead. Defines additional data to extract from Helm release and save as additional output. Support Go template syntax.",
                 "additionalProperties": true
+              },
+              "helmRelease": {
+                "$id": "#/properties/output/properties/helmRelease",
+                "type": "object",
+                "title": "The parameters for Helm Release output",
+                "additionalProperties": false,
+                "properties": {
+                  "useHelmReleaseStorage": {
+                    "$id": "#/properties/output/properties/helmRelease/properties/useHelmReleaseStorage",
+                    "type": "boolean",
+                    "title": "Specifies whether to use Helm Release storage",
+                    "default": false
+                  }
+                }
+              },
+              "additional": {
+                "$id": "#/properties/output/properties/additional",
+                "type": "object",
+                "title": "The parameters for additional output",
+                "required": [
+                  "goTemplate"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "useHelmTemplateStorage": {
+                    "$id": "#/properties/output/properties/additional/properties/useHelmTemplateStorage",
+                    "type": "boolean",
+                    "title": "Specifies whether to use Helm Template storage",
+                    "default": false
+                  },
+                  "goTemplate": {
+                    "$id": "#/properties/output/properties/additional/properties/goTemplate",
+                    "type": "string",
+                    "title": "Defines additional data to extract from Helm release and save as additional output. Support Go template syntax.",
+                    "additionalProperties": true
+                  }
+                }
               }
             }
           }
         }
       }
+      
