@@ -40,7 +40,7 @@ spec:
                 "version": {
                   "$id": "#/properties/version",
                   "description": "Version",
-                  "default": "0.6.0-bb9b779",
+                  "default": "0.6.0-bf8d006",
                   "$ref": "#/definitions/semVer"
                 }
               },
