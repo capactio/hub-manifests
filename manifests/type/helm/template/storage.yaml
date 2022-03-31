@@ -17,7 +17,6 @@ spec:
   additionalRefs:
     - cap.core.type.hub.storage
   jsonSchema:
-    # TODO: Change globally `contextSchema` to object
     value: |-
       {
         "$schema": "http://json-schema.org/draft-07/schema",
@@ -35,7 +34,50 @@ spec:
             "format": "uri"
           },
           "contextSchema": {
-            "const": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema\",\n  \"type\": \"object\",\n  \"required\": [\n    \"goTemplate\",\n    \"release\"\n  ],\n  \"properties\": {\n    \"goTemplate\": {\n      \"$id\": \"#/properties/context/properties/goTemplate\",\n      \"type\": \"string\"\n    },\n    \"release\": {\n      \"required\": [\n        \"name\",\n        \"namespace\"\n      ],\n      \"$id\": \"#/properties/context/properties/release\",\n      \"type\": \"object\",\n      \"additionalProperties\": false,\n      \"properties\": {\n        \"name\": {\n          \"$id\": \"#/properties/context/properties/release/properties/name\",\n          \"type\": \"string\"\n        },\n        \"namespace\": {\n          \"$id\": \"#/properties/context/properties/release/properties/namespace\",\n          \"type\": \"string\"\n        },\n        \"driver\": {\n          \"$id\": \"#/properties/context/properties/release/properties/driver\",\n          \"type\": \"string\",\n          \"default\": \"secrets\",\n          \"enum\": [\n            \"secrets\",\n            \"configmaps\",\n            \"sql\"\n          ]\n        }\n      }\n    }\n  },\n  \"additionalProperties\": false\n}"
+            "const": {
+              "$schema": "http://json-schema.org/draft-07/schema",
+              "type": "object",
+              "required": [
+                "goTemplate",
+                "release"
+              ],
+              "properties": {
+                "goTemplate": {
+                  "$id": "#/properties/context/properties/goTemplate",
+                  "type": "string"
+                },
+                "release": {
+                  "required": [
+                    "name",
+                    "namespace"
+                  ],
+                  "$id": "#/properties/context/properties/release",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "$id": "#/properties/context/properties/release/properties/name",
+                      "type": "string"
+                    },
+                    "namespace": {
+                      "$id": "#/properties/context/properties/release/properties/namespace",
+                      "type": "string"
+                    },
+                    "driver": {
+                      "$id": "#/properties/context/properties/release/properties/driver",
+                      "type": "string",
+                      "default": "secrets",
+                      "enum": [
+                        "secrets",
+                        "configmaps",
+                        "sql"
+                      ]
+                    }
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
           },
           "acceptValue": {
             "$id": "#/properties/acceptValue",
