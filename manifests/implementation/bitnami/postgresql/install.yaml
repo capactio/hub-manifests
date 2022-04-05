@@ -51,10 +51,9 @@ spec:
         - name: cap.type.helm.release.storage
           revision: 0.1.0
           alias: helm-release-storage
-# TODO: Uncomment once dynamic TypeInstances are supported in umbrella workflow
-#        - name: cap.type.helm.template.storage
-#          revision: 0.1.0
-#          alias: helm-template-storage
+        - name: cap.type.helm.template.storage
+          revision: 0.1.0
+          alias: helm-template-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.helm
@@ -88,7 +87,7 @@ spec:
             outputs:
               artifacts:
                 - name: postgresql
-                  from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                  from: "{{steps.resolve-ti-value.outputs.artifacts.ti-artifact}}"
             steps:
               - - name: create-helm-args
                   capact-action: jinja2.template
@@ -115,7 +114,7 @@ spec:
                               helmRelease:
                                 useHelmReleaseStorage: true
                               additional:
-                                useHelmTemplateStorage: false # TODO: Toggle to true and make sure it can be reused in umbrella workflows
+                                useHelmTemplateStorage: true
                                 goTemplate: |
                                   host: '{{ template "common.names.fullname" . }}.{{ .Release.Namespace }}'
                                   port: {{ template "postgresql.port" . }}
@@ -131,9 +130,6 @@ spec:
               - - name: helm-install
                   capact-action: helm.install
                   capact-outputTypeInstances: # Defines which artifacts are output TypeInstances
-                    - name: postgresql
-                      from: additional
-                      backend: helm-template-storage
                     - name: psql-helm-release
                       from: helm-release
                       backend: helm-release-storage
@@ -149,3 +145,39 @@ spec:
                       - name: kubeconfig
                         from: "{{inputs.artifacts.kubeconfig}}"
                         optional: true
+
+              - - name: resolve-ti-value
+                  template: resolve-ti-art-value
+                  capact-outputTypeInstances:
+                    - name: postgresql
+                      from: ti-artifact
+                      backend: helm-template-storage
+                  arguments:
+                    artifacts:
+                      - name: ti-artifact
+                        from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                      - name: backend
+                        from: "{{workflow.outputs.artifacts.helm-template-storage}}"
+
+          # TODO: PoC - create a proper container
+          - name: resolve-ti-art-value
+            inputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /ti.yaml
+                - name: backend
+                  path: /backend.yaml
+            outputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /ti.yaml              
+            container:
+              image: alpine:latest
+              command: [ "sh", "-c" ]
+              args: [ "
+                  echo 'cat /ti.yaml' &&
+                  cat /ti.yaml || true &&
+                  echo 'cat /backend.yaml' &&
+                  cat /backend.yaml || true &&
+                  sleep 2 && echo 'value: foo' >> /ti.yaml && exit 0
+                 " ]
