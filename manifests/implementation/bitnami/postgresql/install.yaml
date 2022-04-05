@@ -87,7 +87,7 @@ spec:
             outputs:
               artifacts:
                 - name: postgresql
-                  from: "{{steps.resolve-ti-value.outputs.artifacts.ti-artifact}}"
+                  from: "{{steps.resolve-psql-value.outputs.artifacts.ti-artifact}}"
             steps:
               - - name: create-helm-args
                   capact-action: jinja2.template
@@ -129,10 +129,6 @@ spec:
 
               - - name: helm-install
                   capact-action: helm.install
-                  capact-outputTypeInstances: # Defines which artifacts are output TypeInstances
-                    - name: psql-helm-release
-                      from: helm-release
-                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
@@ -146,7 +142,8 @@ spec:
                         from: "{{inputs.artifacts.kubeconfig}}"
                         optional: true
 
-              - - name: resolve-ti-value
+              # allows reusing this workflow as a part of other umbrella workflows and read the artifact value
+              - - name: resolve-psql-value
                   template: resolve-ti-art-value
                   capact-outputTypeInstances:
                     - name: postgresql
@@ -159,25 +156,40 @@ spec:
                       - name: backend
                         from: "{{workflow.outputs.artifacts.helm-template-storage}}"
 
-          # TODO: PoC - create a proper container
+              # allows reusing this workflow as a part of other umbrella workflows and read the artifact value
+              - - name: resolve-helm-rel-value
+                  template: resolve-ti-art-value
+                  capact-outputTypeInstances:
+                    - name: psql-helm-release
+                      from: ti-artifact
+                      backend: helm-release-storage
+                  arguments:
+                    artifacts:
+                      - name: ti-artifact
+                        from: "{{steps.helm-install.outputs.artifacts.helm-release}}"
+                      - name: backend
+                        from: "{{workflow.outputs.artifacts.helm-release-storage}}"
+
           - name: resolve-ti-art-value
             inputs:
               artifacts:
                 - name: ti-artifact
-                  path: /ti.yaml
+                  path: /tmp/input-ti.yaml
                 - name: backend
-                  path: /backend.yaml
+                  path: /tmp/storage-backend.yaml
             outputs:
               artifacts:
                 - name: ti-artifact
-                  path: /ti.yaml              
+                  path: /tmp/output.yaml
             container:
-              image: alpine:latest
-              command: [ "sh", "-c" ]
-              args: [ "
-                  echo 'cat /ti.yaml' &&
-                  cat /ti.yaml || true &&
-                  echo 'cat /backend.yaml' &&
-                  cat /backend.yaml || true &&
-                  sleep 2 && echo 'value: foo' >> /ti.yaml && exit 0
-                 " ]
+              image: ghcr.io/capactio/pr/ti-value-fetcher:PR-697
+              env:
+                - name: APP_LOGGER_DEV_MODE
+                  value: "true"
+                - name: APP_INPUT_TI_FILE_PATH
+                  value: "{{inputs.artifacts.ti-artifact.path}}"
+                - name: APP_INPUT_BACKEND_TI_FILE_PATH
+                  value: "{{inputs.artifacts.backend.path}}"
+                - name: APP_OUTPUT_FILE_PATH
+                  value: "{{outputs.artifacts.ti-artifact.path}}"
+
