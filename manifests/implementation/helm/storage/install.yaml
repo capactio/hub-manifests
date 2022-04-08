@@ -180,8 +180,7 @@ spec:
                             value:
                               url: "<@ releaseSvcUrl @>"
                               acceptValue: false
-                              contextSchema: |-
-                                {
+                              contextSchema: {
                                   "\$schema": "http://json-schema.org/draft-07/schema",
                                   "type": "object",
                                   "required": [
@@ -221,8 +220,7 @@ spec:
                             value:
                               url: "<@ templateSvcUrl @>"
                               acceptValue: false
-                              contextSchema: |-
-                                {
+                              contextSchema: {
                                   "\$schema": "http://json-schema.org/draft-07/schema",
                                   "type": "object",
                                   "required": [
