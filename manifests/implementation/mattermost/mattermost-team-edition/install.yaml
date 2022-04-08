@@ -109,6 +109,7 @@ spec:
                   capact-outputTypeInstances:
                     - name: postgresql
                       from: postgresql
+                      backend: helm-template-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
@@ -463,6 +464,10 @@ spec:
 
               - - name: helm-install
                   capact-action: helm.install
+                  capact-outputTypeInstances:
+                    - name: mattermost-helm-release
+                      from: helm-release
+                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
@@ -483,20 +488,6 @@ spec:
                         from: "{{steps.helm-install.outputs.artifacts.additional}}"
                       - name: backend
                         from: "{{workflow.outputs.artifacts.helm-template-storage}}"
-
-              # allows reusing this workflow as a part of other umbrella workflows and read the artifact value
-              - - name: resolve-helm-rel-value
-                  template: resolve-ti-art-value
-                  capact-outputTypeInstances:
-                    - name: mattermost-helm-release
-                      from: ti-artifact
-                      backend: helm-release-storage
-                  arguments:
-                    artifacts:
-                      - name: ti-artifact
-                        from: "{{steps.helm-install.outputs.artifacts.helm-release}}"
-                      - name: backend
-                        from: "{{workflow.outputs.artifacts.helm-release-storage}}"
 
           - name: prepare-parameters
             inputs:
