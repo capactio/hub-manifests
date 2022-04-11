@@ -15,6 +15,7 @@ metadata:
 
 spec:
   jsonSchema:
+    # TODO(https://github.com/capactio/capact/issues/666): Remove output.useHelmTemplateStorage - detect input TypeInstance in Helm Runner and output the same shape
     value: |-
       {
         "$schema": "http://json-schema.org/draft-07/schema",
