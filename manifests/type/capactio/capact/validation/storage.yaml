@@ -23,6 +23,7 @@ spec:
         "title": "The root schema for Capact Validation Local Hub storage",
         "required": [
           "url",
+          "acceptValue",
           "contextSchema"
         ],
         "properties":{
