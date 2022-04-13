@@ -16,96 +16,100 @@ spec:
   jsonSchema:
     value: |-
       {
-        "$schema":"http://json-schema.org/draft-07/schema",
-        "type":"object",
-        "title":"The generic storage backend schema",
-        "required":[
+        "$schema": "http://json-schema.org/draft-07/schema",
+        "type": "object",
+        "title": "The generic storage backend schema",
+        "required": [
           "required",
           "properties",
           "additionalProperties"
         ],
-        "properties":{
-          "required":{
-            "$id":"#/properties/required",
-            "type":"array",
-            "minItems":3,
-            "allOf":[
+        "properties": {
+          "required": {
+            "$id": "#/properties/required",
+            "type": "array",
+            "maxItems": 3,
+            "allOf": [
               {
-                "contains":{
-                  "const":"url"
+                "contains": {
+                  "const": "url"
                 }
               },
               {
-                "contains":{
-                  "const":"acceptValue"
+                "contains": {
+                  "const": "acceptValue"
                 }
               },
               {
-                "contains":{
-                  "const":"contextSchema"
+                "contains": {
+                  "const": "contextSchema"
                 }
               }
             ]
           },
-          "properties":{
-            "$id":"#/properties/properties",
-            "type":"object",
-            "minProperties":3,
-            "maxProperties":3,
-            "properties":{
-              "url":{
-                "type":"object",
-                "properties":{
-                  "type":{
-                    "const":"string"
+          "properties": {
+            "$id": "#/properties/properties",
+            "type": "object",
+            "required": [
+              "contextSchema",
+              "url",
+              "acceptValue"
+            ],
+            "properties": {
+              "url": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "string"
                   }
                 },
-                "required":[
+                "required": [
                   "type"
                 ]
               },
-              "contextSchema":{
-                "type":"object",
-                "oneOf":[
+              "contextSchema": {
+                "type": "object",
+                "oneOf": [
                   {
-                    "properties":{
-                      "const":{
-                        "type":"object"
+                    "properties": {
+                      "const": {
+                        "type": "object"
                       }
                     },
-                    "required":[
+                    "required": [
                       "const"
                     ]
                   },
                   {
-                    "properties":{
-                      "type":{
-                        "const":"null"
+                    "properties": {
+                      "type": {
+                        "const": "null"
                       }
                     },
-                    "required":[
+                    "required": [
                       "type",
                       "const"
                     ]
                   }
                 ]
               },
-              "acceptValue":{
-                "type":"object",
-                "properties":{
-                  "type":{
-                    "const":"boolean"
+              "acceptValue": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "const": "boolean"
                   }
                 },
-                "required":[
+                "required": [
                   "type",
                   "const"
                 ]
               }
-            }
+            },
+            "additionalProperties": false
           },
-          "additionalProperties":{
-            "const":false
+          "additionalProperties": {
+            "const": false
           }
         }
       }
