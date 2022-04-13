@@ -51,10 +51,9 @@ spec:
         - name: cap.type.helm.release.storage
           revision: 0.1.0
           alias: helm-release-storage
-# TODO: Uncomment once dynamic TypeInstances are supported in umbrella workflow
-#        - name: cap.type.helm.template.storage
-#          revision: 0.1.0
-#          alias: helm-template-storage
+        - name: cap.type.helm.template.storage
+          revision: 0.1.0
+          alias: helm-template-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.helm
@@ -88,7 +87,7 @@ spec:
             outputs:
               artifacts:
                 - name: postgresql
-                  from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                  from: "{{steps.resolve-psql-value.outputs.artifacts.ti-artifact}}"
             steps:
               - - name: create-helm-args
                   capact-action: jinja2.template
@@ -115,7 +114,7 @@ spec:
                               helmRelease:
                                 useHelmReleaseStorage: true
                               additional:
-                                useHelmTemplateStorage: false # TODO: Toggle to true and make sure it can be reused in umbrella workflows
+                                useHelmTemplateStorage: true
                                 goTemplate: |
                                   host: '{{ template "common.names.fullname" . }}.{{ .Release.Namespace }}'
                                   port: {{ template "postgresql.port" . }}
@@ -130,10 +129,7 @@ spec:
 
               - - name: helm-install
                   capact-action: helm.install
-                  capact-outputTypeInstances: # Defines which artifacts are output TypeInstances
-                    - name: postgresql
-                      from: additional
-                      backend: helm-template-storage
+                  capact-outputTypeInstances:
                     - name: psql-helm-release
                       from: helm-release
                       backend: helm-release-storage
@@ -149,3 +145,41 @@ spec:
                       - name: kubeconfig
                         from: "{{inputs.artifacts.kubeconfig}}"
                         optional: true
+
+              # allows reusing this workflow as a part of other umbrella workflows and read the artifact value
+              - - name: resolve-psql-value
+                  template: resolve-ti-art-value
+                  capact-outputTypeInstances:
+                    - name: postgresql
+                      from: ti-artifact
+                      backend: helm-template-storage
+                  arguments:
+                    artifacts:
+                      - name: ti-artifact
+                        from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                      - name: backend
+                        from: "{{workflow.outputs.artifacts.helm-template-storage}}"
+
+          - name: resolve-ti-art-value
+            inputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /tmp/input-ti.yaml
+                - name: backend
+                  path: /tmp/storage-backend.yaml
+            outputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /tmp/output.yaml
+            container:
+              image: ghcr.io/capactio/ti-value-fetcher:2ada6f8
+              env:
+                - name: APP_LOGGER_DEV_MODE
+                  value: "true"
+                - name: APP_INPUT_TI_FILE_PATH
+                  value: "{{inputs.artifacts.ti-artifact.path}}"
+                - name: APP_INPUT_BACKEND_TI_FILE_PATH
+                  value: "{{inputs.artifacts.backend.path}}"
+                - name: APP_OUTPUT_FILE_PATH
+                  value: "{{outputs.artifacts.ti-artifact.path}}"
+

@@ -15,6 +15,7 @@ metadata:
 
 spec:
   jsonSchema:
+    # TODO(https://github.com/capactio/capact/issues/666): Remove output.useHelmTemplateStorage and use env in Helm Runner instead - as we have two Implementations.
     value: |-
       {
         "$schema": "http://json-schema.org/draft-07/schema",
