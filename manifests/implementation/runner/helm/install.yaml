@@ -122,7 +122,7 @@ spec:
               - name: tmp
                 emptyDir: { }
             container:
-              image: ghcr.io/capactio/pr/helm-runner:PR-686
+              image: ghcr.io/capactio/helm-runner:2ada6f8
               env:
                 - name: RUNNER_OPTIONAL_KUBECONFIG_TI
                   value: "{{inputs.artifacts.kubeconfig.path}}"
@@ -154,7 +154,7 @@ spec:
                 - name: ti-artifact
                   path: /tmp/output.yaml
             container:
-              image: ghcr.io/capactio/pr/ti-value-fetcher:PR-697
+              image: ghcr.io/capactio/ti-value-fetcher:2ada6f8
               env:
                 - name: APP_LOGGER_DEV_MODE
                   value: "true"
