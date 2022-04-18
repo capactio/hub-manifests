@@ -132,7 +132,6 @@ spec:
                   capact-outputTypeInstances:
                     - name: psql-helm-release
                       from: helm-release
-                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
