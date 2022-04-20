@@ -416,7 +416,7 @@ spec:
                       - name: template
                         raw:
                           data: |
-                            version: <@ input.elasticsearch_version @>
+                            version: "<@ input.elasticsearch_version @>"
                             protocol: "https"
                             host: "<@ input.endpoint @>"
                             port: 443

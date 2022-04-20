@@ -246,7 +246,7 @@ spec:
                         raw:
                           data: |
                             password: "<@ elasticache_auth_token @>"
-                            port: "<@ elasticache_port @>"
+                            port: <@ elasticache_port @>
                             host: "<@ elasticache_replication_group_primary_endpoint_address @>"
 
           - name: prepare-parameters

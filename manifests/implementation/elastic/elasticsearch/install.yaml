@@ -148,17 +148,21 @@ spec:
                                     - path: '/'
                               <% endif %>
                             output:
-                              goTemplate: |
-                                version: "{{ .Values.imageTag }}"
-                              <% if host %>
-                                host: "{{ (index .Values.ingress.hosts 0).host }}"
-                                port: 80
-                              <% else %>
-                                host: "{{ template "elasticsearch.masterService" . }}.{{ .Release.Namespace }}"
-                                port: "{{ .Values.httpPort }}"
-                              <% endif %>
-                                basicAuthSecretName: <@ metadata.name @>
-                                protocol: "http"
+                              helmRelease:
+                                useHelmReleaseStorage: false
+                              additional:
+                                useHelmTemplateStorage: false
+                                goTemplate: |
+                                  version: "{{ .Values.imageTag }}"
+                                <% if host %>
+                                  host: "{{ (index .Values.ingress.hosts 0).host }}"
+                                  port: 80
+                                <% else %>
+                                  host: "{{ template "elasticsearch.masterService" . }}.{{ .Release.Namespace }}"
+                                  port: "{{ .Values.httpPort }}"
+                                <% endif %>
+                                  basicAuthSecretName: <@ metadata.name @>
+                                  protocol: "http"
 
                       - name: input-parameters
                         from:  "{{inputs.artifacts.input-parameters}}"
