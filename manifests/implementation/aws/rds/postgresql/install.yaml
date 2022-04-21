@@ -186,7 +186,7 @@ spec:
                             - AWS_ACCESS_KEY_ID=<@ aws.accessKeyID @>
                             - AWS_SECRET_ACCESS_KEY=<@ aws.secretAccessKey @>
                             output:
-                              goTemplate:
+                              goTemplate: |
                                 host: "{{ .instance_ip_addr }}"
                                 port: {{ .port }}
                                 defaultDBName: "{{ .defaultDBName }}"

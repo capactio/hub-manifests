@@ -99,7 +99,7 @@ spec:
                             - GOOGLE_PROJECT=<@ gcp.project_id @>
                             - GOOGLE_APPLICATION_CREDENTIALS=/additional
                             output:
-                              goTemplate:
+                              goTemplate: |
                                 host: "{{ .instance_ip_addr }}"
                                 port: 5432
                                 defaultDBName: postgres

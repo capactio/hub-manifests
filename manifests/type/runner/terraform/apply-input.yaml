@@ -124,9 +124,8 @@ spec:
                 "properties": {
                   "goTemplate": {
                     "$id": "#/properties/args/properties/output/properties/goTemplate",
-                    "type": "object",
-                    "title": "The shape for additional output file defined with support for Go template syntax",
-                    "additionalProperties": true
+                    "type": "string",
+                    "title": "The shape for additional output file defined with support for Go template syntax"
                   }
                 }
               }

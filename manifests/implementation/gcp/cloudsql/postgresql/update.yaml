@@ -111,7 +111,7 @@ spec:
                             - GOOGLE_PROJECT=<@ gcp.project_id @>
                             - GOOGLE_APPLICATION_CREDENTIALS=/additional
                             output:
-                              goTemplate:
+                              goTemplate: |
                                 host: "{{ .instance_ip_addr }}"
                                 port: <@ postgresql.port @>
                                 defaultDBName: <@ postgresql.defaultDBName @>
@@ -168,7 +168,7 @@ spec:
                   path: /yamls/input.yaml
                 - name: gcp
                   path: /yamls/gcp.yaml
-                - name: release 
+                - name: release
                   path: /yamls/release.yaml
                 - name: postgresql
                   path: /yamls/postgresql.yaml

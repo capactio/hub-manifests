@@ -109,7 +109,7 @@ spec:
                               - AWS_SECRET_ACCESS_KEY=<@ providercredentials.secretAccessKey @>
                               - AWS_DEFAULT_REGION=<@ additionalinput.region | default('eu-west-1') @>
                             output:
-                              goTemplate:
+                              goTemplate: |
                                 elasticache_auth_token: "{{ .elasticache_auth_token }}"
                                 elasticache_parameter_group_id: "{{ .elasticache_parameter_group_id }}"
                                 elasticache_port: "{{ .elasticache_port }}"
