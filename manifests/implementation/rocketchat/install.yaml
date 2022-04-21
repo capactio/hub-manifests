@@ -99,6 +99,7 @@ spec:
               - - name: install-db
                   capact-when: mongodb == nil # conditional execution
                   capact-action: mongodb.install
+                  # Affected by https://github.com/capactio/capact/issues/705
                   capact-outputTypeInstances:
                     - name: mongodb
                       from: mongodb
@@ -252,9 +253,14 @@ spec:
                                 successThreshold: <@ additionalinput.readinessProbe.successThreshold | default(1) @>
 
                             output:
-                              goTemplate: |
-                                host: "{{ .Values.host }}"
-                                version: "{{ .Values.image.tag }}"
+                              helmRelease:
+                                useHelmReleaseStorage: true
+                              additional:
+                                useHelmTemplateStorage: true
+                                goTemplate: |
+                                  host: "{{ .Values.host }}"
+                                  version: "{{ .Values.image.tag }}"
+
                       - name: input-parameters
                         from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
