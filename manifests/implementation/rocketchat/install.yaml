@@ -272,6 +272,8 @@ spec:
                   capact-outputTypeInstances:
                     - name: rocketchat-helm-release
                       from: helm-release
+                      # Affected by https://github.com/capactio/capact/issues/705
+                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
