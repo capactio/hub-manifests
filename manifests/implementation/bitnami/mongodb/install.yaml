@@ -51,6 +51,14 @@ spec:
       oneOf:
         - name: kubernetes
           revision: 0.1.0
+    cap.core.type.hub.storage:
+      allOf:
+        - name: cap.type.helm.release.storage
+          revision: 0.1.0
+          alias: helm-release-storage
+        - name: cap.type.helm.template.storage
+          revision: 0.1.0
+          alias: helm-template-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.helm
@@ -86,7 +94,7 @@ spec:
             outputs:
               artifacts:
                 - name: mongodb
-                  from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                  from: "{{steps.resolve-value.outputs.artifacts.ti-artifact}}"
             steps:
               - - name: prepare-parameters
                   template: prepare-parameters
@@ -360,17 +368,22 @@ spec:
                                   rules: <@ additionalinput.metrics.prometheusRule.rules | default({}) @>
 
                             output:
-                              goTemplate: |
-                                replicas:
-                                {{- range $i := until (int .Values.replicaCount) }}
-                                  - '{{ include "mongodb.fullname" $ }}-{{ $i }}.{{ include "mongodb.fullname" $ }}-headless.{{ $.Release.Namespace }}.svc:{{ $.Values.service.port }}'
-                                {{- end }}
-                                replicaSetName: '{{ .Values.replicaSetName }}'
-                                defaultDBName: '{{ .Values.auth.database }}'
-                                rootPassword: '{{ .Values.auth.rootPassword }}'
-                                user:
-                                  username: '{{ .Values.auth.username }}'
-                                  password: '{{ .Values.auth.password }}'
+                              helmRelease:
+                                useHelmReleaseStorage: true
+                              additional:
+                                useHelmTemplateStorage: true
+                                goTemplate: |
+                                  replicas:
+                                  {{- range $i := until (int .Values.replicaCount) }}
+                                    - '{{ include "mongodb.fullname" $ }}-{{ $i }}.{{ include "mongodb.fullname" $ }}-headless.{{ $.Release.Namespace }}.svc:{{ $.Values.service.port }}'
+                                  {{- end }}
+                                  replicaSetName: '{{ .Values.replicaSetName }}'
+                                  defaultDBName: '{{ .Values.auth.database }}'
+                                  rootPassword: '{{ .Values.auth.rootPassword }}'
+                                  user:
+                                    username: '{{ .Values.auth.username }}'
+                                    password: '{{ .Values.auth.password }}'
+
                       - name: input-parameters
                         from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
@@ -380,10 +393,9 @@ spec:
               - - name: helm-install
                   capact-action: helm.install
                   capact-outputTypeInstances: # Defines which artifacts are output TypeInstances
-                    - name: mongodb
-                      from: additional
                     - name: mongo-helm-release
                       from: helm-release
+                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
@@ -396,6 +408,43 @@ spec:
                       - name: kubeconfig
                         from: "{{inputs.artifacts.kubeconfig}}"
                         optional: true
+
+              # allows reusing this workflow as a part of other umbrella workflows and read the artifact value
+              - - name: resolve-value
+                  template: resolve-ti-art-value
+                  capact-outputTypeInstances:
+                    - name: mongodb
+                      from: ti-artifact
+                      backend: helm-template-storage
+                  arguments:
+                    artifacts:
+                      - name: ti-artifact
+                        from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                      - name: backend
+                        from: "{{workflow.outputs.artifacts.helm-template-storage}}"
+
+          - name: resolve-ti-art-value
+            inputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /tmp/input-ti.yaml
+                - name: backend
+                  path: /tmp/storage-backend.yaml
+            outputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /tmp/output.yaml
+            container:
+              image: ghcr.io/capactio/ti-value-fetcher:2ada6f8
+              env:
+                - name: APP_LOGGER_DEV_MODE
+                  value: "true"
+                - name: APP_INPUT_TI_FILE_PATH
+                  value: "{{inputs.artifacts.ti-artifact.path}}"
+                - name: APP_INPUT_BACKEND_TI_FILE_PATH
+                  value: "{{inputs.artifacts.backend.path}}"
+                - name: APP_OUTPUT_FILE_PATH
+                  value: "{{outputs.artifacts.ti-artifact.path}}"
 
           - name: prepare-parameters
             inputs:

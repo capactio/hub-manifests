@@ -87,9 +87,6 @@ spec:
               - - name: install-db
                   capact-when: mongodb == nil # conditional execution
                   capact-action: mongodb.install
-                  capact-outputTypeInstances:
-                    - name: mongodb
-                      from: mongodb
                   arguments:
                     artifacts:
                       - name: input-parameters

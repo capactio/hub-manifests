@@ -77,7 +77,9 @@ spec:
                 - name: additional-parameters
                   optional: true
             outputs:
-              artifacts: []
+              artifacts:
+                - name: config
+                  from: "{{steps.resolve-value.outputs.artifacts.ti-artifact}}"
             steps:
               - - name: prepare-parameters
                   template: prepare-parameters
