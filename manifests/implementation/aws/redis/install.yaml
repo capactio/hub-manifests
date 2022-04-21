@@ -14,6 +14,9 @@ metadata:
       url: https://capact.io
   license:
     name: "Apache 2.0"
+  attributes:
+    cap.attribute.cloud.provider.aws:
+      revision: 0.1.0
 
 spec:
   appVersion: "6.2.x"
