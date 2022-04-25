@@ -119,6 +119,7 @@ spec:
                         raw:
                           data: |
                             prefix: gcp
+                            unpackValue: true
 
               - - name: convert-gcp-yaml-to-json
                   template: convert-yaml-to-json
