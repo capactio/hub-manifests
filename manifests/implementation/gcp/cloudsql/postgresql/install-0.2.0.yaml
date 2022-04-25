@@ -152,7 +152,7 @@ spec:
             container:
               image: ghcr.io/capactio/yq:4 # Original image: mikefarah/yq:4
               command: ["sh", "-c"]
-              args: ["sleep 1 && yq eval -j -i /file"]
+              args: ["sleep 1 && yq e '.value' -i /file && yq eval -j -i /file"]
             outputs:
               artifacts:
                 - name: out
