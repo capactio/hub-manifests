@@ -109,6 +109,8 @@ spec:
                   capact-outputTypeInstances:
                     - name: postgresql
                       from: postgresql
+                      # Affected by https://github.com/capactio/capact/issues/705
+                      # This needs to be removed to allow other non-Helm based Implementation
                       backend: helm-template-storage
                   arguments:
                     artifacts:
