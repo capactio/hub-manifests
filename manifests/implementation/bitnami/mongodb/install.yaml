@@ -395,6 +395,7 @@ spec:
                   capact-outputTypeInstances: # Defines which artifacts are output TypeInstances
                     - name: mongo-helm-release
                       from: helm-release
+                      # Affected by https://github.com/capactio/capact/issues/705
                       backend: helm-release-storage
                   arguments:
                     artifacts:
@@ -435,7 +436,7 @@ spec:
                 - name: ti-artifact
                   path: /tmp/output.yaml
             container:
-              image: ghcr.io/capactio/ti-value-fetcher:2ada6f8
+              image: ghcr.io/capactio/pr/ti-value-fetcher:PR-707
               env:
                 - name: APP_LOGGER_DEV_MODE
                   value: "true"
