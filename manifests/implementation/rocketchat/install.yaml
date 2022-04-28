@@ -99,10 +99,11 @@ spec:
               - - name: install-db
                   capact-when: mongodb == nil # conditional execution
                   capact-action: mongodb.install
-                  # Affected by https://github.com/capactio/capact/issues/705
                   capact-outputTypeInstances:
                     - name: mongodb
                       from: mongodb
+                      # Affected by https://github.com/capactio/capact/issues/705
+                      # This needs to be removed to allow other non-Helm based Implementation
                       backend: helm-template-storage
                   arguments:
                     artifacts:
