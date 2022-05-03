@@ -373,7 +373,7 @@ spec:
                             - AWS_ACCESS_KEY_ID=<@ aws.accessKeyID @>
                             - AWS_SECRET_ACCESS_KEY=<@ aws.secretAccessKey @>
                             output:
-                              goTemplate:
+                              goTemplate: |
                                 arn: "{{ .arn }}"
                                 domain_id: "{{ .domain_id }}"
                                 domain_name: "{{ .domain_name }}"
@@ -416,7 +416,7 @@ spec:
                       - name: template
                         raw:
                           data: |
-                            version: <@ input.elasticsearch_version @>
+                            version: "<@ input.elasticsearch_version @>"
                             protocol: "https"
                             host: "<@ input.endpoint @>"
                             port: 443

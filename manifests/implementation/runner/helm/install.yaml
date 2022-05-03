@@ -154,7 +154,7 @@ spec:
                 - name: ti-artifact
                   path: /tmp/output.yaml
             container:
-              image: ghcr.io/capactio/ti-value-fetcher:2ada6f8
+              image: ghcr.io/capactio/pr/ti-value-fetcher:PR-707
               env:
                 - name: APP_LOGGER_DEV_MODE
                   value: "true"

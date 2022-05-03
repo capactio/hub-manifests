@@ -27,7 +27,9 @@ spec:
           }
         ],
         "required": [
-           "name"
+           "endpoint",
+           "accesskey",
+           "secretkey"
         ],
         "properties": {
           "endpoint": {

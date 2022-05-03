@@ -122,7 +122,7 @@ spec:
                               ingress_rule_cidr_blocks = "<@ additionalinput.ingress_rule_cidr_blocks | default('0.0.0.0/0') @>"
                               tier = "<@ additionalinput.tier | default('db.t3.micro') @>"
                               publicly_accessible = <@ additionalinput.publicly_accessible | default(true) | tojson @>
-                              engine_version = "<@ additionalinput.engine_version | default('11.10') @>"
+                              engine_version = "<@ additionalinput.engine_version | default('11.15') @>"
                               major_engine_version = "<@ additionalinput.major_engine_version | default('11') @>"
                               performance_insights_enabled = <@ additionalinput.performance_insights_enabled | default(true) | tojson @>
 
@@ -186,7 +186,7 @@ spec:
                             - AWS_ACCESS_KEY_ID=<@ aws.accessKeyID @>
                             - AWS_SECRET_ACCESS_KEY=<@ aws.secretAccessKey @>
                             output:
-                              goTemplate:
+                              goTemplate: |
                                 host: "{{ .instance_ip_addr }}"
                                 port: {{ .port }}
                                 defaultDBName: "{{ .defaultDBName }}"

@@ -46,6 +46,14 @@ spec:
       oneOf:
         - name: kubernetes
           revision: 0.1.0
+    cap.core.type.hub.storage:
+      allOf:
+        - name: cap.type.helm.release.storage
+          revision: 0.1.0
+          alias: helm-release-storage
+        - name: cap.type.helm.template.storage
+          revision: 0.1.0
+          alias: helm-template-storage
 
   imports:
     - interfaceGroupPath: cap.interface.runner.argo
@@ -83,6 +91,10 @@ spec:
                   optional: true
                 - name: additional-parameters
                   optional: true
+            outputs:
+              artifacts:
+                - name: rocketchat-config
+                  from: "{{steps.resolve-value.outputs.artifacts.ti-artifact}}"
             steps:
               - - name: install-db
                   capact-when: mongodb == nil # conditional execution
@@ -90,6 +102,9 @@ spec:
                   capact-outputTypeInstances:
                     - name: mongodb
                       from: mongodb
+                      # Affected by https://github.com/capactio/capact/issues/705
+                      # This needs to be removed to allow other non-Helm based Implementation
+                      backend: helm-template-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
@@ -239,9 +254,14 @@ spec:
                                 successThreshold: <@ additionalinput.readinessProbe.successThreshold | default(1) @>
 
                             output:
-                              goTemplate: |
-                                host: "{{ .Values.host }}"
-                                version: "{{ .Values.image.tag }}"
+                              helmRelease:
+                                useHelmReleaseStorage: true
+                              additional:
+                                useHelmTemplateStorage: true
+                                goTemplate: |
+                                  host: "{{ .Values.host }}"
+                                  version: "{{ .Values.image.tag }}"
+
                       - name: input-parameters
                         from: "{{steps.prepare-parameters.outputs.artifacts.merged}}"
                       - name: configuration
@@ -251,16 +271,53 @@ spec:
               - - name: helm-install
                   capact-action: helm.install
                   capact-outputTypeInstances:
-                    - name: rocketchat-config
-                      from: additional
                     - name: rocketchat-helm-release
                       from: helm-release
+                      # Affected by https://github.com/capactio/capact/issues/705
+                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
                         from: "{{steps.render-helm-args.outputs.artifacts.render}}"
                       - name: runner-context
                         from: "{{workflow.outputs.artifacts.runner-context}}"
+
+              # allows reusing this workflow as a part of other umbrella workflows and read the artifact value
+              - - name: resolve-value
+                  template: resolve-ti-art-value
+                  capact-outputTypeInstances:
+                    - name: rocketchat-config
+                      from: ti-artifact
+                      backend: helm-template-storage
+                  arguments:
+                    artifacts:
+                      - name: ti-artifact
+                        from: "{{steps.helm-install.outputs.artifacts.additional}}"
+                      - name: backend
+                        from: "{{workflow.outputs.artifacts.helm-template-storage}}"
+
+          - name: resolve-ti-art-value
+            inputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /tmp/input-ti.yaml
+                - name: backend
+                  path: /tmp/storage-backend.yaml
+            outputs:
+              artifacts:
+                - name: ti-artifact
+                  path: /tmp/output.yaml
+            container:
+              image: ghcr.io/capactio/pr/ti-value-fetcher:PR-707
+              env:
+                - name: APP_LOGGER_DEV_MODE
+                  value: "true"
+                - name: APP_INPUT_TI_FILE_PATH
+                  value: "{{inputs.artifacts.ti-artifact.path}}"
+                - name: APP_INPUT_BACKEND_TI_FILE_PATH
+                  value: "{{inputs.artifacts.backend.path}}"
+                - name: APP_OUTPUT_FILE_PATH
+                  value: "{{outputs.artifacts.ti-artifact.path}}"
 
           - name: prepare-parameters
             inputs:
