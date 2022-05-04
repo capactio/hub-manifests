@@ -38,6 +38,7 @@ spec:
           "password": {
             "$id": "#/properties/password",
             "type": "string",
+            "minLength": 16,
             "title": "Password"
           }
         },
