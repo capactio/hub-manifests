@@ -69,8 +69,8 @@ spec:
                       - name: template
                         raw:
                           data: |
-                            id: "<@ id @>"
-                            value
+                            id: <@ id @>
+                            value:
                               key: true
                       - name: input-parameters
                         from: "{{workflow.outputs.artifacts.injected}}"
