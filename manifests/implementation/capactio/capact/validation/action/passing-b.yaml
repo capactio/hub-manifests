@@ -57,6 +57,22 @@ spec:
         templates:
           - name: main
             steps:
+              - - name: render-exp-ti
+                  capact-action: jinja2.template
+                  arguments:
+                    artifacts:
+                      - name: template
+                        raw:
+                          data: |
+                            value
+                              key: true
+                            id: "<@ id @>"
+                      - name: input-parameters
+                        from: "{{workflow.outputs.artifacts.injected}}"
+                      - name: configuration
+                        raw:
+                          data: ""
+
               - - name: test
                   template: test
                   arguments:
@@ -65,6 +81,8 @@ spec:
                         from: "{{workflow.outputs.artifacts.testInput}}"
                       - name: injected
                         from: "{{workflow.outputs.artifacts.injected}}"
+                      - name: expected
+                        from: "{{steps.render-exp-ti.outputs.artifacts.render}}"
                   capact-outputTypeInstances:
                     - name: testUpload
                       from: upload
@@ -77,6 +95,8 @@ spec:
                   path: /input
                 - name: injected
                   path: /injected
+                - name: expected
+                  path: /expected
             outputs:
               artifacts:
                 - name: upload
@@ -84,4 +104,4 @@ spec:
             container:
               image: alpine:latest
               command: ["sh", "-c"]
-              args: ["echo 'Implementation B' && cp /input /upload && printf 'value:\n  key: true\n' > /expected && diff /expected /injected && sleep 1"]
+              args: ["echo 'Implementation B' && cp /input /upload && diff /expected /injected && sleep 1"]
