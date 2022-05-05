@@ -48,6 +48,11 @@ spec:
       methods:
         - name: run
           revision: 0.1.0
+    - interfaceGroupPath: cap.interface.templating.jinja2
+      alias: jinja2
+      methods:
+        - name: template
+          revision: 0.1.0
 
   action:
     runnerInterface: argo.run
@@ -64,9 +69,9 @@ spec:
                       - name: template
                         raw:
                           data: |
+                            id: "<@ id @>"
                             value
                               key: true
-                            id: "<@ id @>"
                       - name: input-parameters
                         from: "{{workflow.outputs.artifacts.injected}}"
                       - name: configuration
