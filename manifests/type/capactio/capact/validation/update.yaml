@@ -22,7 +22,7 @@ spec:
         "examples": [
           {
             "key": "example key",
-            "id": "123"
+            "downloadTypeInstanceId": "123"
           }
         ],
         "required": [
@@ -37,7 +37,7 @@ spec:
           "downloadTypeInstanceId": {
            "$id": "#/properties/key",
            "type": "string",
-           "title": "Downlaod TypeInstance Id"
+           "title": "Download TypeInstance Id"
           }
         },
         "additionalProperties": false
