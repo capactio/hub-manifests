@@ -64,7 +64,7 @@ spec:
                       - name: template
                         raw:
                           data: |
-                            key: "<@ value.key @>"
+                            key: "Implementation A"
                             downloadTypeInstanceId: "<@ id @>"
                       - name: input-parameters
                         from: "{{workflow.outputs.artifacts.testUpdate}}"
