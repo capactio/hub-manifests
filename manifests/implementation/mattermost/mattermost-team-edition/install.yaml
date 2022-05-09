@@ -50,9 +50,6 @@ spec:
           revision: 0.1.0
     cap.core.type.hub.storage:
       allOf:
-        - name: cap.type.helm.release.storage
-          revision: 0.1.0
-          alias: helm-release-storage
         - name: cap.type.helm.template.storage
           revision: 0.1.0
           alias: helm-template-storage
@@ -109,9 +106,6 @@ spec:
                   capact-outputTypeInstances:
                     - name: postgresql
                       from: postgresql
-                      # Affected by https://github.com/capactio/capact/issues/705
-                      # This needs to be removed to allow other non-Helm based Implementation
-                      backend: helm-template-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
@@ -469,8 +463,6 @@ spec:
                   capact-outputTypeInstances:
                     - name: mattermost-helm-release
                       from: helm-release
-                      # Affected by https://github.com/capactio/capact/issues/705
-                      backend: helm-release-storage
                   arguments:
                     artifacts:
                       - name: input-parameters
