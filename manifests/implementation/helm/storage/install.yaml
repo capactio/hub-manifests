@@ -104,7 +104,7 @@ spec:
                             generateName: true
                             chart:
                               name: "helm-storage-backend"
-                              repo: "https://storage.googleapis.com/capactio-commercial-stable-charts"
+                              repo: "https://storage.googleapis.com/capactio-latest-charts"
                               version: <@ input.version | default("0.6.0-2ada6f8") @>
                             values:
                               localHubEndpoint: <@ input.localHubEndpoint | default("http://capact-hub-local.capact-system/graphql") @>
