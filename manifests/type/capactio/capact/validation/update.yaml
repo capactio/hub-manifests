@@ -21,7 +21,8 @@ spec:
         "title": "The schema for update Type",
         "examples": [
           {
-            "key": "example key"
+            "key": "example key",
+            "downloadTypeInstanceId": "123"
           }
         ],
         "required": [
@@ -32,6 +33,11 @@ spec:
            "$id": "#/properties/key",
            "type": "string",
            "title": "Key"
+          },
+          "downloadTypeInstanceId": {
+           "$id": "#/properties/key",
+           "type": "string",
+           "title": "Download TypeInstance Id"
           }
         },
         "additionalProperties": false
