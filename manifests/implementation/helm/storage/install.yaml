@@ -105,7 +105,7 @@ spec:
                             chart:
                               name: "helm-storage-backend"
                               repo: "https://storage.googleapis.com/capactio-latest-charts"
-                              version: <@ input.version | default("0.6.0-2ada6f8") @>
+                              version: <@ input.version | default("0.6.0-aaf8850") @>
                             values:
                               localHubEndpoint: <@ input.localHubEndpoint | default("http://capact-hub-local.capact-system/graphql") @>
                               kubeconfig:
@@ -118,7 +118,7 @@ spec:
                                 targetCPUUtilizationPercentage: <@ additionalinput.autoscaling.targetCPUUtilizationPercentage | default(80) @>
                               global:
                                 containerRegistry:
-                                  overrideTag: <@ additionalinput.global.containerRegistry.overrideTag | default("2ada6f8") @>
+                                  overrideTag: <@ additionalinput.global.containerRegistry.overrideTag | default("aaf8850") @>
                                   path: <@ additionalinput.global.containerRegistry.path | default("ghcr.io/capactio") @>
                               helmReleaseBackend:
                                 enabled: <@ additionalinput.helmReleaseBackend.enabled | default(true) | tojson @>
