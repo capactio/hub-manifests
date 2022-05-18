@@ -65,7 +65,7 @@ spec:
                   "overrideTag": {
                     "type": "string",
                     "title": "OverrideTag",
-                    "default": "2ada6f8",
+                    "default": "aaf8850",
                     "$id": "#/properties/global/properties/containerRegistry/properties/overrideTag"
                   },
                   "path": {

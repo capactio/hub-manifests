@@ -40,9 +40,21 @@ spec:
                 "version": {
                   "$id": "#/properties/version",
                   "description": "Version",
-                  "default": "0.6.0-2ada6f8",
+                  "default": "0.6.0-aaf8850",
                   "$ref": "#/definitions/semVer"
-                }
+                },
+                "localHubEndpoint": {
+                  "$id": "#/properties/localHubEndpoint",
+                  "type": "string",
+                  "description": "Local Hub Endpoint",
+                  "default": "http://capact-hub-local.capact-system/graphql"
+                },
+                "kubeconfigTypeInstanceID": {
+                  "$id": "#/properties/kubeconfigTypeInstanceID",
+                  "type": "string",
+                  "description": "Kubeconfig TypeInstance ID",
+                  "default": ""
+                }  
               },
               "additionalProperties": false
             }
