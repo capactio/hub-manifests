@@ -6,8 +6,8 @@ metadata:
   name: apply-with-state
   license:
     name: "Apache 2.0"
-  displayName: Apply Action for Terraform Runner
-  description: Running Terraform apply with an existing tfstate file
+  displayName: "Apply with existing Terrfarom state"
+  description: "Apply action for Terraform Runner, which respects a given Terraform state"
   documentationURL: https://helm.sh/
   maintainers:
     - email: team-dev@capact.io

@@ -6,8 +6,8 @@ metadata:
   name: apply
   license:
     name: "Apache 2.0"
-  displayName: Apply Action for Helm Runner
-  description: Running Terraform apply
+  displayName: "Apply"
+  description: "Apply action for Terraform Runner"
   documentationURL: https://helm.sh/
   maintainers:
     - email: team-dev@capact.io
