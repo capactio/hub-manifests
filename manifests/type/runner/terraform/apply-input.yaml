@@ -82,7 +82,7 @@ spec:
           "args": {
             "$id": "#/properties/args",
             "type": "object",
-            "title": "Arguments for Helm Runner",
+            "title": "Arguments for Terraform Runner",
             "additionalProperties": false,
             "required": [
               "command",

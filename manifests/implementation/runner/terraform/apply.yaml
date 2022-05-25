@@ -6,7 +6,7 @@ metadata:
   name: apply
   license:
     name: "Apache 2.0"
-  displayName: Apply Action for Helm Runner
+  displayName: Apply Action for Terraform Runner
   description: Running Terraform apply
   documentationURL: https://helm.sh/
   maintainers:
