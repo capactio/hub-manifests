@@ -78,7 +78,7 @@ spec:
               - name: tmp
                 emptyDir: { }
             container:
-              image: ghcr.io/capactio/helm-runner:aaf8850
+              image: ghcr.io/capactio/helm-runner:6977416
               env:
                 - name: RUNNER_OPTIONAL_KUBECONFIG_TI
                   value: "{{inputs.artifacts.kubeconfig.path}}"
